@@ -24,17 +24,57 @@ import {
 } from 'native-base';
 
 
-import LoginScreen from './Screens/LoginScreen';
-import MainScreen from './Screens/MainScreen';
-import Ereport from './Screens/Ereport';
-import FAQ from './Screens/FAQ';
-import ApprovalLimit from './Screens/ApprovalLimit';
-import OrderInformation from './Screens/OrderInformation';
-import DailyCalendar from './Screens/DailyCalendar';
+import LoginScreen from './screens/LoginScreen';
+import MainScreen from './screens/MainScreen';
+import Ereport from './screens/Ereport';
+
+import M1 from './screens/menu/m1/M1';
+import M2 from './screens/menu/m2/M2';
+
+import ApprovalLimit from './screens/ApprovalLimit';
+import OrderInformation from './screens/OrderInformation';
+import DailyCalendar from './screens/DailyCalendar';
 
 import SelectBase from './pages/SelectBase';
 import ScanScreen from './pages/ScanScreen';
 
+import ShowInCome from './screens/menu/m1/ShowInCome'
+import CurrentStatus from './screens/menu/m1/CurrentStatus'
+import ShowBank from './screens/menu/m1/ShowBank'
+import ShowInComeTeam from './screens/menu/m1/ShowInComeTeam'
+import ShowPayMentdeposit from './screens/menu/m1/ShowPayMentdeposit'
+import ShowSellBook from './screens/menu/m1/ShowSellBook'
+
+import ShowAR from './screens/menu/m2/ShowAR'
+import AR_SellAmount from './screens/menu/m2/AR_SellAmount'
+import AR_ShowArdetail from './screens/menu/m2/AR_ShowArdetail'
+import AR_SellAmountByIcDept from './screens/menu/m2/AR_SellAmountByIcDept'
+import AR_GoodsBooking from './screens/menu/m2/AR_GoodsBooking'
+import AR_Address from './screens/menu/m2/AR_Address'
+
+import ShowAP from './screens/menu/m3/ShowAP'
+import AP_PurcAmount from './screens/menu/m3/AP_PurcAmount'
+import AP_ShowArdetail from './screens/menu/m3/AP_ShowArdetail'
+import AP_PurcAmountByIcDept from './screens/menu/m3/AP_PurcAmountByIcDept'
+import AP_GoodsBooking from './screens/menu/m3/AP_GoodsBooking'
+import AP_Address from './screens/menu/m3/AP_Address'
+
+import ChequeIn from './screens/menu/m4/ChequeIn'
+import ChequeBook from './screens/menu/m4/ChequeBook'
+import SkuBalance from './screens/menu/m4/SkuBalance'
+import SkuBalanceByWL from './screens/menu/m4/SkuBalanceByWL'
+
+import ArDueDate from './screens/menu/m5/ArDueDate'
+import Arcat from './screens/menu/m5/Arcat'
+import ApDueDate from './screens/menu/m5/ApDueDate'
+import Apcat from './screens/menu/m5/Apcat'
+
+import ShowSlmn from './screens/menu/m6/ShowSlmn'
+import ShowPos from './screens/menu/m6/ShowPos'
+import SlmnByYearMonth from './screens/menu/m6/SlmnByYearMonth'
+import PosByYearMonth from './screens/menu/m6/PosByYearMonth'
+import IncomeBySlmn from './screens/menu/m6/IncomeBySlmn'
+import IncomeByPos from './screens/menu/m6/IncomeByPos'
 
 const LoginStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -96,12 +136,9 @@ const App = () => {
                 name="Ereport"
                 component={Ereport}
               />
+
+
               <MainStack.Screen
-                options={{ headerShown: false }}
-                name="FAQ"
-                component={FAQ}
-              />
-               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="ApprovalLimit"
                 component={ApprovalLimit}
@@ -111,13 +148,187 @@ const App = () => {
                 name="OrderInformation"
                 component={OrderInformation}
               />
-               <MainStack.Screen
+              <MainStack.Screen
                 options={{ headerShown: false }}
                 name="DailyCalendar"
                 component={DailyCalendar}
               />
-              
-              
+
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="M1"
+                component={M1}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowInCome"
+                component={ShowInCome}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowInComeTeam"
+                component={ShowInComeTeam}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="CurrentStatus"
+                component={CurrentStatus}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowBank"
+                component={ShowBank}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowPayMentdeposit"
+                component={ShowPayMentdeposit}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowSellBook"
+                component={ShowSellBook}
+              />
+
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="M2"
+                component={M2}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowAR"
+                component={ShowAR}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AR_SellAmount"
+                component={AR_SellAmount}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AR_ShowArdetail"
+                component={AR_ShowArdetail}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AR_SellAmountByIcDept"
+                component={AR_SellAmountByIcDept}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AR_GoodsBooking"
+                component={AR_GoodsBooking}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AR_Address"
+                component={AR_Address}
+              />
+
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowAP"
+                component={ShowAP}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AP_PurcAmount"
+                component={AP_PurcAmount}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AP_ShowArdetail"
+                component={AP_ShowArdetail}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AP_PurcAmountByIcDept"
+                component={AP_PurcAmountByIcDept}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AP_GoodsBooking"
+                component={AP_GoodsBooking}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="AP_Address"
+                component={AP_Address}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ChequeIn"
+                component={ChequeIn}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ChequeBook"
+                component={ChequeBook}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="SkuBalance"
+                component={SkuBalance}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="SkuBalanceByWL"
+                component={SkuBalanceByWL}
+              />
+
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="Arcat"
+                component={Arcat}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ArDueDate"
+                component={ArDueDate}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="Apcat"
+                component={Apcat}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ApDueDate"
+                component={ApDueDate}
+              />
+
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowSlmn"
+                component={ShowSlmn}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="ShowPos"
+                component={ShowPos}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="SlmnByYearMonth"
+                component={SlmnByYearMonth}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="PosByYearMonth"
+                component={PosByYearMonth}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="IncomeBySlmn"
+                component={IncomeBySlmn}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="IncomeByPos"
+                component={IncomeByPos}
+              />
+
             </MainStack.Navigator>
           </SafeAreaView>
         </NavigationContainer>

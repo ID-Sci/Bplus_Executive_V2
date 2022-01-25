@@ -125,6 +125,7 @@ const ApprovalLimit = () => {
                             <View style={{ padding: 20, marginTop: 0 }}>
                                 <View>
                                     <TouchableOpacity
+                                       
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',

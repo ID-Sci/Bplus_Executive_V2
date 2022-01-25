@@ -107,7 +107,58 @@ const MainScreen = () => {
     setLoading(true);
   };
 
+  const logOut = async () => {
+    setLoading(true)
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
+      method: 'POST',
+      body: JSON.stringify({
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
+        'BPAPUS-LOGIN-GUID': '',
+        'BPAPUS-FUNCTION': 'UnRegister',
+        'BPAPUS-PARAM':
+          '{"BPAPUS-MACHINE": "' +
+          registerReducer.machineNum +
+          '" }',
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        setLoading(false)
+        if (json && json.ResponseCode == '635') {
+          Alert.alert(
+            Language.t('alert.errorTitle'),
+            Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+          console.log('NOT FOUND MEMBER');
+        } else if (json && json.ResponseCode == '629') {
+          Alert.alert(
+            Language.t('alert.errorTitle'),
+            'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+        } else if (json && json.ResponseCode == '200') {
 
+          navigation.dispatch(
+            navigation.replace('LoginScreen')
+          )
+        } else {
+          Alert.alert(
+            Language.t('alert.errorTitle'),
+          );
+        }
+      })
+      .catch((error) => {
+        console.error('ERROR at _fetchGuidLogin' + error);
+        setLoading(false)
+        if (databaseReducer.Data.urlser == '') {
+          Alert.alert(
+            Language.t('alert.errorTitle'),
+            Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+        } else {
+          Alert.alert(
+            Language.t('alert.errorTitle'),
+            Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+        }
+      });
+
+  };
 
   return (
 
@@ -304,6 +355,27 @@ const MainScreen = () => {
                       </View>
                     </View>
                   </TouchableOpacity>
+                  <TouchableNativeFeedback
+                    onPress={() => logOut()}>
+                    <View
+                      style={{
+                        margin: 10,
+                        borderRadius: 20,
+                        flexDirection: 'column',
+                        padding: 10,
+                        backgroundColor: Colors.buttonColorPrimary,
+                      }}>
+                      <Text
+                        style={{
+                          color: Colors.buttonTextColor,
+                          alignSelf: 'center',
+                          fontSize: FontSize.medium,
+                          fontWeight: 'bold',
+                        }}>
+                        {'ออกจากระบบ'}
+                      </Text>
+                    </View>
+                  </TouchableNativeFeedback>
                 </View>
               </View>
             </ScrollView>

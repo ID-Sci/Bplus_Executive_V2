@@ -1,14 +1,14 @@
 // const backgroundColor = "#03A9F4";
 const backgroundColor = "#E6EBFF";
 const backgroundColorSecondary = "#FCFCFC";
-const backgroundLoginColor = "#42a5f5";
+const backgroundLoginColor = "#1b56b6";
 const backgroundLoginColorSecondary = "#FCFCFC";
 export default {
   backgroundColor,
   backgroundColorSecondary,
   backgroundLoginColor,
   backgroundLoginColorSecondary,
-  primaryColor: "#42a5f5",
+  primaryColor: "#1b56b6",
   lightPrimiryColor: "#80d6ff",
   darkPrimiryColor: "#0077c2",
   fontColor: "#474040",

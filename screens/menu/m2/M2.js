@@ -39,21 +39,21 @@ import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
-import { Language, changeLanguage } from '../translations/I18n';
-import { FontSize } from '../components/FontSizeHelper';
+import { Language, changeLanguage } from '../../../translations/I18n';
+import { FontSize } from '../../../components/FontSizeHelper';
 
 
-import * as loginActions from '../src/actions/loginActions';
-import * as registerActions from '../src/actions/registerActions';
-import * as databaseActions from '../src/actions/databaseActions';
+import * as loginActions from '../../../src/actions/loginActions';
+import * as registerActions from '../../../src/actions/registerActions';
+import * as databaseActions from '../../../src/actions/databaseActions';
 
-import Colors from '../src/Colors';
+import Colors from '../../../src/Colors';
 import { fontSize, fontWeight } from 'styled-system';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const FAQ = () => {
+const M2 = () => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -94,7 +94,7 @@ const FAQ = () => {
         secureTextEntry: true,
     });
 
-    const image = '../images/UI/Asset35.png';
+    const image = '../../../images/UI/Asset35.png';
 
     useEffect(() => {
         console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
@@ -118,13 +118,14 @@ const FAQ = () => {
                     < >
                         <Image
                             style={topImage}
-                            source={require('../images/UI/Asset23.png')}
+                            source={require('../../../images/UI/Asset23.png')}
                         />
 
                         <ScrollView>
                             <View style={{ padding: 20, marginTop: 0 }}>
                                 <View>
                                     <TouchableOpacity
+                                        onPress={() => navigation.navigate('ShowInCome')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -147,7 +148,7 @@ const FAQ = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset27.png')}
+                                                source={require('../../../images/UI/Asset18.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -160,6 +161,7 @@ const FAQ = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        onPress={() => navigation.navigate('ShowInComeTeam')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -182,7 +184,7 @@ const FAQ = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset28.png')}
+                                                source={require('../../../images/UI/Asset18.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -195,6 +197,7 @@ const FAQ = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        onPress={() => navigation.navigate('ShowBank')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -217,7 +220,7 @@ const FAQ = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset29.png')}
+                                                source={require('../../../images/UI/Asset18.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -230,6 +233,7 @@ const FAQ = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        onPress={() => navigation.navigate('ShowSellBook')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -252,7 +256,7 @@ const FAQ = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset30.png')}
+                                                source={require('../../../images/UI/Asset18.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -265,6 +269,7 @@ const FAQ = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        onPress={() => navigation.navigate('ShowInCome')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -287,7 +292,7 @@ const FAQ = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset31.png')}
+                                                source={require('../../../images/UI/Asset18.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -300,6 +305,7 @@ const FAQ = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        onPress={() => navigation.navigate('CurrentStatus')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -322,7 +328,7 @@ const FAQ = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset32.png')}
+                                                source={require('../../../images/UI/Asset18.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -482,4 +488,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default FAQ;
+export default M2;

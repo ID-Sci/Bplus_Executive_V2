@@ -39,21 +39,21 @@ import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
-import { Language, changeLanguage } from '../translations/I18n';
-import { FontSize } from '../components/FontSizeHelper';
+import { Language, changeLanguage } from '../../../translations/I18n';
+import { FontSize } from '../../../components/FontSizeHelper';
 
 
-import * as loginActions from '../src/actions/loginActions';
-import * as registerActions from '../src/actions/registerActions';
-import * as databaseActions from '../src/actions/databaseActions';
+import * as loginActions from '../../../src/actions/loginActions';
+import * as registerActions from '../../../src/actions/registerActions';
+import * as databaseActions from '../../../src/actions/databaseActions';
 
-import Colors from '../src/Colors';
+import Colors from '../../../src/Colors';
 import { fontSize, fontWeight } from 'styled-system';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const Ereport = () => {
+const M1 = () => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -94,7 +94,7 @@ const Ereport = () => {
         secureTextEntry: true,
     });
 
-    const image = '../images/UI/Asset35.png';
+    const image = '../../../images/UI/Asset35.png';
 
     useEffect(() => {
         console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
@@ -118,14 +118,14 @@ const Ereport = () => {
                     < >
                         <Image
                             style={topImage}
-                            source={require('../images/UI/Asset13.png')}
+                            source={require('../../../images/UI/Asset23.png')}
                         />
 
                         <ScrollView>
                             <View style={{ padding: 20, marginTop: 0 }}>
                                 <View>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('M1')}
+                                        onPress={() => navigation.navigate('ShowInCome')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -148,7 +148,7 @@ const Ereport = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset17.png')}
+                                                source={require('../../../images/UI/Asset27.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -156,12 +156,12 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>คำถามที่ถามประจำ</Text>
+                                                }}>ยอดขายตามปีเดือน</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('M2')}
+                                     onPress={() => navigation.navigate('ShowInComeTeam')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -184,7 +184,7 @@ const Ereport = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset18.png')}
+                                                source={require('../../../images/UI/Asset28.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -192,11 +192,12 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ยอกลูกหนี้แต่ละราย</Text>
+                                                }}>ยอดขายตามทีมขาย</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                     onPress={() => navigation.navigate('ShowBank')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -219,7 +220,7 @@ const Ereport = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset19.png')}
+                                                source={require('../../../images/UI/Asset29.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -227,11 +228,12 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ยอดเจ้าหนี้แต่ละราย</Text>
+                                                }}>ยอดเงินในธนาคาร</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                     onPress={() => navigation.navigate('ShowSellBook')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -254,7 +256,7 @@ const Ereport = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset20.png')}
+                                                source={require('../../../images/UI/Asset30.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -262,11 +264,12 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>สรุปยอดเช็คและสินค้าคงเหลือ</Text>
+                                                }}>แสดงยอดซื้อขายรายวัน</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                     onPress={() => navigation.navigate('ShowInCome')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -289,7 +292,7 @@ const Ereport = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset21.png')}
+                                                source={require('../../../images/UI/Asset31.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -297,11 +300,12 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>สรุปยอดลูกหนี้-เจ้าหนี้</Text>
+                                                }}>แสดงยอดรับจ่ายรายวัน</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                     onPress={() => navigation.navigate('CurrentStatus')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -324,7 +328,7 @@ const Ereport = () => {
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
-                                                source={require('../images/UI/Asset22.png')}
+                                                source={require('../../../images/UI/Asset32.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
                                                 <Text style={{
@@ -332,7 +336,7 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ติดตามยอดขาย</Text>
+                                                }}>สรุปสถานภาพปัจจุบัน</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
@@ -484,4 +488,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Ereport;
+export default M1;
