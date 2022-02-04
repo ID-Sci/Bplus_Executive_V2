@@ -77,19 +77,12 @@ const OrderInformation = () => {
         //backsakura013
     }, []);
 
-    const [GUID, setGUID] = useStateIfMounted('');
-
-    const [isSelected, setSelection] = useState(loginReducer.userloggedIn == true ? loginReducer.userloggedIn : false);
-    const [isSFeatures, setSFeatures] = useState(loginReducer.isSFeatures == true ? loginReducer.isSFeatures : false);
 
     const [loading, setLoading] = useStateIfMounted(false);
     const [loading_backG, setLoading_backG] = useStateIfMounted(true);
 
-    const [resultJson, setResultJson] = useState([]);
-    const [marker, setMarker] = useState(false);
-    const [username, setUsername] = useState(loginReducer.userloggedIn == true ? loginReducer.userNameED : '');
-    const [password, setPassword] = useState(loginReducer.userloggedIn == true ? loginReducer.passwordED : '');
-
+    const [textsearch, setSearch] = useState('');
+    const [arrayObj, setArrayObj] = useState([]);
     const [data, setData] = useStateIfMounted({
         secureTextEntry: true,
     });
@@ -107,6 +100,61 @@ const OrderInformation = () => {
         setLoading(true);
     };
 
+    const InCome = async () => {
+        console.log(textsearch)
+        letsLoading()
+
+        await fetchInCome()
+        closeLoading()
+        // setArrayObj(arrayResult)
+    }
+    const fetchInCome = async () => {
+
+        setArrayObj([])
+        await fetch(databaseReducer.Data.urlser + '/UpdateErp', {
+            method: 'POST',
+            body: JSON.stringify({
+                'BPAPUS-BPAPSV': loginReducer.serviceID,
+                'BPAPUS-LOGIN-GUID': loginReducer.guid,
+                'BPAPUS-FUNCTION': 'SearchGoodsInfoWPurcPrice',
+                'BPAPUS-PARAM': '{"APPRB_KEY": " 0" }',
+                'BPAPUS-FILTER': "AND (GOODS_CODE LIKE '%" + textsearch + "%') OR (SKU_NAME LIKE '%" + textsearch + "%') OR (SKU_CODE LIKE '%" + textsearch + "%') ",
+                'BPAPUS-ORDERBY': '',
+                'BPAPUS-OFFSET': '0',
+                'BPAPUS-FETCH': '0',
+            }),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let responseData = JSON.parse(json.ResponseData);
+                if (responseData.RECORD_COUNT > 0) {
+
+                    setArrayObj(responseData.SearchGoodsInfoWPurcPrice)
+                } else {
+                    Alert.alert("ไม่พบข้อมูล");
+                }
+                setLoading(false)
+            })
+            .catch((error) => {
+                // if (ser_die) {
+                //     ser_die = false
+                //     regisMacAdd()
+                // } else {
+                //     console.log('Function Parameter Required');
+                //     let temp_error = 'error_ser.' + 610;
+                //     console.log('>> ', temp_error)
+                //     Alert.alert(
+                //         Language.t('alert.errorTitle'),
+                //         Language.t(temp_error), [{
+                //             text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                //                 navigation.replace('LoginStackScreen')
+                //             )
+                //         }]);
+                //     setLoading(false)
+                // }
+                console.error('ERROR at fetchContent >> ' + error)
+            })
+    }
 
 
     return (
@@ -121,7 +169,7 @@ const OrderInformation = () => {
                             source={require('../images/UI/Asset41.png')}
                         />
                         <View style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 20, marginTop: 0 }}>
-                            <View>
+                            <View style={{ borderTopStartRadius: 20, borderTopEndRadius: 20, borderBottomStartRadius: arrayObj.length > 0 ? 0 : 20, borderBottomEndRadius: arrayObj.length > 0 ? 0 : 20, backgroundColor: Colors.backgroundLoginColorSecondary, }}>
                                 <View style={{
                                     borderRadius: 20,
                                     flexDirection: 'column',
@@ -129,6 +177,7 @@ const OrderInformation = () => {
                                     backgroundColor: Colors.backgroundLoginColorSecondary,
                                     borderColor: Colors.borderColor,
                                     borderWidth: 0.5
+
                                 }}>
                                     <TextInput
                                         style={{
@@ -137,13 +186,14 @@ const OrderInformation = () => {
                                             color: Colors.fontColor,
                                             fontSize: FontSize.medium,
                                         }}
-
+                                        value={textsearch}
+                                        onChangeText={(val) => setSearch(val)}
                                         placeholderTextColor={Colors.fontColorSecondary}
                                         placeholder={'ค้นหา'}
 
                                     />
 
-                                    <TouchableNativeFeedback  >
+                                    <TouchableNativeFeedback onPress={() => InCome()}>
 
                                         <Image
                                             style={{ height: 30, width: 30, marginRight: 10, }}
@@ -156,55 +206,64 @@ const OrderInformation = () => {
                         </View>
                         <ScrollView>
                             <View style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20, marginTop: 0 }}>
-                                <View style={{
-                                    borderRadius: 20,
-                                    padding: 20,
-                                    flexDirection: 'column',
-                                    backgroundColor: Colors.backgroundLoginColorSecondary,
-                                }}>
+                                {arrayObj.length > 0 ?
                                     <View style={{
-                                        borderBottomColor: 'black',
-                                        borderBottomWidth: 1,
-                                        paddingBottom:10,
-                                        paddingTop:10
+
+                                        padding: 20,
+                                        borderBottomStartRadius: 20, borderBottomEndRadius: 20,
+                                        backgroundColor: Colors.backgroundLoginColorSecondary,
                                     }}>
-                                        <View style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            paddingBottom: 5
-                                        }}>
-                                            <Text style={{ width: deviceWidth / 4 }}>{'รหัสซื้อขาย'}</Text>
-                                            <Text>{'544564465'}</Text>
-                                        </View>
-                                        <View style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            paddingBottom: 5
-                                        }}>
-                                            <Text style={{ width: deviceWidth / 4 }}>{'ชื่อสินค้า'}</Text>
-                                            <Text>{'544564465'}</Text>
-                                        </View>
-                                        <View style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            paddingBottom: 5
-                                        }}>
-                                            <Text style={{ width: deviceWidth / 4 }}>{'หน่วยนับ'}</Text>
-                                            <Text>{'544564465'}</Text>
-                                        </View>
-                                        <View style={{
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                            paddingBottom: 5
-                                        }}>
-                                            <Text style={{ width: deviceWidth / 4 }}>{'รหัสสินค้า'}</Text>
-                                            <Text>{'544564465'}</Text>
-                                        </View>
+                                        {arrayObj.map((item) => {
+                                            return (
+                                                <View style={{
 
-                                    </View>
+                                                    flexDirection: 'column',
 
-                                </View>
+                                                }}>
+                                                    <View style={{
+                                                        borderBottomColor: 'black',
+                                                        borderBottomWidth: 1,
+                                                        paddingBottom: 10,
+                                                        paddingTop: 10
+                                                    }}>
+                                                        <View style={{
+                                                            alignItems: 'center',
+                                                            flexDirection: 'row',
+                                                            paddingBottom: 5
+                                                        }}>
+                                                            <Text style={{ width: deviceWidth / 4 }}>{'รหัสซื้อขาย'}</Text>
+                                                            <Text>{item.GOODS_CODE}</Text>
+                                                        </View>
+                                                        <View style={{
+                                                            alignItems: 'center',
+                                                            flexDirection: 'row',
+                                                            paddingBottom: 5
+                                                        }}>
+                                                            <Text style={{ width: deviceWidth / 4 }}>{'ชื่อสินค้า'}</Text>
+                                                            <Text>{item.SKU_NAME}</Text>
+                                                        </View>
+                                                        <View style={{
+                                                            alignItems: 'center',
+                                                            flexDirection: 'row',
+                                                            paddingBottom: 5
+                                                        }}>
+                                                            <Text style={{ width: deviceWidth / 4 }}>{'หน่วยนับ'}</Text>
+                                                            <Text>{item.UTQ_NAME}</Text>
+                                                        </View>
+                                                        <View style={{
+                                                            alignItems: 'center',
+                                                            flexDirection: 'row',
+                                                            paddingBottom: 5
+                                                        }}>
+                                                            <Text style={{ width: deviceWidth / 4 }}>{'รหัสสินค้า'}</Text>
+                                                            <Text>{item.SKU_CODE}</Text>
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                            )
+                                        })}
 
+                                    </View> : null}
                             </View>
                             <TouchableNativeFeedback
                                 onPress={() => navigation.goBack()}>

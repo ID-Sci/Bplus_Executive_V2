@@ -30,6 +30,10 @@ import Ereport from './screens/Ereport';
 
 import M1 from './screens/menu/m1/M1';
 import M2 from './screens/menu/m2/M2';
+import M3 from './screens/menu/m3/M3';
+import M4 from './screens/menu/m4/M4';
+import M5 from './screens/menu/m5/M5';
+import M6 from './screens/menu/m6/M6';
 
 import ApprovalLimit from './screens/ApprovalLimit';
 import OrderInformation from './screens/OrderInformation';
@@ -228,6 +232,11 @@ const App = () => {
 
               <MainStack.Screen
                 options={{ headerShown: false }}
+                name="M3"
+                component={M3}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
                 name="ShowAP"
                 component={ShowAP}
               />
@@ -256,6 +265,12 @@ const App = () => {
                 name="AP_Address"
                 component={AP_Address}
               />
+
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="M4"
+                component={M4}
+              />
               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="ChequeIn"
@@ -279,6 +294,11 @@ const App = () => {
 
               <MainStack.Screen
                 options={{ headerShown: false }}
+                name="M5"
+                component={M5}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
                 name="Arcat"
                 component={Arcat}
               />
@@ -298,6 +318,11 @@ const App = () => {
                 component={ApDueDate}
               />
 
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="M6"
+                component={M6}
+              />
               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="ShowSlmn"

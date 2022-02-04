@@ -118,14 +118,14 @@ const M2 = () => {
                     < >
                         <Image
                             style={topImage}
-                            source={require('../../../images/UI/Asset23.png')}
+                            source={require('../../../images/UI/Asset13.png')}
                         />
 
                         <ScrollView>
                             <View style={{ padding: 20, marginTop: 0 }}>
                                 <View>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('ShowInCome')}
+                                        onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_SellAmount' })}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -156,12 +156,12 @@ const M2 = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ยอดขายตามปีเดือน</Text>
+                                                }}>แสดงยอดขายแต่ละเดือน</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('ShowInComeTeam')}
+                                        onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_ShowArdetail' })}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -192,12 +192,12 @@ const M2 = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ยอดขายตามทีมขาย</Text>
+                                                }}>แสดงยอดหนี้คงค้าง</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('ShowBank')}
+                                        onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_SellAmountByIcDept' })}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -228,12 +228,12 @@ const M2 = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ยอดเงินในธนาคาร</Text>
+                                                }}>แสดงยอดขายตามหมวดสินค้า</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('ShowSellBook')}
+                                        onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_GoodsBooking' })}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -264,12 +264,12 @@ const M2 = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>แสดงยอดซื้อขายรายวัน</Text>
+                                                }}>แสดงสินค้าจองค้างส่ง</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate('ShowInCome')}
+                                        onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_Address' })}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
@@ -300,46 +300,11 @@ const M2 = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>แสดงยอดรับจ่ายรายวัน</Text>
+                                                }}>แสดงที่อยู่</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate('CurrentStatus')}
-                                        style={{
-                                            backgroundColor: Colors.backgroundLoginColorSecondary,
-                                            flexDirection: 'column',
-                                            margin: 10,
-                                            borderRadius: 10,
-                                            paddingLeft: 10,
-                                            paddingRight: 10,
-                                            paddingTop: 10,
-                                            paddingBottom: 10,
-                                            shadowColor: Colors.borderColor,
-                                            shadowOffset: {
-                                                width: 0,
-                                                height: 6,
-                                            },
-                                            shadowOpacity: 0.5,
-                                            shadowRadius: 1.0,
-                                            elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Image
-                                                style={{ height: 40, width: 40 }}
-                                                resizeMode={'contain'}
-                                                source={require('../../../images/UI/Asset18.png')}
-                                            />
-                                            <View style={{ marginLeft: 20 }}>
-                                                <Text style={{
-                                                    color: 'black',
-                                                    alignSelf: 'center',
-                                                    fontSize: FontSize.medium,
-                                                    fontWeight: 'bold'
-                                                }}>สรุปสถานภาพปัจจุบัน</Text>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
+                              
                                     <TouchableNativeFeedback
                                         onPress={() => navigation.goBack()}>
                                         <View

@@ -11,7 +11,7 @@ export const state_years = years;
 export const Day_Calendar = (year, mont) => {
     year = year - 543
     let getDate = new Date(`${year}/${mont + 1}/1`).getDay();
-    console.log(getDate)
+   
     if (mont == 11) mont = 1
     else mont = mont + 2
 
@@ -42,10 +42,45 @@ export const Day_Calendar = (year, mont) => {
         dayObj.push(obj)
         obj = []
     }
-    console.log(dayObj)
-    console.log(days);
+  
     return dayObj
+}
+export const Day_mont = (year, mont) => {
+    year = year - 543
+    let getDate = new Date(`${year}/${mont + 1}/1`).getDay();
+ 
+    if (mont == 11) mont = 1
+    else mont = mont + 2
 
+    var lastDate = new Date(`${year}/${mont}/0`);
+
+    var d = 1
+    var l = lastDate.getDate()
+
+    var days = []
+    let obj = []
+    var dayObj = []
+    for (var i = d; i <= l; i++) {
+        days.push(i)
+    }
+    obj = []
+    for (var i = 0; i < getDate; i++)
+        obj.push('')
+    days.map((item) => {
+        obj.push(item)
+        if (obj.length == 7) {
+            dayObj.push(obj)
+            obj = []
+        }
+    })
+    if (obj.length < 7) {
+        for (var i = 0; i < 7 - obj.length; i++)
+            obj.push('')
+        dayObj.push(obj)
+        obj = []
+    }
+  
+    return days
 }
 export const regisMacAdd = async (urlser, serviceID, machineNum, userNameED, passwordED) => {
     console.log('REGIS MAC ADDRESS');

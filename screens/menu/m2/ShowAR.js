@@ -165,13 +165,13 @@ const showAR = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
+                            <FontAwesome name="arrow-left" color={'black'} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
                                 marginLeft: 12,
                                 fontSize: FontSize.medium,
-                                color: Colors.fontColor2
+                                color:'black'
                             }}>{`ยอดลูกหนี้แต่ละราย`}</Text>
                     </View>
 
@@ -181,7 +181,7 @@ const showAR = ({ route }) => {
                 <View style={tabbar} >
                     <View style={{
                         backgroundColor: '#fff', alignSelf: 'center',
-                        justifyContent: 'center', borderRadius: 20, flexDirection: 'row', marginBottom: 10
+                        justifyContent: 'center', borderRadius: 20, flexDirection: 'row', borderColor:'black',borderWidth:1, marginBottom: 10
                     }}>
 
                         <TextInput
@@ -190,6 +190,7 @@ const showAR = ({ route }) => {
                                 marginLeft: 10,
                                 borderBottomColor: Colors.borderColor,
                                 color: Colors.fontColor,
+                               
                                 padding: 10,
                                 fontSize: FontSize.medium,
 
@@ -233,8 +234,8 @@ const showAR = ({ route }) => {
                                                         <>
                                                             <View>
                                                                 <TouchableOpacity
-                                                                    onPress={() => navigation.navigate(route.params.route.routeName, {
-                                                                        route: route.params.route, Obj: item.key
+                                                                    onPress={() => navigation.navigate(route.params.routeName, {
+                                                                        Obj: item.key
                                                                     })}>
                                                                     <DataTable.Row>
                                                                         <DataTable.Cell>{item.name}</DataTable.Cell>
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         justifyContent: 'space-between',
-        backgroundColor: Colors.buttonColorPrimary,
+        backgroundColor: Colors.backgroundLoginColor,
 
     },
     tabbar: {
@@ -323,7 +324,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         alignItems: 'center',
-        backgroundColor: Colors.backgroundLoginColor,
+        backgroundColor: Colors.backgroundColor,
         justifyContent: 'space-between',
         flexDirection: 'row',
     },
@@ -424,7 +425,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         fontSize: FontSize.mediumw,
-        color: Colors.buttonColorPrimary
+        color: Colors.backgroundLoginColor
     },
     modalText: {
         marginBottom: 15,

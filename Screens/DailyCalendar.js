@@ -87,7 +87,7 @@ const DailyCalendar = () => {
 
 
     var daily = new Date()
-    console.log(daily)
+
     const [dateIndex, set_DateIndex] = useState(1)
     const [monthIndex, set_MonthIndex] = useState(daily.getMonth())
     const [yearIndex, set_yearIndex] = useState(daily.getFullYear() + 543)
@@ -116,20 +116,20 @@ const DailyCalendar = () => {
     }
 
     useEffect(() => {
-        console.log('dateIndex')
-        if (dateIndex)
-            get_Point(fulldate())
-    }, [dateIndex])
+
+
+
+    }, [])
     useEffect(() => {
-        console.log('monthIndex')
-        if (monthIndex)
-            get_Point(fulldate())
+        console.log(`monthIndex ${monthIndex}`)
+        if (!loading )
+            get_Point()
     }, [monthIndex])
     useEffect(() => {
 
-        console.log('yearIndex')
-        if (yearIndex)
-            get_Point(fulldate())
+        console.log(`yearIndex ${yearIndex}`)
+        if (!loading)
+            get_Point()
     }, [yearIndex])
 
 
@@ -139,15 +139,22 @@ const DailyCalendar = () => {
         let y = yearIndex - 543
         return `${y}${m.toString().length > 1 ? m : '0' + m}${d.toString().length > 1 ? d : '0' + d}`
     }
-    const get_Point = async (d) => {
-        console.log(d)
-        get_poppoint(d)
-        get_mappoint(d)
-        get_rarchqDue(d)
-        get_rapDue(d)
+    const fetchdate = (d) => {
+
+        let m = monthIndex + 1
+        let y = yearIndex - 543
+        return `${y}${m.toString().length > 1 ? m : '0' + m}${d.toString().length > 1 ? d : '0' + d}`
+    }
+    const get_Point = async () => {
+        letsLoading()
+        await get_poppoint()
+        await get_mappoint()
+        await get_rarchqDue()
+        await get_rapDue()
+        closeLoading()
     }
 
-    const get_poppoint = async (d) => {
+    const get_poppoint = async () => {
         await fetch(databaseReducer.Data.urlser + '/Calendar', {
             method: 'POST',
             body: JSON.stringify({
@@ -156,8 +163,10 @@ const DailyCalendar = () => {
                 'BPAPUS-FUNCTION': 'SHOWCALENDARPOAPPOINT',
                 'BPAPUS-PARAM':
                     '{"FROM_DATE": ' +
-                    d + ',"TO_DATE": ' +
-                    d + '}',
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[0]) +
+                    ',"TO_DATE": ' +
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[safe_Format.Day_mont(yearIndex, monthIndex).length - 1]) +
+                    '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -187,7 +196,7 @@ const DailyCalendar = () => {
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
-    const get_mappoint = async (d) => {
+    const get_mappoint = async () => {
         await fetch(databaseReducer.Data.urlser + '/Calendar', {
             method: 'POST',
             body: JSON.stringify({
@@ -196,8 +205,10 @@ const DailyCalendar = () => {
                 'BPAPUS-FUNCTION': 'SHOWCALENDARBKAPPOINT',
                 'BPAPUS-PARAM':
                     '{"FROM_DATE": ' +
-                    d + ',"TO_DATE": ' +
-                    d + '}',
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[0]) +
+                    ',"TO_DATE": ' +
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[safe_Format.Day_mont(yearIndex, monthIndex).length - 1]) +
+                    '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -227,7 +238,7 @@ const DailyCalendar = () => {
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
-    const get_rarchqDue = async (d) => {
+    const get_rarchqDue = async () => {
         await fetch(databaseReducer.Data.urlser + '/Calendar', {
             method: 'POST',
             body: JSON.stringify({
@@ -236,8 +247,10 @@ const DailyCalendar = () => {
                 'BPAPUS-FUNCTION': 'SHOWCALENDARARDUE',
                 'BPAPUS-PARAM':
                     '{"FROM_DATE": ' +
-                    d + ',"TO_DATE": ' +
-                    d + '}',
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[0]) +
+                    ',"TO_DATE": ' +
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[safe_Format.Day_mont(yearIndex, monthIndex).length - 1]) +
+                    '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -267,7 +280,7 @@ const DailyCalendar = () => {
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
-    const get_rapDue = async (d) => {
+    const get_rapDue = async () => {
         await fetch(databaseReducer.Data.urlser + '/Calendar', {
             method: 'POST',
             body: JSON.stringify({
@@ -276,8 +289,10 @@ const DailyCalendar = () => {
                 'BPAPUS-FUNCTION': 'SHOWCALENDARAPDUE',
                 'BPAPUS-PARAM':
                     '{"FROM_DATE": ' +
-                    d + ',"TO_DATE": ' +
-                    d + '}',
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[0]) +
+                    ',"TO_DATE": ' +
+                    fetchdate(safe_Format.Day_mont(yearIndex, monthIndex)[safe_Format.Day_mont(yearIndex, monthIndex).length - 1]) +
+                    '}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -531,66 +546,67 @@ const DailyCalendar = () => {
                                                             <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`นัดรับ`}</Text>
                                                         </View>
                                                         <View>
-                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${poppoint.RECORD_COUNT ? poppoint.RECORD_COUNT : 0})`}</Text>
+                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${poppoint.SHOWCALENDARPOAPPOINT && poppoint.SHOWCALENDARPOAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) }).length > 0 ? poppoint.SHOWCALENDARPOAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) }).length : 0})`}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
                                             </TouchableNativeFeedback>
-                                            {menu1 && poppoint.RECORD_COUNT > 0 ? <>
-                                                {poppoint.SHOWCALENDARPOAPPOINT.map((item) => {
-                                                    return (
-                                                        <View style={{
-                                                            borderBottomColor: 'black',
-                                                            borderBottomWidth: 1,
+                                            {menu1 && poppoint.SHOWCALENDARPOAPPOINT && poppoint.SHOWCALENDARPOAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) }).length > 0 ? <>
+                                                {poppoint.SHOWCALENDARPOAPPOINT && poppoint.SHOWCALENDARPOAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) })
+                                                    .map((item) => {
+                                                        return (
+                                                            <View style={{
+                                                                borderBottomColor: 'black',
+                                                                borderBottomWidth: 1,
 
-                                                            paddingLeft: 10,
-                                                            paddingRight: 10,
-                                                            paddingLeft: 10
-                                                        }}>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
+                                                                paddingLeft: 10,
+                                                                paddingRight: 10,
+                                                                paddingLeft: 10
+                                                            }}>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
 
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสนัดรับ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.APPO_A_AMT}`}</Text>
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสนัดรับ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.APPO_A_AMT}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อเจ้าหนี้'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.AP_NAME}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ยกเลิก'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_CANCEL_DATE)}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่จัดส่ง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_SHIP_DATE)}`}</Text>
+                                                                </View>
                                                             </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อเจ้าหนี้'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.AP_NAME}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ยกเลิก'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_CANCEL_DATE)}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่จัดส่ง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_SHIP_DATE)}`}</Text>
-                                                            </View>
-                                                        </View>
-                                                    )
-                                                })}
+                                                        )
+                                                    })}
                                             </> : null}
                                             {/* นัดส่ง */}
                                             <TouchableNativeFeedback onPress={() => set_menu2(!menu2)}>
@@ -609,66 +625,67 @@ const DailyCalendar = () => {
                                                             <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`นัดส่ง`}</Text>
                                                         </View>
                                                         <View>
-                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${mappoint.RECORD_COUNT ? mappoint.RECORD_COUNT : 0})`}</Text>
+                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${mappoint.SHOWCALENDARBKAPPOINT && mappoint.SHOWCALENDARBKAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) }).length > 0 ? mappoint.SHOWCALENDARBKAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) }).length : 0})`}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
                                             </TouchableNativeFeedback>
-                                            {menu2 && mappoint.RECORD_COUNT > 0 ? <>
-                                                {mappoint.SHOWCALENDARBKAPPOINT.map((item) => {
-                                                    return (
-                                                        <View style={{
-                                                            borderBottomColor: 'black',
-                                                            borderBottomWidth: 1,
+                                            {menu2 && mappoint.SHOWCALENDARBKAPPOINT && mappoint.SHOWCALENDARBKAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) }).length > 0 ? <>
+                                                {mappoint.SHOWCALENDARBKAPPOINT && mappoint.SHOWCALENDARBKAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == fulldate()) })
+                                                    .map((item) => {
+                                                        return (
+                                                            <View style={{
+                                                                borderBottomColor: 'black',
+                                                                borderBottomWidth: 1,
 
-                                                            paddingLeft: 10,
-                                                            paddingRight: 10,
-                                                            paddingLeft: 10
-                                                        }}>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
+                                                                paddingLeft: 10,
+                                                                paddingRight: 10,
+                                                                paddingLeft: 10
+                                                            }}>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
 
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสนัดส่ง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.AROE_KEY}`}</Text>
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสนัดส่ง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.AROE_KEY}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อลูกหนี้'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.AR_NAME}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ยกเลิก'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_CANCEL_DATE)}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่จัดส่ง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_SHIP_DATE)}`}</Text>
+                                                                </View>
                                                             </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อลูกหนี้'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.AR_NAME}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ยกเลิก'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_CANCEL_DATE)}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่จัดส่ง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.TRH_SHIP_DATE)}`}</Text>
-                                                            </View>
-                                                        </View>
-                                                    )
-                                                })}
+                                                        )
+                                                    })}
                                             </> : null}
                                             {/* รับชำระ */}
                                             <TouchableNativeFeedback onPress={() => set_menu3(!menu3)}>
@@ -685,66 +702,67 @@ const DailyCalendar = () => {
                                                             <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`รับชำระ`}</Text>
                                                         </View>
                                                         <View>
-                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${rarchqDue.RECORD_COUNT ? rarchqDue.RECORD_COUNT : 0})`}</Text>
+                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${rarchqDue.SHOWCALENDARARDUE && rarchqDue.SHOWCALENDARARDUE.filter((item) => { return (item.ARD_DUE_DA == fulldate()) }).length > 0 ? rarchqDue.SHOWCALENDARARDUE.filter((item) => { return (item.ARD_DUE_DA == fulldate()) }).length : 0})`}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
                                             </TouchableNativeFeedback>
-                                            {menu3 && rarchqDue.RECORD_COUNT > 0 ? <>
-                                                {rarchqDue.SHOWCALENDARARDUE.map((item) => {
-                                                    return (
-                                                        <View style={{
-                                                            borderBottomColor: 'black',
-                                                            borderBottomWidth: 1,
+                                            {menu3 && rarchqDue.SHOWCALENDARARDUE && rarchqDue.SHOWCALENDARARDUE.filter((item) => { return (item.ARD_DUE_DA == fulldate()) }).length > 0 ? <>
+                                                {rarchqDue.SHOWCALENDARARDUE && rarchqDue.SHOWCALENDARARDUE.filter((item) => { return (item.ARD_DUE_DA == fulldate()) })
+                                                    .map((item) => {
+                                                        return (
+                                                            <View style={{
+                                                                borderBottomColor: 'black',
+                                                                borderBottomWidth: 1,
 
-                                                            paddingLeft: 10,
-                                                            paddingRight: 10,
-                                                            paddingLeft: 10
-                                                        }}>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
+                                                                paddingLeft: 10,
+                                                                paddingRight: 10,
+                                                                paddingLeft: 10
+                                                            }}>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
 
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสรับชำระ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.ARD_KEY}`}</Text>
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสรับชำระ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.ARD_KEY}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อลูกหนี้'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.AR_NAME}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ชำระ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.ARD_BIL_DA)}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่รับชำระ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.ARD_DUE_DA)}`}</Text>
+                                                                </View>
                                                             </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อลูกหนี้'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.AR_NAME}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ชำระ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.ARD_BIL_DA)}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่รับชำระ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.ARD_DUE_DA)}`}</Text>
-                                                            </View>
-                                                        </View>
-                                                    )
-                                                })}
+                                                        )
+                                                    })}
                                             </> : null}
                                             {/* จ่ายชำระ */}
                                             <TouchableNativeFeedback onPress={() => set_menu4(!menu4)}>
@@ -761,66 +779,67 @@ const DailyCalendar = () => {
                                                             <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`จ่ายชำระ`}</Text>
                                                         </View>
                                                         <View>
-                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${rapDue.RECORD_COUNT ? rapDue.RECORD_COUNT : 0})`}</Text>
+                                                            <Text style={{ fontSize: FontSize.medium, color: 'black' }}>{`(${rapDue.SHOWCALENDARAPDUE && rapDue.SHOWCALENDARAPDUE.filter((item) => { return (item.APD_DUE_DA == fulldate()) }).length > 0 ? rapDue.SHOWCALENDARAPDUE.filter((item) => { return (item.APD_DUE_DA == fulldate()) }).length : 0})`}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
                                             </TouchableNativeFeedback>
-                                            {menu4 && rapDue.RECORD_COUNT > 0 ? <>
-                                                {rapDue.SHOWCALENDARAPDUE.map((item) => {
-                                                    return (
-                                                        <View style={{
-                                                            borderBottomColor: 'black',
-                                                            borderBottomWidth: 1,
+                                            {menu4 && rapDue.SHOWCALENDARAPDUE && rapDue.SHOWCALENDARAPDUE.filter((item) => { return (item.APD_DUE_DA == fulldate()) }).length > 0 ? <>
+                                                {rapDue.SHOWCALENDARAPDUE && rapDue.SHOWCALENDARAPDUE.filter((item) => { return (item.APD_DUE_DA == fulldate()) })
+                                                    .map((item) => {
+                                                        return (
+                                                            <View style={{
+                                                                borderBottomColor: 'black',
+                                                                borderBottomWidth: 1,
 
-                                                            paddingLeft: 10,
-                                                            paddingRight: 10,
-                                                            paddingLeft: 10
-                                                        }}>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
+                                                                paddingLeft: 10,
+                                                                paddingRight: 10,
+                                                                paddingLeft: 10
+                                                            }}>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
 
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสรับชำระ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.APD_KEY}`}</Text>
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสรับชำระ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.APD_KEY}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อลูกหนี้'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.AP_NAME}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ชำระ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.APD_BIL_DA)}`}</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    paddingBottom: 5
+                                                                }}>
+                                                                    <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่รับชำระ'}</Text>
+                                                                    <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.APD_DUE_DA)}`}</Text>
+                                                                </View>
                                                             </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'ชื่อลูกหนี้'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.AP_NAME}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'รหัสอ้างอิง'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${item.DI_REF}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่ชำระ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.APD_BIL_DA)}`}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                alignItems: 'center',
-                                                                flexDirection: 'row',
-                                                                paddingBottom: 5
-                                                            }}>
-                                                                <Text style={{ width: deviceWidth / 4, color: 'black', }}>{'วันที่รับชำระ'}</Text>
-                                                                <Text style={{ color: 'black', }}>{`${safe_Format.dateFormat(item.APD_DUE_DA)}`}</Text>
-                                                            </View>
-                                                        </View>
-                                                    )
-                                                })}
+                                                        )
+                                                    })}
                                             </> : null}
                                         </View>
                                         <TouchableNativeFeedback
@@ -870,7 +889,7 @@ const DailyCalendar = () => {
                             width: deviceWidth,
                             height: deviceHeight,
                             opacity: 0.5,
-                            backgroundColor: null,
+                            backgroundColor: 'black',
                             alignSelf: 'center',
                             justifyContent: 'center',
                             alignContent: 'center',

@@ -204,7 +204,7 @@ const AR_GoodsBooking = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
+                            <FontAwesome name="arrow-left" color={Colors.fontColor2} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{

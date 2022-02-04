@@ -118,7 +118,7 @@ const M1 = () => {
                     < >
                         <Image
                             style={topImage}
-                            source={require('../../../images/UI/Asset23.png')}
+                            source={require('../../../images/UI/Asset13.png')}
                         />
 
                         <ScrollView>

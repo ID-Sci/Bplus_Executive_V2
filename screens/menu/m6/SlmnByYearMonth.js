@@ -216,18 +216,18 @@ const SlmnByYearMonth = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
+                            <FontAwesome name="arrow-left" color={'black'} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
                                 marginLeft: 12,
                                 fontSize: FontSize.medium,
-                                color: Colors.fontColor2
+                                color: 'black'
                             }}>{`แสดงยอดพนักงานขายแต่ละเดือน`}</Text>
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <FontAwesome name="calendar" color={Colors.fontColor2} size={FontSize.large} />
+                            <FontAwesome name="calendar" color={'black'} size={FontSize.large} />
                         </TouchableOpacity>
                     </View>
 
@@ -309,7 +309,7 @@ const SlmnByYearMonth = ({ route }) => {
                                             <View width={20}></View>
                                             <Text style={styles.modalText}>เลือกการค้นหา</Text>
                                             <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
-                                                <FontAwesome name="close" color={Colors.buttonColorPrimary} size={FontSize.large} />
+                                                <FontAwesome name="close" color={Colors.fontColor2} size={FontSize.large} />
                                             </Pressable>
                                         </View>
                                         <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         justifyContent: 'space-between',
-        backgroundColor: Colors.buttonColorPrimary,
+        backgroundColor: Colors.backgroundLoginColor,
 
     },
     tabbar: {
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         alignItems: 'center',
-        backgroundColor: Colors.backgroundLoginColor,
+        backgroundColor: Colors.backgroundColor,
         justifyContent: 'space-between',
         flexDirection: 'row',
     },
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         fontSize: FontSize.mediumw,
-        color: Colors.buttonColorPrimary
+        color: Colors.fontColor2
     },
     modalText: {
         marginBottom: 15,

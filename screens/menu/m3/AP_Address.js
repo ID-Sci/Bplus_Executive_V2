@@ -211,7 +211,7 @@ const AP_Address = ({ route }) => {
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
-                            <FontAwesome name="arrow-left" color={Colors.buttonColorPrimary} size={FontSize.large} />
+                            <FontAwesome name="arrow-left" color={Colors.fontColor2} size={FontSize.large} />
                         </TouchableOpacity>
                         <Text
                             style={{
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         justifyContent: 'space-between',
-        backgroundColor: Colors.buttonColorPrimary,
+        backgroundColor: Colors.backgroundLoginColor,
 
     },
     tabbar: {
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         textAlign: "center",
-        color: Colors.buttonColorPrimary
+        color: Colors.backgroundColor
     },
     modalText: {
         marginBottom: 15,

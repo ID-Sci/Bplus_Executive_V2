@@ -134,39 +134,45 @@ const SelectBase = ({ route }) => {
       setPassword('')
     }
   }
+  const closeLoading = () => {
+    setLoading(false);
+  };
+  const letsLoading = () => {
+    setLoading(true);
+  };
 
-  const _onPressSelected = async () => {
-    setLoading(true)
-    for (let i in items) {
-      if (items[i].nameser == selectbaseValue) {
-        dispatch(databaseActions.setData(items[i]));
-        Alert.alert(
-          Language.t('alert.succeed'),
-          Language.t('selectBase.connect') + ' ' + selectbaseValue + ' ' + Language.t('alert.succeed'), [{
-            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-              navigation.replace('LoginScreen')
-            )
-          }]);
+  // const _onPressSelected = async () => {
+  //   setLoading(true)
+  //   for (let i in items) {
+  //     if (items[i].nameser == selectbaseValue) {
+  //       dispatch(databaseActions.setData(items[i]));
+  //       Alert.alert(
+  //         Language.t('alert.succeed'),
+  //         Language.t('selectBase.connect') + ' ' + selectbaseValue + ' ' + Language.t('alert.succeed'), [{
+  //           text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+  //             navigation.replace('LoginScreen')
+  //           )
+  //         }]);
 
-      }
-    }
-  }
-  const _onPressEdit = () => {
-    a = Math.floor(100000 + Math.random() * 900000);
-    console.log(a)
-    console.log(databaseReducer.Data.nameser)
-    console.log(selectbaseValue)
-    if (databaseReducer.Data.nameser == selectbaseValue) {
-      Alert.alert(
-        Language.t('alert.errorTitle'),
-        Language.t('selectBase.cannotEdit'), [{
-          text: Language.t('alert.ok'), onPress: () => { }
-        }]);
-    } else {
+  //     }
+  //   }
+  // }
+  // const _onPressEdit = () => {
+  //   a = Math.floor(100000 + Math.random() * 900000);
+  //   console.log(a)
+  //   console.log(databaseReducer.Data.nameser)
+  //   console.log(selectbaseValue)
+  //   if (databaseReducer.Data.nameser == selectbaseValue) {
+  //     Alert.alert(
+  //       Language.t('alert.errorTitle'),
+  //       Language.t('selectBase.cannotEdit'), [{
+  //         text: Language.t('alert.ok'), onPress: () => { }
+  //       }]);
+  //   } else {
 
-    }
+  //   }
 
-  }
+  // }
 
   const checkValue = () => {
     let c = true
@@ -189,14 +195,13 @@ const SelectBase = ({ route }) => {
     return c
   }
   const _onPressUpdate = async (basename, newurl) => {
-    setLoading(true)
-
+    
     if (checkValue() == true) {
       await checkIPAddress('-1')
     }
   }
   const _onPressDelete = async () => {
-    setLoading(true)
+   
 
     let temp = loginReducer.ipAddress;
     let tempurl = baseurl.split('.dll')
@@ -226,7 +231,7 @@ const SelectBase = ({ route }) => {
   }
 
   const _onPressAddbase = async () => {
-    setLoading(true)
+    letsLoading()
     let tempurl = baseurl.split('.dll')
     let newurl = tempurl[0] + '.dll'
     let temp = []
@@ -439,7 +444,7 @@ const SelectBase = ({ route }) => {
               selectedValue={selectlanguage}
               style={{ color: Colors.backgroundLoginColorSecondary, width: 110 }}
               mode="dropdown"
-              onValueChange={(itemValue, itemIndex) => Alert.alert('', Language.t('menu.changeLanguage'), [{ text: Language.t('alert.ok'), onPress: () => setlanguageState(itemValue) }, { text: Language.t('alert.cancel'), onPress: () => { } }])} >
+              onValueChange={(itemValue, itemIndex) => Alert.alert('', Language.t('menu.changeLanguage'), [{ text: Language.t('alert.ok'), onPress: () => console.log(' setlanguageState(itemValue)') }, { text: Language.t('alert.cancel'), onPress: () => { } }])} >
               <Picker.Item label="TH" value="th" />
               <Picker.Item label="EN" value="en" />
             </Picker>
@@ -811,7 +816,7 @@ const SelectBase = ({ route }) => {
               width: deviceWidth,
               height: deviceHeight,
               opacity: 0.5,
-              backgroundColor: Colors.backgroundColorSecondary,
+              backgroundColor: 'black',
               alignSelf: 'center',
               justifyContent: 'center',
               alignContent: 'center',
