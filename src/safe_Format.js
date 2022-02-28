@@ -99,6 +99,7 @@ export const regisMacAdd = async (urlser, serviceID, machineNum, userNameED, pas
         .then((response) => response.json())
         .then(async (json) => {
             if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
+                console.log(json)
                 return await _fetchGuidLog(urlser, serviceID, machineNum, userNameED, passwordED);
             } else {
                 console.log('REGISTER MAC FAILED');
@@ -135,7 +136,7 @@ export const _fetchGuidLog = async (urlser, serviceID, machineNum, userNameED, p
                 new_GUID = responseData.BPAPUS_GUID;
 
             } else {
-                console.log(">> ", json.ResponseCode)
+                console.log(">> ", json)
             }
         })
         .catch((error) => {

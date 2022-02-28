@@ -284,7 +284,7 @@ const MainScreen = () => {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('OrderInformation')}
+                    onPress={() => navigation.navigate('OrderScreen')}
                     style={{
                       backgroundColor: Colors.backgroundLoginColorSecondary,
                       flexDirection: 'column',
@@ -320,7 +320,7 @@ const MainScreen = () => {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('DailyCalendar')}
+                    onPress={() => navigation.navigate('DailyCalendarScreen')}
                     style={{
                       backgroundColor: Colors.backgroundLoginColorSecondary,
                       flexDirection: 'column',

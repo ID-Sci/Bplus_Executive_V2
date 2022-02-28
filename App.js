@@ -28,57 +28,60 @@ import LoginScreen from './screens/LoginScreen';
 import MainScreen from './screens/MainScreen';
 import Ereport from './screens/Ereport';
 
-import M1 from './screens/menu/m1/M1';
-import M2 from './screens/menu/m2/M2';
-import M3 from './screens/menu/m3/M3';
-import M4 from './screens/menu/m4/M4';
-import M5 from './screens/menu/m5/M5';
-import M6 from './screens/menu/m6/M6';
+import M1 from './screens/menus/m1/M1';
+import M2 from './screens/menus/m2/M2';
+import M3 from './screens/menus/m3/M3';
+import M4 from './screens/menus/m4/M4';
+import M5 from './screens/menus/m5/M5';
+import M6 from './screens/menus/m6/M6';
 
 import ApprovalLimit from './screens/ApprovalLimit';
-import OrderInformation from './screens/OrderInformation';
-import DailyCalendar from './screens/DailyCalendar';
+import OrderScreen from './screens/orders/OrderScreen';
+import OrderInformation from './screens/orders/OrderInformation';
+import DailyCalendarScreen from './screens/dailyCalendars/DailyCalendarScreen';
+import DailyCalendarInfomation from './screens/dailyCalendars/DailyCalendarInfomation';
+
 
 import SelectBase from './pages/SelectBase';
 import ScanScreen from './pages/ScanScreen';
 
-import ShowInCome from './screens/menu/m1/ShowInCome'
-import CurrentStatus from './screens/menu/m1/CurrentStatus'
-import ShowBank from './screens/menu/m1/ShowBank'
-import ShowInComeTeam from './screens/menu/m1/ShowInComeTeam'
-import ShowPayMentdeposit from './screens/menu/m1/ShowPayMentdeposit'
-import ShowSellBook from './screens/menu/m1/ShowSellBook'
+import ShowInCome from './screens/menus/m1/ShowInCome'
+import CurrentStatus from './screens/menus/m1/CurrentStatus'
+import ShowBank from './screens/menus/m1/ShowBank'
+import ShowInComeTeam from './screens/menus/m1/ShowInComeTeam'
+import ShowPayMentdeposit from './screens/menus/m1/ShowPayMentdeposit'
+import ShowSellBook from './screens/menus/m1/ShowSellBook'
 
-import ShowAR from './screens/menu/m2/ShowAR'
-import AR_SellAmount from './screens/menu/m2/AR_SellAmount'
-import AR_ShowArdetail from './screens/menu/m2/AR_ShowArdetail'
-import AR_SellAmountByIcDept from './screens/menu/m2/AR_SellAmountByIcDept'
-import AR_GoodsBooking from './screens/menu/m2/AR_GoodsBooking'
-import AR_Address from './screens/menu/m2/AR_Address'
+import ShowAR from './screens/menus/m2/ShowAR'
+import AR_SellAmount from './screens/menus/m2/AR_SellAmount'
+import AR_ShowArdetail from './screens/menus/m2/AR_ShowArdetail'
+import AR_SellAmountByIcDept from './screens/menus/m2/AR_SellAmountByIcDept'
+import AR_GoodsBooking from './screens/menus/m2/AR_GoodsBooking'
+import AR_Address from './screens/menus/m2/AR_Address'
 
-import ShowAP from './screens/menu/m3/ShowAP'
-import AP_PurcAmount from './screens/menu/m3/AP_PurcAmount'
-import AP_ShowArdetail from './screens/menu/m3/AP_ShowArdetail'
-import AP_PurcAmountByIcDept from './screens/menu/m3/AP_PurcAmountByIcDept'
-import AP_GoodsBooking from './screens/menu/m3/AP_GoodsBooking'
-import AP_Address from './screens/menu/m3/AP_Address'
+import ShowAP from './screens/menus/m3/ShowAP'
+import AP_PurcAmount from './screens/menus/m3/AP_PurcAmount'
+import AP_ShowArdetail from './screens/menus/m3/AP_ShowArdetail'
+import AP_PurcAmountByIcDept from './screens/menus/m3/AP_PurcAmountByIcDept'
+import AP_GoodsBooking from './screens/menus/m3/AP_GoodsBooking'
+import AP_Address from './screens/menus/m3/AP_Address'
 
-import ChequeIn from './screens/menu/m4/ChequeIn'
-import ChequeBook from './screens/menu/m4/ChequeBook'
-import SkuBalance from './screens/menu/m4/SkuBalance'
-import SkuBalanceByWL from './screens/menu/m4/SkuBalanceByWL'
+import ChequeIn from './screens/menus/m4/ChequeIn'
+import ChequeBook from './screens/menus/m4/ChequeBook'
+import SkuBalance from './screens/menus/m4/SkuBalance'
+import SkuBalanceByWL from './screens/menus/m4/SkuBalanceByWL'
 
-import ArDueDate from './screens/menu/m5/ArDueDate'
-import Arcat from './screens/menu/m5/Arcat'
-import ApDueDate from './screens/menu/m5/ApDueDate'
-import Apcat from './screens/menu/m5/Apcat'
+import ArDueDate from './screens/menus/m5/ArDueDate'
+import Arcat from './screens/menus/m5/Arcat'
+import ApDueDate from './screens/menus/m5/ApDueDate'
+import Apcat from './screens/menus/m5/Apcat'
 
-import ShowSlmn from './screens/menu/m6/ShowSlmn'
-import ShowPos from './screens/menu/m6/ShowPos'
-import SlmnByYearMonth from './screens/menu/m6/SlmnByYearMonth'
-import PosByYearMonth from './screens/menu/m6/PosByYearMonth'
-import IncomeBySlmn from './screens/menu/m6/IncomeBySlmn'
-import IncomeByPos from './screens/menu/m6/IncomeByPos'
+import ShowSlmn from './screens/menus/m6/ShowSlmn'
+import ShowPos from './screens/menus/m6/ShowPos'
+import SlmnByYearMonth from './screens/menus/m6/SlmnByYearMonth'
+import PosByYearMonth from './screens/menus/m6/PosByYearMonth'
+import IncomeBySlmn from './screens/menus/m6/IncomeBySlmn'
+import IncomeByPos from './screens/menus/m6/IncomeByPos'
 
 const LoginStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -149,13 +152,24 @@ const App = () => {
               />
               <MainStack.Screen
                 options={{ headerShown: false }}
+                name="OrderScreen"
+                component={OrderScreen}
+              />
+                 <MainStack.Screen
+                options={{ headerShown: false }}
                 name="OrderInformation"
                 component={OrderInformation}
               />
+              
               <MainStack.Screen
                 options={{ headerShown: false }}
-                name="DailyCalendar"
-                component={DailyCalendar}
+                name="DailyCalendarScreen"
+                component={DailyCalendarScreen}
+              />
+                <MainStack.Screen
+                options={{ headerShown: false }}
+                name="DailyCalendarInfomation"
+                component={DailyCalendarInfomation}
               />
 
               <MainStack.Screen

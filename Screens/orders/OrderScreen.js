@@ -39,21 +39,22 @@ import { useSelector, connect, useDispatch } from 'react-redux';
 
 
 
-import { Language, changeLanguage } from '../translations/I18n';
-import { FontSize } from '../components/FontSizeHelper';
+import { Language, changeLanguage } from '../../translations/I18n';
+import { FontSize } from '../../components/FontSizeHelper';
 
 
-import * as loginActions from '../src/actions/loginActions';
-import * as registerActions from '../src/actions/registerActions';
-import * as databaseActions from '../src/actions/databaseActions';
+import * as loginActions from '../../src/actions/loginActions';
+import * as registerActions from '../../src/actions/registerActions';
+import * as databaseActions from '../../src/actions/databaseActions';
 
-import Colors from '../src/Colors';
+import Colors from '../../src/Colors';
+import * as safe_Format from '../../src/safe_Format';
 import { fontSize, fontWeight, paddingTop } from 'styled-system';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const OrderInformation = () => {
+const OrderScreen = () => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -70,7 +71,7 @@ const OrderInformation = () => {
         tabbar,
         buttonContainer,
     } = styles;
-
+    var ser_die = true
     useEffect(() => {
 
 
@@ -87,7 +88,7 @@ const OrderInformation = () => {
         secureTextEntry: true,
     });
 
-    const image = '../images/UI/Asset35.png';
+    const image = '../../images/UI/Asset35.png';
 
     useEffect(() => {
         console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
@@ -108,14 +109,19 @@ const OrderInformation = () => {
         closeLoading()
         // setArrayObj(arrayResult)
     }
-    const fetchInCome = async () => {
+    const regisMacAdd = async () => {
+        let tempGuid = await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)
+        await dispatch(loginActions.guid(tempGuid))
+        fetchInCome(tempGuid)
+    };
+    const fetchInCome = async (tempGuid) => {
 
         setArrayObj([])
         await fetch(databaseReducer.Data.urlser + '/UpdateErp', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': loginReducer.guid,
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'SearchGoodsInfoWPurcPrice',
                 'BPAPUS-PARAM': '{"APPRB_KEY": " 0" }',
                 'BPAPUS-FILTER': "AND (GOODS_CODE LIKE '%" + textsearch + "%') OR (SKU_NAME LIKE '%" + textsearch + "%') OR (SKU_CODE LIKE '%" + textsearch + "%') ",
@@ -128,7 +134,7 @@ const OrderInformation = () => {
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-
+                    console.log(responseData.SearchGoodsInfoWPurcPrice[0])
                     setArrayObj(responseData.SearchGoodsInfoWPurcPrice)
                 } else {
                     Alert.alert("ไม่พบข้อมูล");
@@ -136,22 +142,22 @@ const OrderInformation = () => {
                 setLoading(false)
             })
             .catch((error) => {
-                // if (ser_die) {
-                //     ser_die = false
-                //     regisMacAdd()
-                // } else {
-                //     console.log('Function Parameter Required');
-                //     let temp_error = 'error_ser.' + 610;
-                //     console.log('>> ', temp_error)
-                //     Alert.alert(
-                //         Language.t('alert.errorTitle'),
-                //         Language.t(temp_error), [{
-                //             text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-                //                 navigation.replace('LoginStackScreen')
-                //             )
-                //         }]);
-                //     setLoading(false)
-                // }
+                if (ser_die) {
+                    ser_die = false
+                    regisMacAdd()
+                } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
+                    setLoading(false)
+                }
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
@@ -166,7 +172,7 @@ const OrderInformation = () => {
                     < >
                         <Image
                             style={topImage}
-                            source={require('../images/UI/Asset41.png')}
+                            source={require('../../images/UI/Asset41.png')}
                         />
                         <View style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 20, marginTop: 0 }}>
                             <View style={{ borderTopStartRadius: 20, borderTopEndRadius: 20, borderBottomStartRadius: arrayObj.length > 0 ? 0 : 20, borderBottomEndRadius: arrayObj.length > 0 ? 0 : 20, backgroundColor: Colors.backgroundLoginColorSecondary, }}>
@@ -198,7 +204,7 @@ const OrderInformation = () => {
                                         <Image
                                             style={{ height: 30, width: 30, marginRight: 10, }}
                                             resizeMode={'contain'}
-                                            source={require('../images/UI/Asset45.png')}
+                                            source={require('../../images/UI/Asset45.png')}
                                         />
                                     </TouchableNativeFeedback>
                                 </View>
@@ -215,51 +221,59 @@ const OrderInformation = () => {
                                     }}>
                                         {arrayObj.map((item) => {
                                             return (
-                                                <View style={{
+                                                <TouchableNativeFeedback onPress={() => navigation.navigate('OrderInformation',
+                                                    {
+                                                        header: 'สอบถามข้อมูลการสั่งซื้อ',
+                                                        data: item
+                                                    })}>
 
-                                                    flexDirection: 'column',
 
-                                                }}>
                                                     <View style={{
-                                                        borderBottomColor: 'black',
-                                                        borderBottomWidth: 1,
-                                                        paddingBottom: 10,
-                                                        paddingTop: 10
+
+                                                        flexDirection: 'column',
+
                                                     }}>
                                                         <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
+                                                            borderBottomColor: 'black',
+                                                            borderBottomWidth: 1,
+                                                            paddingBottom: 10,
+                                                            paddingTop: 10,
                                                         }}>
-                                                            <Text style={{ width: deviceWidth / 4 }}>{'รหัสซื้อขาย'}</Text>
-                                                            <Text>{item.GOODS_CODE}</Text>
-                                                        </View>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4 }}>{'ชื่อสินค้า'}</Text>
-                                                            <Text>{item.SKU_NAME}</Text>
-                                                        </View>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4 }}>{'หน่วยนับ'}</Text>
-                                                            <Text>{item.UTQ_NAME}</Text>
-                                                        </View>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4 }}>{'รหัสสินค้า'}</Text>
-                                                            <Text>{item.SKU_CODE}</Text>
+                                                            <View style={{
+
+                                                                flexDirection: 'row',
+                                                                paddingBottom: 5
+                                                            }}>
+                                                                <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'รหัสซื้อขาย'}</Text>
+                                                                <Text style={{ color: Colors.fontColor }}>{item.GOODS_CODE}</Text>
+                                                            </View>
+                                                            <View style={{
+
+                                                                flexDirection: 'row',
+                                                                paddingBottom: 5
+                                                            }}>
+                                                                <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'ชื่อสินค้า'}</Text>
+                                                                <Text style={{ width: deviceWidth / 1.8, color: Colors.fontColor }}>{item.SKU_NAME}</Text>
+                                                            </View>
+                                                            <View style={{
+
+                                                                flexDirection: 'row',
+                                                                paddingBottom: 5
+                                                            }}>
+                                                                <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'หน่วยนับ'}</Text>
+                                                                <Text style={{ color: Colors.fontColor }}>{item.UTQ_NAME}</Text>
+                                                            </View>
+                                                            <View style={{
+
+                                                                flexDirection: 'row',
+                                                                paddingBottom: 5
+                                                            }}>
+                                                                <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'รหัสสินค้า'}</Text>
+                                                                <Text style={{ color: Colors.fontColor }}>{item.SKU_CODE}</Text>
+                                                            </View>
                                                         </View>
                                                     </View>
-                                                </View>
+                                                </TouchableNativeFeedback>
                                             )
                                         })}
 
@@ -411,4 +425,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default OrderInformation;
+export default OrderScreen;

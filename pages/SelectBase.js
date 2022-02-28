@@ -141,38 +141,7 @@ const SelectBase = ({ route }) => {
     setLoading(true);
   };
 
-  // const _onPressSelected = async () => {
-  //   setLoading(true)
-  //   for (let i in items) {
-  //     if (items[i].nameser == selectbaseValue) {
-  //       dispatch(databaseActions.setData(items[i]));
-  //       Alert.alert(
-  //         Language.t('alert.succeed'),
-  //         Language.t('selectBase.connect') + ' ' + selectbaseValue + ' ' + Language.t('alert.succeed'), [{
-  //           text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-  //             navigation.replace('LoginScreen')
-  //           )
-  //         }]);
 
-  //     }
-  //   }
-  // }
-  // const _onPressEdit = () => {
-  //   a = Math.floor(100000 + Math.random() * 900000);
-  //   console.log(a)
-  //   console.log(databaseReducer.Data.nameser)
-  //   console.log(selectbaseValue)
-  //   if (databaseReducer.Data.nameser == selectbaseValue) {
-  //     Alert.alert(
-  //       Language.t('alert.errorTitle'),
-  //       Language.t('selectBase.cannotEdit'), [{
-  //         text: Language.t('alert.ok'), onPress: () => { }
-  //       }]);
-  //   } else {
-
-  //   }
-
-  // }
 
   const checkValue = () => {
     let c = true
@@ -195,13 +164,13 @@ const SelectBase = ({ route }) => {
     return c
   }
   const _onPressUpdate = async (basename, newurl) => {
-    
+
     if (checkValue() == true) {
       await checkIPAddress('-1')
     }
   }
   const _onPressDelete = async () => {
-   
+
 
     let temp = loginReducer.ipAddress;
     let tempurl = baseurl.split('.dll')
@@ -237,7 +206,7 @@ const SelectBase = ({ route }) => {
     let temp = []
     let check = false;
     let checktest = false;
-
+    console.log('Hit')
     if (checkValue() == true) {
       temp = items;
       for (let i in items) {
@@ -276,8 +245,6 @@ const SelectBase = ({ route }) => {
         }
         if (!check) {
           checkIPAddress('1')
-        } else {
-          setLoading(false)
         }
       } else {
         Alert.alert(
@@ -285,7 +252,7 @@ const SelectBase = ({ route }) => {
           Language.t('selectBase.Alert3'), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
         setLoading(false)
       }
-      setLoading(false)
+
     } else {
       Alert.alert(
         Language.t('alert.errorTitle'),
@@ -392,8 +359,9 @@ const SelectBase = ({ route }) => {
                 Alert.alert(
                   Language.t('alert.errorTitle'),
                   Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
+                setLoading(false)
               }
-              setLoading(false)
+
             })
             .catch((error) => {
               Alert.alert(
@@ -409,8 +377,9 @@ const SelectBase = ({ route }) => {
           Alert.alert(
             Language.t('alert.errorTitle'),
             Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+          setLoading(false)
         }
-        setLoading(false)
+
       })
       .catch((error) => {
         Alert.alert(

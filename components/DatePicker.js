@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {StyleSheet, TouchableOpacity, Dimensions, Picker} from 'react-native';
+import {StyleSheet, TouchableOpacity,Text, Dimensions, Picker} from 'react-native';
 import 'moment/locale/th';
 import moment from 'moment';
 import Colors from '../src/Colors';
 import {FontSize} from '../components/FontSizeHelper';
-import {View, Input, Icon, Text, Button, List, ListItem} from 'native-base';
+import {View, Input, Icon,   Button, List, ListItem} from 'native-base';
 import Modal from 'react-native-modal';
 import {Language} from '../translations/I18n';
 import DropdownList from './DropdownList';
