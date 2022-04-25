@@ -279,7 +279,7 @@ const MainScreen = () => {
                           alignSelf: 'center',
                           fontSize: FontSize.medium,
                           fontWeight: 'bold'
-                        }}>อนุมัติเอกสาร</Text>
+                        }}>อนุมัติวงเงิน</Text>
                       </View>
                     </View>
                   </TouchableOpacity>

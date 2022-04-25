@@ -290,9 +290,9 @@ const SelectBase = ({ route }) => {
               'BPAPUS-FUNCTION': 'Login',
               'BPAPUS-PARAM':
                 '{"BPAPUS-MACHINE": "11111122","BPAPUS-USERID": "' +
-                username +
+                username.toUpperCase() +
                 '","BPAPUS-PASSWORD": "' +
-                password +
+                password.toUpperCase() +
                 '"}',
             }),
           })
@@ -302,8 +302,8 @@ const SelectBase = ({ route }) => {
                 let newObj = {
                   nameser: basename,
                   urlser: newurl,
-                  usernameser: username,
-                  passwordser: password
+                  usernameser: username.toUpperCase(),
+                  passwordser: password.toUpperCase()
                 }
                 console.log(json.ResponseCode)
                 if (state == '-1') {

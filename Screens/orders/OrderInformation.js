@@ -51,6 +51,7 @@ import * as databaseActions from '../../src/actions/databaseActions';
 import Colors from '../../src/Colors';
 import * as safe_Format from '../../src/safe_Format';
 import { fontSize, fontWeight, paddingTop } from 'styled-system';
+import { faAward } from '@fortawesome/free-solid-svg-icons';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -74,16 +75,18 @@ const OrderInformation = ({ route }) => {
     } = styles;
     var ser_die = true
     useEffect(() => {
-
+        console.log('InCome')
+        InCome()
 
         //backsakura013
     }, []);
     const [btn, setBtn] = useState([{ name: 'ประวัติการซื้อ', state: true }, { name: 'ประวัติการขาย', state: false }, { name: 'จำนวนคงเหลือ', state: false, }, { name: 'ราคราขาย', state: false }]);
 
-    const [loading, setLoading] = useStateIfMounted(false);
+    const [loading, setLoading] = useStateIfMounted(true);
     const [loading_backG, setLoading_backG] = useStateIfMounted(true);
+    const [SHOWWLSKUQTYBYGOODSKEY, setSHOWWLSKUQTYBYGOODSKEY] = useState([]);
 
-    const [textsearch, setSearch] = useState('');
+    const [Sp000221, setSp000221] = useState([]);
     const [arrayObj, setArrayObj] = useState([]);
 
     const [data, setData] = useStateIfMounted({
@@ -95,7 +98,9 @@ const OrderInformation = ({ route }) => {
     useEffect(() => {
         console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
     }, [registerReducer.machineNum]);
-
+    useEffect(() => {
+        console.log(safe_Format.gettoDate())
+    }, [Sp000221])
     const closeLoading = () => {
         setLoading(false);
     };
@@ -104,11 +109,11 @@ const OrderInformation = ({ route }) => {
     };
 
     const InCome = async () => {
-        console.log(textsearch)
-        letsLoading()
+
+        await letsLoading()
 
         await fetchInCome()
-        closeLoading()
+        await closeLoading()
         // setArrayObj(arrayResult)
     }
     const regisMacAdd = async () => {
@@ -116,8 +121,8 @@ const OrderInformation = ({ route }) => {
         await dispatch(loginActions.guid(tempGuid))
         fetchInCome(tempGuid)
     };
-    const set_StateBtn = (index) => {
 
+    const set_StateBtn = (index) => {
         let temp_stateBtn = [];
         console.log(index)
         for (var i in btn) {
@@ -136,19 +141,33 @@ const OrderInformation = ({ route }) => {
             temp_stateBtn.push(ObjBtn)
         }
         setBtn(temp_stateBtn)
+    }
+
+    const fetchInCome = async (tempGuid) => {
+        console.log(tempGuid)
+        if (tempGuid) {
+            console.log('(tempGuid)')
+            await fetchSHOWWLSKUQTYBYGOODSKEY(tempGuid)
+            await fetchSp000221(tempGuid)
+        } else {
+            console.log('()')
+            await fetchSHOWWLSKUQTYBYGOODSKEY()
+            await fetchSp000221()
+        }
 
     }
-    const fetchInCome = async (tempGuid) => {
 
-        setArrayObj([])
-        await fetch(databaseReducer.Data.urlser + '/UpdateErp', {
+    const fetchSHOWWLSKUQTYBYGOODSKEY = async (tempGuid) => {
+        console.log('fetchSHOWWLSKUQTYBYGOODSKEY >> ')
+
+        await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
-                'BPAPUS-FUNCTION': 'SearchGoodsInfoWPurcPrice',
-                'BPAPUS-PARAM': '{"APPRB_KEY": " 0" }',
-                'BPAPUS-FILTER': "AND (GOODS_CODE LIKE '%" + textsearch + "%') OR (SKU_NAME LIKE '%" + textsearch + "%') OR (SKU_CODE LIKE '%" + textsearch + "%') ",
+                'BPAPUS-FUNCTION': 'SHOWWLSKUQTYBYGOODSKEY',
+                'BPAPUS-PARAM': '{\"TO_DATE\": \"' + safe_Format.gettoDate() + '\",\"GOODS_KEY\": \"' + route.params.data.GOODS_KEY + '\"}',
+                'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
@@ -158,10 +177,98 @@ const OrderInformation = ({ route }) => {
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-                    console.log(responseData.SearchGoodsInfoWPurcPrice[0])
-                    setArrayObj(responseData.SearchGoodsInfoWPurcPrice)
+                    console.log('SHOWWLSKUQTYBYGOODSKEY >> ', responseData.SHOWWLSKUQTYBYGOODSKEY)
+                    setSHOWWLSKUQTYBYGOODSKEY(responseData.SHOWWLSKUQTYBYGOODSKEY)
+                }
+
+            })
+            .catch((error) => {
+                if (ser_die) {
+                    ser_die = false
+                    regisMacAdd()
                 } else {
-                    Alert.alert("ไม่พบข้อมูล");
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
+
+                }
+                console.error('ERROR at fetchContent >> ' + error)
+            })
+    }
+    const fetchSp000221 = async (tempGuid) => {
+        console.log('fetchSp000221 >> ')
+
+        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
+            method: 'POST',
+            body: JSON.stringify({
+                'BPAPUS-BPAPSV': loginReducer.serviceID,
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
+                'BPAPUS-FUNCTION': 'Sp000221',
+                'BPAPUS-PARAM': '',
+                'BPAPUS-FILTER': "AND GOODS_CODE = '" + route.params.data.GOODS_CODE + "'",
+                'BPAPUS-ORDERBY': '',
+                'BPAPUS-OFFSET': '0',
+                'BPAPUS-FETCH': '0',
+            }),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let responseData = JSON.parse(json.ResponseData);
+                if (responseData.RECORD_COUNT > 0) {
+                    console.log('Sp000221 >> ', responseData.Sp000221)
+                    setSp000221(responseData.Sp000221)
+                }
+
+            })
+            .catch((error) => {
+                if (ser_die) {
+                    ser_die = false
+                    regisMacAdd()
+                } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginStackScreen')
+                            )
+                        }]);
+
+                }
+                console.error('ERROR at fetchContent >> ' + error)
+            })
+    }
+
+    const fetchTradinghistory = async (tempGuid) => {
+        setArrayObj([])
+        await fetch(databaseReducer.Data.urlser + '/UpdateErp', {
+            method: 'POST',
+            body: JSON.stringify({
+                'BPAPUS-BPAPSV': loginReducer.serviceID,
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
+                'BPAPUS-FUNCTION': 'SHOWWLSKUQTYBYGOODSKEY',
+                'BPAPUS-PARAM': '{"TO_DATE": " 0","GOODS_KEY","" }',
+                'BPAPUS-FILTER': "",
+                'BPAPUS-ORDERBY': '',
+                'BPAPUS-OFFSET': '0',
+                'BPAPUS-FETCH': '0',
+            }),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let responseData = JSON.parse(json.ResponseData);
+                if (responseData.RECORD_COUNT > 0) {
+                    console.log(responseData.SHOWWLSKUQTYBYGOODSKEY[0])
+                    setArrayObj(responseData.SHOWWLSKUQTYBYGOODSKEY)
                 }
                 setLoading(false)
             })
@@ -180,12 +287,11 @@ const OrderInformation = ({ route }) => {
                                 navigation.replace('LoginStackScreen')
                             )
                         }]);
-                    setLoading(false)
+
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
-
 
     return (
 
@@ -193,8 +299,9 @@ const OrderInformation = ({ route }) => {
             <StatusBar hidden={true} />
             <ImageBackground source={require(image)} onLoadEnd={() => { setLoading_backG(false) }} resizeMode="cover" style={styles.image}>
                 {!loading_backG ?
-                    < >
-
+                    < View style={{
+                        flex: 1
+                    }}>
                         <StatusBar hidden={true} />
                         <View style={tabbar}>
                             <View style={{ flexDirection: 'row', }}>
@@ -210,18 +317,12 @@ const OrderInformation = ({ route }) => {
                                     }}>{route.params.header && (`${route.params.header}`)}</Text>
                             </View>
                             <View>
-
                             </View>
-
                         </View>
                         <View style={{
-
                             flexDirection: 'column',
-
                         }}>
                             <View style={{
-
-
                                 paddingBottom: 10,
                                 padding: 10,
                             }}>
@@ -261,132 +362,268 @@ const OrderInformation = ({ route }) => {
                         </View>
                         <View style={{ flexDirection: 'row', }}>
                             <ScrollView horizontal={true}>
-                            {btn.map((Obj, index) => {
-                                return (
-                                    <TouchableOpacity
-                                        onPress={() => set_StateBtn(index)}
-                                        style={{
-                                            borderTopStartRadius: 20,
-                                            borderTopEndRadius: 20,
-                                            flexDirection: 'column',
-                                            padding: 10,
-                                            backgroundColor: Obj.state==true? Colors.buttonColorPrimary:Colors.itemColor
-                                        }}>
-                                        <Text
+                                {btn.map((Obj, index) => {
+                                    return (
+                                        <TouchableOpacity
+                                            onPress={() => set_StateBtn(index)}
                                             style={{
-                                                color: Colors.buttonTextColor,
-                                                alignSelf: 'center',
-                                                fontSize: FontSize.medium,
-                                                fontWeight: 'bold',
+                                                borderTopStartRadius: 20,
+                                                borderTopEndRadius: 20,
+                                                flexDirection: 'column',
+                                                padding: 10,
+                                                backgroundColor: Obj.state == true ? Colors.buttonColorPrimary : Colors.itemColor
                                             }}>
-                                            {Obj.name}
-                                        </Text>
-                                    </TouchableOpacity>
-                                )
-                            })}
+                                            <Text
+                                                style={{
+                                                    color: Colors.buttonTextColor,
+                                                    alignSelf: 'center',
+                                                    fontSize: FontSize.medium,
+                                                    fontWeight: 'bold',
+                                                }}>
+                                                {Obj.name}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )
+                                })}
                             </ScrollView>
-                       
-
-
-
                         </View>
 
-                        <ScrollView>
-                            <View style={{ paddingLeft: 20, paddingRight: 20, marginTop: 0 }}>
-                                {arrayObj.length > 0 ? <>
-                                    <View style={{
 
-                                        padding: 20,
-                                        borderBottomStartRadius: 20, borderBottomEndRadius: 20,
-                                        backgroundColor: Colors.backgroundLoginColorSecondary,
-                                    }}>
-                                        {arrayObj.map((item) => {
-                                            return (
+
+                        <View style={{
+                            width: deviceWidth,
+                            borderBottomStartRadius: 20,
+                            borderBottomEndRadius: 20,
+                            flexDirection: 'column',
+                            padding: 10,
+                            backgroundColor: Colors.buttonColorPrimary
+                        }}>
+                            <View style={{
+
+                                borderRadius: 20,
+                                height: deviceHeight * 0.55,
+                                padding: 10,
+                                backgroundColor: Colors.backgroundColorSecondary
+
+                            }}>
+
+
+
+                                {btn[2].state && (
+                                    <ScrollView horizontal={true}>
+
+                                        <View style={{
+                                            flexDirection: 'column',
+                                            padding: 5,
+                                        }}>
+                                            {SHOWWLSKUQTYBYGOODSKEY.length > 0 ? (
+                                                <>
+                                                    <View
+                                                        style={{ flexDirection: 'row',borderBottomColor:Colors.fontColor,borderBottomWidth:1 }}
+                                                    >
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            คลัง
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ตำแหน่งเก็บ
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            คงเหลือ
+                                                        </Text>
+                                                    </View>
+                                                    <ScrollView>
+                                                        {SHOWWLSKUQTYBYGOODSKEY.map((item) => {
+                                                            return (
+                                                                <View
+                                                                    style={{ flexDirection: 'row' }}
+                                                                >
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.WL_CODE)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.WL_NAME)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.currencyFormat(item.SUM_QTY)}
+                                                                    </Text>
+                                                                </View>
+                                                            )
+                                                        })}
+                                                    </ScrollView>
+                                                </>
+                                            ) : (
                                                 <View style={{
 
-                                                    flexDirection: 'column',
+                                                    justifyContent: 'center',
+                                                    alignContent: 'center',
 
                                                 }}>
-                                                    <View style={{
-                                                        borderBottomColor: 'black',
-                                                        borderBottomWidth: 1,
-                                                        paddingBottom: 10,
-                                                        paddingTop: 10,
+                                                    <Text style={{
+                                                        fontSize: fontSize.large
                                                     }}>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'รหัสซื้อขาย'}</Text>
-                                                            <Text style={{ color: Colors.fontColor }}>{item.GOODS_CODE}</Text>
-                                                        </View>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'ชื่อสินค้า'}</Text>
-                                                            <Text style={{ color: Colors.fontColor }}>{item.SKU_NAME}</Text>
-                                                        </View>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'หน่วยนับ'}</Text>
-                                                            <Text style={{ color: Colors.fontColor }}>{item.UTQ_NAME}</Text>
-                                                        </View>
-                                                        <View style={{
-                                                            alignItems: 'center',
-                                                            flexDirection: 'row',
-                                                            paddingBottom: 5
-                                                        }}>
-                                                            <Text style={{ width: deviceWidth / 4, color: Colors.fontColor }}>{'รหัสสินค้า'}</Text>
-                                                            <Text style={{ color: Colors.fontColor }}>{item.SKU_CODE}</Text>
-                                                        </View>
-                                                    </View>
+                                                        ไม่มีข้อมูล
+                                                    </Text>
                                                 </View>
-                                            )
-                                        })}
+                                            )}
+                                        </View>
 
-                                    </View>
+                                    </ScrollView>
+                                )}
 
-                                </> : null}
+                                {btn[3].state && (
+                                    <ScrollView horizontal={true}>
 
-                            </View>
-                            <View style={{
-                                width: deviceWidth,
-                                
-                                flexDirection: 'column',
-                                padding: 10,
-                                backgroundColor: Colors.buttonColorPrimary
-                            }}>
-                            </View>
-                            <TouchableNativeFeedback
-                                onPress={() => navigation.goBack()}>
-                                <View
-                                    style={{
-                                        margin: 10,
-                                        borderRadius: 20,
-                                        flexDirection: 'column',
-                                        padding: 10,
-                                        backgroundColor: Colors.buttonColorPrimary,
-                                    }}>
-                                    <Text
-                                        style={{
-                                            color: Colors.buttonTextColor,
-                                            alignSelf: 'center',
-                                            fontSize: FontSize.medium,
-                                            fontWeight: 'bold',
+                                        <View style={{
+                                            flexDirection: 'column',
+                                            padding: 5,
                                         }}>
-                                        {'ย้อนกลับ'}
-                                    </Text>
-                                </View>
-                            </TouchableNativeFeedback>
-                        </ScrollView>
+                                            {Sp000221.length > 0 ? (
+                                                <>
+                                                    <View
+                                                        style={{ flexDirection: 'row',borderBottomColor:Colors.fontColor,borderBottomWidth:1 }}
+                                                    >
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.4, padding: 5 }}>
+                                                            รหัสตารางราคาขาย
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ตารางราคาขาย
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            รหัสซื้อขาย
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ชื่อสินค้า
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ข้อมูลเตือน
 
-                    </ > : <View
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ราคราขาย
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ส่วนลด
+                                                        </Text>
+
+
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ประเภทสินค้า
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.2, padding: 5 }}>
+                                                            ยี่ห้อ
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
+                                                            ประเภททดแทน
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.2, padding: 5 }}>
+                                                            สี
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.2, padding: 5 }}>
+                                                            ขนาด
+                                                        </Text>
+                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.2, padding: 5 }}>
+                                                            หมวด
+                                                        </Text>
+                                                    </View>
+                                                    <ScrollView>
+                                                        {Sp000221.map((item) => {
+                                                            return (
+                                                                <View
+                                                                    style={{ flexDirection: 'row' }}
+                                                                >
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.4, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.ARPLU_KEY)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.ARPRB_CODE)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.GOODS_CODE)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_NAME)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_ALERT_MSG)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.currencyFormat(item.ARPLU_U_PRC)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.currencyFormat(item.ARPLU_U_DSC)}
+                                                                    </Text>
+
+
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_ICCAT)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.2, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_BRN)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_SKUALT)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.2, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_ICCOLOR)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.2, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_ICSIZE)}
+                                                                    </Text>
+                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.2, padding: 5 }}>
+                                                                        {safe_Format.massageFormat(item.SKU_ICDEPT)}
+                                                                    </Text>
+                                                                </View>
+                                                            )
+                                                        })}
+                                                    </ScrollView>
+                                                </>
+                                            ) : (
+                                                <View style={{
+
+                                                    justifyContent: 'center',
+                                                    alignContent: 'center',
+
+                                                }}>
+                                                    <Text style={{
+                                                        fontSize: fontSize.large
+                                                    }}>
+                                                        ไม่มีข้อมูล
+                                                    </Text>
+                                                </View>
+                                            )}
+                                        </View>
+
+                                    </ScrollView>
+                                )}
+
+
+
+                            </View>
+
+                        </View>
+                        <TouchableNativeFeedback
+                            onPress={() => navigation.goBack()}>
+                            <View
+                                style={{
+                                    margin: 10,
+                                    borderRadius: 20,
+                                    flexDirection: 'column',
+                                    padding: 10,
+                                    backgroundColor: Colors.buttonColorPrimary,
+                                }}>
+                                <Text
+                                    style={{
+                                        color: Colors.buttonTextColor,
+                                        alignSelf: 'center',
+                                        fontSize: FontSize.medium,
+                                        fontWeight: 'bold',
+                                    }}>
+                                    {'ย้อนกลับ'}
+                                </Text>
+                            </View>
+                        </TouchableNativeFeedback>
+
+                    </ View> : <View
                         style={{
                             width: deviceWidth,
                             height: deviceHeight,

@@ -212,9 +212,9 @@ const LoginScreen = () => {
           '{"BPAPUS-MACHINE": "' +
           registerReducer.machineNum +
           '","BPAPUS-USERID": "' +
-          username +
+          username.toUpperCase() +
           '","BPAPUS-PASSWORD": "' +
-          password +
+          password.toUpperCase() +
           '"}',
       }),
     })
@@ -232,8 +232,8 @@ const LoginScreen = () => {
         } else if (json && json.ResponseCode == '200') {
           let responseData = JSON.parse(json.ResponseData)
           dispatch(loginActions.guid(responseData.BPAPUS_GUID))
-          dispatch(loginActions.userNameED(username))
-          dispatch(loginActions.passwordED(password))
+          dispatch(loginActions.userNameED(username.toUpperCase()))
+          dispatch(loginActions.passwordED(password.toUpperCase()))
           dispatch(loginActions.userlogin(isSelected))
 
           navigation.dispatch(

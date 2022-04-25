@@ -91,6 +91,7 @@ const OrderScreen = () => {
     const image = '../../images/UI/Asset35.png';
 
     useEffect(() => {
+        InCome()
         console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
     }, [registerReducer.machineNum]);
 
@@ -127,7 +128,7 @@ const OrderScreen = () => {
                 'BPAPUS-FILTER': "AND (GOODS_CODE LIKE '%" + textsearch + "%') OR (SKU_NAME LIKE '%" + textsearch + "%') OR (SKU_CODE LIKE '%" + textsearch + "%') ",
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
-                'BPAPUS-FETCH': '0',
+                'BPAPUS-FETCH': '20',
             }),
         })
             .then((response) => response.json())
@@ -196,7 +197,7 @@ const OrderScreen = () => {
                                         onChangeText={(val) => setSearch(val)}
                                         placeholderTextColor={Colors.fontColorSecondary}
                                         placeholder={'ค้นหา'}
-
+                                        onSubmitEditing={() => InCome()}
                                     />
 
                                     <TouchableNativeFeedback onPress={() => InCome()}>

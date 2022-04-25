@@ -151,6 +151,10 @@ export const _fetchGuidLog = async (urlser, serviceID, machineNum, userNameED, p
 export const monthFormat = (month) => {
     return months_th[Number(month) - 1];
 }
+export const massageFormat = (text) => {
+    if (text.length>0) return text
+    else return '-'
+}
 export const currencyFormat = (num) => {
     if (num == 0) return '-'
     else return Number(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -189,6 +193,10 @@ export const setnewdateF = (date) => {
 
     var year = x.getFullYear()
     return year + '' + month + '' + day
+}
+export const gettoDate = () => {
+    var x = new Date();
+    return setnewdateF(x)
 }
 export const Radio_menu = (index, val) => {
 

@@ -512,7 +512,7 @@ const DailyCalendarScreen = () => {
                                                 onValueChange={(itemValue, itemIndex) => set_yearIndex(itemValue, itemIndex)}>
                                                 {safe_Format.state_years.map((obj, index) => {
                                                     return (
-                                                        <Picker.Item color={Colors.itemColor} label={obj.toString()} value={obj} />
+                                                        <Picker.Item color={Colors.itemColor} style={{backgroundColor: Colors.backgroundColorSecondary}} label={obj.toString()} value={obj} />
                                                     )
                                                 })}
                                             </Picker>
@@ -532,7 +532,7 @@ const DailyCalendarScreen = () => {
                                                 onValueChange={(itemValue, itemIndex) => setMonthState(itemValue, itemIndex)}>
                                                 {safe_Format.months_th.map((obj, index) => {
                                                     return (
-                                                        <Picker.Item color={Colors.itemColor} label={obj} value={index} />
+                                                        <Picker.Item color={Colors.itemColor}  style={{backgroundColor: Colors.backgroundColorSecondary}}  label={obj} value={index} />
                                                     )
                                                 })}
                                             </Picker>
@@ -923,7 +923,6 @@ const DailyCalendarScreen = () => {
                                                     </View>
                                                 </View>
                                             </TouchableNativeFeedback>
-                                     
                                         </View>
 
                                         <TouchableNativeFeedback
