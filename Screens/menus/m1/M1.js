@@ -269,7 +269,7 @@ const M1 = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                     onPress={() => navigation.navigate('ShowInCome')}
+                                     onPress={() => navigation.navigate('ShowPayMentdeposit')}
                                         style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',

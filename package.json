@@ -13,6 +13,7 @@
     "ainstall": "cd android/app/build/outputs/apk/release && adb install app-release.apk"
   },
   "dependencies": {
+    "@blacksakura013/th-datepicker": "^1.0.15",
     "@eabdullazyanov/react-native-sms-user-consent": "^1.0.10",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -46,6 +47,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-i18n": "^2.0.15",
     "react-native-image-picker": "^4.3.0",
+    "react-native-localize": "^2.2.2",
     "react-native-modal": "^13.0.0",
     "react-native-navigation-drawer-layout": "^0.0.7",
     "react-native-network-info": "^5.2.1",

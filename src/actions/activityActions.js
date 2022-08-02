@@ -7,6 +7,8 @@ import {
   ACTION_ACT_GETCON_NAME,
   ACTION_ACT_GETCON_RESULT,
   ACTION_ACT_GETCON_LASTUPDATE,
+  ACTION_RPTSVR_GRANT,
+  ACTION_RPTSVR_DATA
 } from '../Constants';
 export const LOguid = (payload) => ({
   type: ACTION_ACT_GETLO_GUID,
@@ -41,3 +43,11 @@ export const lastupdate = (payload) => ({
   payload,
 });
 
+export const RPTSVR_GRANT = (payload) => ({
+  type: ACTION_RPTSVR_GRANT,
+  payload,
+});
+export const RPTSVR_DATA = (payload) => ({
+  type: ACTION_RPTSVR_DATA,
+  payload,
+});

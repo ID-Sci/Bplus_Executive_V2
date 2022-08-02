@@ -46,6 +46,7 @@ import { FontSize } from '../components/FontSizeHelper';
 import * as loginActions from '../src/actions/loginActions';
 import * as registerActions from '../src/actions/registerActions';
 import * as databaseActions from '../src/actions/databaseActions';
+import * as activityActions from '../src/actions/activityActions';
 
 import Colors from '../src/Colors';
 import { fontSize, fontWeight } from 'styled-system';
@@ -89,13 +90,18 @@ const LoginScreen = () => {
   const [marker, setMarker] = useState(false);
   const [username, setUsername] = useState(loginReducer.userloggedIn == true ? loginReducer.userNameED : '');
   const [password, setPassword] = useState(loginReducer.userloggedIn == true ? loginReducer.passwordED : '');
-
+  const activityReducer = useSelector(({ activityReducer }) => activityReducer);
   const [data, setData] = useStateIfMounted({
     secureTextEntry: true,
   });
   const image = '../images/UI/Login/Asset4.png';
 
   useEffect(() => {
+    const RPTSVR_GRANT = '{C09D5B05-3CE9-4F0D-B647-A20E1F4D51AB}'
+
+
+    if (RPTSVR_GRANT != activityReducer.RPTSVR_GRANT)
+      dispatch(activityActions.RPTSVR_GRANT(RPTSVR_GRANT))
     console.log('>> isSFeatures : ', isSFeatures)
     if (registerReducer.machineNum.length == 0)
       getMac()
@@ -152,7 +158,7 @@ const LoginScreen = () => {
 
   const tslogin = async () => {
     await setLoading(true)
-   
+
     await regisMacAdd()
     await setLoading(false)
   }
@@ -263,9 +269,9 @@ const LoginScreen = () => {
       });
     setLoading(false)
   };
- 
 
- 
+
+
 
   return (
 
@@ -274,18 +280,18 @@ const LoginScreen = () => {
       <ImageBackground source={require(image)} onLoadEnd={() => { setLoading_backG(false) }} resizeMode="cover" style={styles.image}>
         {!loading_backG ?
           <ScrollView>
-             <View style={tabbar}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('SelectScreen', { data: '' })}>
-                  <FontAwesomeIcon name="gear" size={30} color={Colors.backgroundLoginColorSecondary} />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    marginLeft: 12,
-                    fontSize: FontSize.medium,
-                    color: Colors.backgroundLoginColorSecondary,
-                  }}></Text>
-              </View>
+            <View style={tabbar}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SelectScreen', { data: '' })}>
+                <FontAwesomeIcon name="gear" size={30} color={Colors.backgroundLoginColorSecondary} />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  marginLeft: 12,
+                  fontSize: FontSize.medium,
+                  color: Colors.backgroundLoginColorSecondary,
+                }}></Text>
+            </View>
 
             <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
               <View style={{ padding: 20, marginTop: deviceHeight / 2.3 }}>
@@ -308,7 +314,7 @@ const LoginScreen = () => {
                       shadowRadius: 1.0,
                       elevation: 15,
                     }}>
-                    <View style={{ height: 40, flexDirection: 'row',alignItems:'center' }}>
+                    <View style={{ height: 40, flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         style={{ height: 30, width: 30 }}
                         resizeMode={'contain'}
@@ -359,7 +365,7 @@ const LoginScreen = () => {
                       elevation: 15,
                     }}>
 
-                    <View style={{ height: 40, flexDirection: 'row',alignItems:'center' }}>
+                    <View style={{ height: 40, flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         style={{ height: 30, width: 30 }}
                         resizeMode={'contain'}
@@ -413,12 +419,13 @@ const LoginScreen = () => {
                     tintColors={{ true: Colors.fontColor, false: Colors.fontColor }}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label} onPress={()=>setSelection(!isSelected)}>{Language.t('login.rememberpassword')}</Text>
+                  <Text style={styles.label} onPress={() => setSelection(!isSelected)}>{Language.t('login.rememberpassword')}</Text>
                 </View>
                 <View>
                   <View
                     style={{
                       flexDirection: 'column',
+                     
                     }}>
                     <TouchableNativeFeedback
                       onPress={() => tslogin()}>
@@ -441,6 +448,13 @@ const LoginScreen = () => {
                       </View>
                     </TouchableNativeFeedback>
                   </View>
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      alignItems:'center'
+                    }}>
+                    <Text style={Colors.borderColor}>version 2.4.1</Text>
+                  </View>
 
                 </View>
               </View>
@@ -458,7 +472,6 @@ const LoginScreen = () => {
               alignContent: 'center',
               position: 'absolute',
             }}>
-
           </View>}
         {loading && (
           <View

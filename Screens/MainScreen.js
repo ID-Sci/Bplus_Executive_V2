@@ -213,6 +213,43 @@ const MainScreen = () => {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
+                    onPress={() => navigation.navigate('Reports')}
+                    style={{
+                      backgroundColor: Colors.backgroundLoginColorSecondary,
+                      flexDirection: 'column',
+                      margin: 10,
+                      borderRadius: 10,
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      shadowColor: Colors.borderColor,
+                      shadowOffset: {
+                        width: 0,
+                        height: 6,
+                      },
+                      shadowOpacity: 0.5,
+                      shadowRadius: 1.0,
+                      elevation: 15,
+                    }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Image
+                        style={{ height: 40, width: 40 }}
+                        resizeMode={'contain'}
+                        source={require('../images/UI/Asset9.png')}
+                      />
+                      <View style={{ marginLeft: 20 }}>
+                        <Text style={{
+                          color: 'black',
+                          alignSelf: 'center',
+                          fontSize: FontSize.medium,
+                          fontWeight: 'bold'
+                        }}>รายงาน</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
                     style={{
                       backgroundColor: Colors.backgroundLoginColorSecondary,
                       flexDirection: 'column',

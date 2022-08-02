@@ -24,9 +24,11 @@ import {
 } from 'native-base';
 
 
+import AutoLogin from './screens/AutoLogin';
 import LoginScreen from './screens/LoginScreen';
 import MainScreen from './screens/MainScreen';
 import Ereport from './screens/Ereport';
+import ReportScreen from './screens/ReportScreen';
 
 import M1 from './screens/menus/m1/M1';
 import M2 from './screens/menus/m2/M2';
@@ -101,6 +103,7 @@ const App = () => {
     return (
       <LoginStack.Navigator>
 
+
         <LoginStack.Screen
           options={{ headerShown: false }}
           name="Login"
@@ -135,6 +138,11 @@ const App = () => {
               />
               <MainStack.Screen
                 options={{ headerShown: false }}
+                name="AutoLogin"
+                component={AutoLogin}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
                 name="MainScreen"
                 component={MainScreen}
               />
@@ -142,6 +150,11 @@ const App = () => {
                 options={{ headerShown: false }}
                 name="Ereport"
                 component={Ereport}
+              />
+              <MainStack.Screen
+                options={{ headerShown: false }}
+                name="Reports"
+                component={ReportScreen}
               />
 
 
@@ -155,18 +168,18 @@ const App = () => {
                 name="OrderScreen"
                 component={OrderScreen}
               />
-                 <MainStack.Screen
+              <MainStack.Screen
                 options={{ headerShown: false }}
                 name="OrderInformation"
                 component={OrderInformation}
               />
-              
+
               <MainStack.Screen
                 options={{ headerShown: false }}
                 name="DailyCalendarScreen"
                 component={DailyCalendarScreen}
               />
-                <MainStack.Screen
+              <MainStack.Screen
                 options={{ headerShown: false }}
                 name="DailyCalendarInfomation"
                 component={DailyCalendarInfomation}

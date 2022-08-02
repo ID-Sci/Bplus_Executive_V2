@@ -255,10 +255,6 @@ const DailyCalendarScreen = () => {
         setLoading(false)
     };
 
-
-
-
-
     const get_Point = async (tempGuid) => {
         set_Statedaily([])
         letsLoading()
@@ -284,11 +280,8 @@ const DailyCalendarScreen = () => {
 
             closeLoading()
         }
-
-
     }
     const refreshScreen = async () => {
-
         await getDay_Calendar()
     }
     const getDay_Calendar = () => {
@@ -297,12 +290,9 @@ const DailyCalendarScreen = () => {
         let d = dateIndex
         let m = monthIndex + 1
         let y = yearIndex - 543
-
         for (var i in safe_Day_Calendar) {
             for (var j in safe_Day_Calendar[i]) {
-
                 var temp_Day_Calendar = `${y}${m.toString().length > 1 ? m : '0' + m}${safe_Day_Calendar[i][j].toString().length > 1 ? safe_Day_Calendar[i][j] : '0' + safe_Day_Calendar[i][j]}`
-
                 if ((poppoint.SHOWCALENDARPOAPPOINT && poppoint.SHOWCALENDARPOAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == temp_Day_Calendar) }).length > 0) ||
                     (mappoint.SHOWCALENDARBKAPPOINT && mappoint.SHOWCALENDARBKAPPOINT.filter((item) => { return (item.TRH_SHIP_DATE == temp_Day_Calendar) }).length > 0) ||
                     (rarchqDue.SHOWCALENDARARDUE && rarchqDue.SHOWCALENDARARDUE.filter((item) => { return (item.ARD_DUE_DA == temp_Day_Calendar) }).length > 0) ||

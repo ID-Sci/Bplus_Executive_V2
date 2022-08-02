@@ -192,7 +192,7 @@ const Ereport = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>ยอกลูกหนี้แต่ละราย</Text>
+                                                }}>ยอดลูกหนี้แต่ละราย</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

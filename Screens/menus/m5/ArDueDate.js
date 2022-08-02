@@ -17,7 +17,7 @@ import {
     TouchableOpacity,
     Modal, Pressable,
 } from 'react-native';
-import DatePicker from 'react-native-datepicker'
+import CalendarScreen from '@blacksakura013/th-datepicker'
 import CheckBox from '@react-native-community/checkbox';
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import {
@@ -353,37 +353,26 @@ const ArDueDate = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                            <View style={{
+                                                <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
-                                                alignItems: 'center', marginBottom: 10
+                                                alignItems: 'center', marginBottom: 10,
                                             }}>
-                                                <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>ถึง </Text>
-                                                <DatePicker
-                                                    style={{ width: 250, }}
-                                                    date={end_date} //start date
-                                                    mode="date"
-                                                    placeholder="select date"
-                                                    format="DD-MM-YYYY"
-
-                                                    confirmBtnText="Confirm"
-                                                    cancelBtnText="Cancel"
-                                                    customStyles={{
-                                                        dateIcon: {
-                                                            left: 0,
-                                                            top: 4,
-                                                            marginLeft: 0
-                                                        },
-                                                        dateInput: {
-
-                                                        }
-                                                        // ... You can check the source to find the other keys.
-                                                    }}
-                                                    onDateChange={(date) => {
-                                                        setE_date(date)
-                                                        setRadio_menu1(4, null)
-                                                        setRadio_menu2(4, null)
-                                                    }}
-                                                />
+                                                <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
+                                                <CalendarScreen
+                                                    value={start_date}
+                                                    onChange={(vel) => setS_date(vel)}
+                                                    language={'th'}
+                                                    era={'be'}
+                                                    format={'dd mon yyyy'}
+                                                    borderColor={Colors.primaryColor}
+                                                    linkTodateColor={Colors.itemColor}
+                                                    calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
+                                                    borderWidth={1}
+                                                    icon={{ color: Colors.primaryColor }}
+                                                    fontSize={FontSize.medium}
+                                                    fontColor={Colors.fontColor}
+                                                    width={250}
+                                                    borderRadius={10} />
                                             </View>
                                             <Pressable
                                                 style={[styles.button, styles.buttonClose]}

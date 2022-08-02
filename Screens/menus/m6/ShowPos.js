@@ -17,7 +17,7 @@ import {
     TouchableOpacity,
     Modal, Pressable,
 } from 'react-native';
-import DatePicker from 'react-native-datepicker'
+import CalendarScreen from '@blacksakura013/th-datepicker'
 import CheckBox from '@react-native-community/checkbox';
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import {
