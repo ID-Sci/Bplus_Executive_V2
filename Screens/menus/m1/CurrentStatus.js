@@ -26,7 +26,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
+
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -52,8 +52,8 @@ import Colors from '../../../src/Colors';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
-const ShowSellBook = ({ route }) => {
+import tableStyles from '../tableStyles'
+const CurrentStatus = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
 
@@ -76,13 +76,13 @@ const ShowSellBook = ({ route }) => {
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
-    const [sum, setSum] = useState(0)
+    // const [sum, setSum] = useState(0)
     const [radioIndex1, setRadioIndex1] = useState(4);
     const [radioIndex2, setRadioIndex2] = useState(4);
     const [radioIndex3, setRadioIndex3] = useState(4);
     const radio_props = [
-        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
-        { label: 'สิ้นปีก่อน', value: 'lastyear' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastAmonth' },
+        { label: 'สิ้นปีก่อน', value: 'lastAyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
@@ -102,14 +102,16 @@ const ShowSellBook = ({ route }) => {
         setPage(0);
     }, [itemsPerPage])
     useEffect(() => {
-        var newsum = 0
-        // for (var i in arrayObj) {
-        //     newsum += Number(arrayObj[i].sellamount)
-        // }
+        console.log(arrayObj_last_month)
+        arrayObj_last_month.map((item) => console.log(item))
 
-        // setSum(newsum)
-
-    }, [arrayObj])
+    }, [sum_last_month])
+    const getSum = (obj) => {
+        let sum = 0
+        for (var i in obj)
+            sum += Number(obj[i])
+        return sum
+    }
 
     const regisMacAdd = async () => {
         let tempGuid = await safe_Format._fetchGuidLog(databaseReducer.Data.urlser, loginReducer.serviceID, registerReducer.machineNum, loginReducer.userNameED, loginReducer.passwordED)
@@ -241,7 +243,7 @@ const ShowSellBook = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -261,161 +263,191 @@ const ShowSellBook = ({ route }) => {
                     </View>
 
                 </View>
-                <View style={{ flex: 1 }}>
-                    <View  >
-                        <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{}}  ><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>รายละเอียด</Text></DataTable.Title>
-                                    <DataTable.Title style={{}} numeric><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>เดือนก่อน</Text></DataTable.Title>
-                                    <DataTable.Title style={{}} numeric><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>ปีก่อน</Text></DataTable.Title>
-                                    <DataTable.Title style={{}} numeric><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ปีนี้ </Text></DataTable.Title>
-                                </DataTable.Header>
-                                <ScrollView>
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                        <TouchableNativeFeedback>
-                                            <View >
-                                                {arrayObj.map((item) => {
-                                                    return (
-                                                        <>
-                                                            <View>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell style={{}}  >{item.desc}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{}} numeric>{safe_Format.currencyFormat(item.last_month)}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{}} numeric >{safe_Format.currencyFormat(item.last_year)}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{}} numeric>{safe_Format.currencyFormat(item.this_year)}</DataTable.Cell>
-                                                                </DataTable.Row>
-                                                            </View>
-                                                        </>
-                                                    )
-                                                })}
 
-                                            </View>
-                                        </TouchableNativeFeedback>
-                                    </KeyboardAvoidingView>
-                                </ScrollView>
-                                {arrayObj.length > 0 ?
+                <ScrollView horizontal={true}>
+                    <View
+                        style={tableStyles.table}>
+                        <View style={tableStyles.tableHeader}>
+                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                fontSize: FontSize.medium,
+                                color: Colors.fontColor2,
+                                alignSelf: 'center'
+                            }}>รายละเอียด</Text></View>
+                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle} ><Text style={{
+                                fontSize: FontSize.medium,
+                                color: Colors.fontColor2,
+                                alignSelf: 'center'
+                            }}>เดือนก่อน</Text></View>
+                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle} ><Text style={{
+                                fontSize: FontSize.medium,
+                                color: Colors.fontColor2,
+                                alignSelf: 'center'
+                            }}>ปีก่อน</Text></View>
+                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle} ><Text style={{
+                                fontSize: FontSize.medium,
+                                color: Colors.fontColor2,
+                                alignSelf: 'center'
+                            }}> ปีนี้ </Text></View>
+                        </View>
+                        <ScrollView >
+                            <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                <TouchableNativeFeedback>
                                     <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell   ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม</Text></DataTable.Cell>
-                                            <DataTable.Cell     > </DataTable.Cell>
-                                            <DataTable.Cell numeric ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                        </DataTable.Row>
-                                    </View> : null}
-                            </DataTable>
-                        </ScrollView>
-                    </View>
+                                        {arrayObj.map((item) => {
+                                            return (
+                                                <>
+                                                    <View style={tableStyles.tableCell}>
+                                                        <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                            fontSize: FontSize.medium,
+                                                            color: Colors.fontColor,
+                                                            alignSelf: 'flex-start'
+                                                        }} >{item.desc}</Text></View>
+                                                        <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle} ><Text style={{
+                                                            fontSize: FontSize.medium,
+                                                            color: Colors.fontColor,
+                                                            alignSelf: 'flex-end'
+                                                        }} >{safe_Format.currencyFormat(item.last_month)}</Text></View>
+                                                        <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}  ><Text style={{
+                                                            fontSize: FontSize.medium,
+                                                            color: Colors.fontColor,
+                                                            alignSelf: 'flex-end'
+                                                        }} >{safe_Format.currencyFormat(item.last_year)}</Text></View>
+                                                        <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle} ><Text style={{
+                                                            fontSize: FontSize.medium,
+                                                            color: Colors.fontColor,
+                                                            alignSelf: 'flex-end'
+                                                        }} >{safe_Format.currencyFormat(item.this_year)}</Text></View>
 
-                    <View style={styles.centeredView}>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                setModalVisible(!modalVisible);
-                            }}>
-                            < TouchableOpacity
-                                onPress={() => setModalVisible(!modalVisible)}
-                                style={styles.centeredView}>
-                                <View>
-                                    <View style={styles.modalView}>
-                                        <View style={{
-                                            justifyContent: 'space-between',
-                                            flexDirection: 'row'
-                                        }}>
-                                            <View width={20}></View>
-                                            <Text style={styles.modalText}>เลือกการค้นหา</Text>
-                                            <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
-                                                <FontAwesome name="close" color={Colors.fontColor2} size={FontSize.large} />
-                                            </Pressable>
-                                        </View>
-                                        <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
-                                            <View style={{ paddingBottom: 10 }}>
-                                                <RadioGroup
-                                                    style={{
-                                                        flexDirection: 'row',
-                                                        paddingLeft: 10
-                                                    }}
-                                                    selectedIndex={radioIndex1}
-                                                    onSelect={(index, value) => setRadio_menu1(index, value)}
-                                                >
-                                                    <RadioButton value={radio_props[0].value} >
-                                                        <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
-                                                    </RadioButton>
-                                                    <RadioButton value={radio_props[1].value} >
-                                                        <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
-                                                    </RadioButton>
-                                                </RadioGroup>
-                                                <RadioGroup
-                                                    style={{
-                                                        flexDirection: 'row',
-                                                        paddingLeft: 10
-                                                    }}
-                                                    selectedIndex={radioIndex2}
-                                                    onSelect={(index, value) => setRadio_menu2(index, value)}
-                                                >
-                                                    <RadioButton value={radio_props[2].value} >
-                                                        <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
-                                                    </RadioButton>
-                                                    <RadioButton value={radio_props[3].value} >
-                                                        <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
-                                                    </RadioButton>
-                                                </RadioGroup>
-                                            </View>
-                                            <View style={{
-                                                flexDirection: 'row', justifyContent: 'space-between',
-                                                alignItems: 'center', marginBottom: 10,
-                                            }}>
-                                                <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
-                                                <CalendarScreen
-                                                    value={start_date}
-                                                    onChange={(vel) => setS_date(vel)}
-                                                    language={'th'}
-                                                    era={'be'}
-                                                    format={'dd mon yyyy'}
-                                                    borderColor={Colors.primaryColor}
-                                                    linkTodateColor={Colors.itemColor}
-                                                    calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
-                                                    borderWidth={1}
-                                                    icon={{ color: Colors.primaryColor }}
-                                                    fontSize={FontSize.medium}
-                                                    fontColor={Colors.fontColor}
-                                                    width={250}
-                                                    borderRadius={10} />
-                                            </View>
-                                       
-                                            <Pressable
-                                                style={[styles.button, styles.buttonClose]}
-                                                onPress={() => InCome()}
+                                                    </View>
+                                                </>
+                                            )
+                                        })}
+
+                                    </View>
+                                </TouchableNativeFeedback>
+                            </KeyboardAvoidingView>
+                            {arrayObj.length > 0 ?
+                         
+                         <View style={tableStyles.tableHeader}>
+                         <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                             fontSize: FontSize.medium,
+                             color: Colors.fontColor2,
+                             alignSelf: 'flex-start'
+                         }}>รวม</Text></View>
+                         <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle} ><Text style={{
+                             fontSize: FontSize.medium,
+                             color: Colors.fontColor2,
+                             alignSelf: 'flex-end'
+                         }}>{safe_Format.currencyFormat(getSum(arrayObj_last_month))}</Text></View>
+                         <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle} ><Text style={{
+                             fontSize: FontSize.medium,
+                             color: Colors.fontColor2,
+                             alignSelf: 'flex-end'
+                         }}>{safe_Format.currencyFormat(getSum(arrayObj_last_year))}</Text></View>
+                         <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle} ><Text style={{
+                             fontSize: FontSize.medium,
+                             color: Colors.fontColor2,
+                             alignSelf: 'flex-end'
+                         }}> {safe_Format.currencyFormat(getSum(arrayObj_this_year))} </Text></View>
+                     </View>
+                            : null}
+                        </ScrollView>
+                    
+                    </View>
+                </ScrollView>
+
+
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}>
+                        < TouchableOpacity
+                            onPress={() => setModalVisible(!modalVisible)}
+                            style={styles.centeredView}>
+                            <View>
+                                <View style={styles.modalView}>
+                                    <View style={{
+                                        justifyContent: 'space-between',
+                                        flexDirection: 'row'
+                                    }}>
+                                        <View width={20}></View>
+                                        <Text style={styles.modalText}>เลือกการค้นหา</Text>
+                                        <Pressable style={{ alignItems: 'flex-end' }} onPress={() => setModalVisible(!modalVisible)}>
+                                            <FontAwesome name="close" color={Colors.fontColor2} size={FontSize.large} />
+                                        </Pressable>
+                                    </View>
+                                    <View style={{ backgroundColor: Colors.fontColor2, borderRadius: 20, padding: 10 }}>
+                                        <View style={{ paddingBottom: 10 }}>
+                                            <RadioGroup
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    paddingLeft: 10
+                                                }}
+                                                selectedIndex={radioIndex1}
+                                                onSelect={(index, value) => setRadio_menu1(index, value)}
                                             >
-                                                <Text style={styles.textStyle}>ตกลง</Text>
-                                            </Pressable>
+                                                <RadioButton value={radio_props[0].value} >
+                                                    <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[0].label}</Text>
+                                                </RadioButton>
+                                                <RadioButton value={radio_props[1].value} >
+                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[1].label}</Text>
+                                                </RadioButton>
+                                            </RadioGroup>
+                                            <RadioGroup
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    paddingLeft: 10
+                                                }}
+                                                selectedIndex={radioIndex2}
+                                                onSelect={(index, value) => setRadio_menu2(index, value)}
+                                            >
+                                                <RadioButton value={radio_props[2].value} >
+                                                    <Text style={{ fontSize: FontSize.medium, width: 100, color: 'black', fontWeight: 'bold', }}>{radio_props[2].label}</Text>
+                                                </RadioButton>
+                                                <RadioButton value={radio_props[3].value} >
+                                                    <Text style={{ fontSize: FontSize.medium, color: 'black', fontWeight: 'bold', }}>{radio_props[3].label}</Text>
+                                                </RadioButton>
+                                            </RadioGroup>
                                         </View>
+                                        <View style={{
+                                            flexDirection: 'row', justifyContent: 'space-between',
+                                            alignItems: 'center', marginBottom: 10,
+                                        }}>
+                                            <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
+                                            <CalendarScreen
+                                                value={start_date}
+                                                onChange={(vel) => setS_date(vel)}
+                                                language={'th'}
+                                                era={'be'}
+                                                format={'DD/MM/YYYY'}
+                                                borderColor={Colors.primaryColor}
+                                                linkTodateColor={Colors.itemColor}
+                                                calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
+                                                borderWidth={1}
+                                                icon={{ color: Colors.primaryColor }}
+                                                fontSize={FontSize.medium}
+                                                fontColor={Colors.fontColor}
+                                                width={250}
+                                                borderRadius={10} />
+                                        </View>
+
+                                        <Pressable
+                                            style={[styles.button, styles.buttonClose]}
+                                            onPress={() => InCome()}
+                                        >
+                                            <Text style={styles.textStyle}>ตกลง</Text>
+                                        </Pressable>
                                     </View>
                                 </View>
-                            </TouchableOpacity>
-                        </Modal>
-                    </View>
+                            </View>
+                        </TouchableOpacity>
+                    </Modal>
                 </View>
+
             </SafeAreaView>
 
             {loading && (
@@ -450,9 +482,6 @@ const ShowSellBook = ({ route }) => {
 
 const styles = StyleSheet.create({
 
-    table: {
-        width: deviceWidth * 2,
-    },
     container: {
         backgroundColor: '#fff',
         flex: 1,
@@ -468,13 +497,38 @@ const styles = StyleSheet.create({
 
 
     },
+    
+    table: {
+        margin: 0,
+
+        height: deviceHeight - FontSize.large * 2
+    },
     tableHeader: {
 
+        flexDirection: 'row',
+
+    },
+    tableHeaderTitle: {
         backgroundColor: Colors.backgroundLoginColor,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'black'
+
+    },
+    tableCell: {
+
+        flexDirection: 'row',
+
+    },
+    tableCellTitle: {
+
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'black'
 
     },
     tabbar: {
-        height: 70,
+        height: FontSize.large * 2,
         padding: 5,
         paddingLeft: 20,
         paddingRight: 20,
@@ -497,10 +551,7 @@ const styles = StyleSheet.create({
         position: 'absolute', //Here is the trick
         bottom: 0, //Here is the trick
     },
-    tabbuttomsum: {
-        backgroundColor: Colors.backgroundLoginColor,
-        color: Colors.fontColor2
-    },
+  
     textTitle2: {
         alignSelf: 'center',
         flex: 2,
@@ -590,4 +641,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default ShowSellBook;
+export default CurrentStatus;

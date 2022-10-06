@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -50,7 +49,7 @@ import Colors from '../../../src/Colors';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const SkuBalance = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -79,8 +78,8 @@ const SkuBalance = ({ route }) => {
     const [radioIndex2, setRadioIndex2] = useState(4);
     const [radioIndex3, setRadioIndex3] = useState(4);
     const radio_props = [
-        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
-        { label: 'สิ้นปีก่อน', value: 'lastyear' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastAmonth' },
+        { label: 'สิ้นปีก่อน', value: 'lastAyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
@@ -216,7 +215,7 @@ const SkuBalance = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -239,22 +238,24 @@ const SkuBalance = ({ route }) => {
                 <View>
                     <View  >
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title ><Text style={{
+                            <View style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.2} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>รหัส</Text></DataTable.Title>
-                                    <DataTable.Title ><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>รหัส</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>ชื่อ</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ชื่อ</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดคงเหลือ </Text></DataTable.Title>
-                                </DataTable.Header>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดคงเหลือ</Text></View>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -262,11 +263,23 @@ const SkuBalance = ({ route }) => {
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
-                                                            <DataTable.Row>
-                                                                <DataTable.Cell style={{ flex: 0.2 }}  >{item.code}</DataTable.Cell>
-                                                                <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   >{item.thaidesc}</DataTable.Cell>
-                                                                <DataTable.Cell style={{ flex: 0.5 }} numeric >{safe_Format.currencyFormat(item.sumcost)}</DataTable.Cell>
-                                                            </DataTable.Row>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.2} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.code}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.thaidesc}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.sumcost)}</Text></View>
+                                                            </View>
 
                                                         </>
                                                     )
@@ -275,22 +288,28 @@ const SkuBalance = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
+                                    {arrayObj.length > 0 ?
+                                        <View style={tableStyles.tableHeader}>
+                                            <View width={deviceWidth * 0.2} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'center'
+                                            }}>รวม</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'center'
+                                            }}> </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-end'
+                                            }} >{safe_Format.currencyFormat(sum)}</Text></View>
+                                        </View>
+                                        : null}
                                 </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม</Text></DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                        </DataTable.Row>
-                                    </View> : null}
-                            </DataTable>
+
+                            </View>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -349,7 +368,7 @@ const SkuBalance = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                                <View style={{
+                                            <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10,
                                             }}>
@@ -359,7 +378,7 @@ const SkuBalance = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -418,7 +437,7 @@ const SkuBalance = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth,
+
     },
     container: {
         backgroundColor: '#fff',

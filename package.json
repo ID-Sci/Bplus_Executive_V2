@@ -1,6 +1,6 @@
 {
   "name": "bplus_executive_v2",
-  "version": "0.0.1",
+  "version": "2.5.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -13,7 +13,7 @@
     "ainstall": "cd android/app/build/outputs/apk/release && adb install app-release.apk"
   },
   "dependencies": {
-    "@blacksakura013/th-datepicker": "^1.0.15",
+    "@blacksakura013/th-datepicker": "^1.0.16",
     "@eabdullazyanov/react-native-sms-user-consent": "^1.0.10",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",

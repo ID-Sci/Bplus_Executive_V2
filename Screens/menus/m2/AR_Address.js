@@ -26,7 +26,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
+
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -51,7 +51,7 @@ import Colors from '../../../src/Colors';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const AR_GoodsBooking = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -201,6 +201,7 @@ const AR_GoodsBooking = ({ route }) => {
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
                 <View style={tabbar}>
+
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -284,7 +285,7 @@ const AR_GoodsBooking = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth,
+      
     },
     container: {
         backgroundColor: '#fff',

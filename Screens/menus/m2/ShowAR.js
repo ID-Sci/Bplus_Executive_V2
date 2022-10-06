@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -52,7 +51,7 @@ import { fontSize } from 'styled-system';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const showAR = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -171,7 +170,7 @@ const showAR = ({ route }) => {
                             style={{
                                 marginLeft: 12,
                                 fontSize: FontSize.medium,
-                                color:'black'
+                                color: 'black'
                             }}>{`ยอดลูกหนี้แต่ละราย`}</Text>
                     </View>
 
@@ -181,7 +180,7 @@ const showAR = ({ route }) => {
                 <View style={tabbar} >
                     <View style={{
                         backgroundColor: '#fff', alignSelf: 'center',
-                        justifyContent: 'center', borderRadius: 20, flexDirection: 'row', borderColor:'black',borderWidth:1, marginBottom: 10
+                        justifyContent: 'center', borderRadius: 20, flexDirection: 'row', borderColor: 'black', borderWidth: 1, marginBottom: 10
                     }}>
 
                         <TextInput
@@ -190,7 +189,7 @@ const showAR = ({ route }) => {
                                 marginLeft: 10,
                                 borderBottomColor: Colors.borderColor,
                                 color: Colors.fontColor,
-                               
+
                                 padding: 10,
                                 fontSize: FontSize.medium,
 
@@ -213,18 +212,25 @@ const showAR = ({ route }) => {
                 <View style={{ flex: 1 }}>
                     <View  >
                         <ScrollView horizontal={true}>
-                            <DataTable style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title ><Text style={{
+                            <View style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.3} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2, width: '60%'
-                                    }}>ชื่อลูกหนี้</Text></DataTable.Title>
-                                    <DataTable.Title ><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>รหัสลูกหนี้</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>เบอร์โทร</Text></DataTable.Title>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ชื่อลูกหนี้</Text></View>
+                                    <View width={deviceWidth * 0.3} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>เบอร์โทร</Text></View>
 
-                                </DataTable.Header>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -232,17 +238,29 @@ const showAR = ({ route }) => {
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
-                                                            <View>
-                                                                <TouchableOpacity
-                                                                    onPress={() => navigation.navigate(route.params.routeName, {
-                                                                        Obj: item.key
-                                                                    })}>
-                                                                    <DataTable.Row>
-                                                                        <DataTable.Cell>{item.name}</DataTable.Cell>
-                                                                        <DataTable.Cell >{item.phone ? item.phone : 'ไม่มีข้อมูล'}</DataTable.Cell>
-                                                                    </DataTable.Row>
-                                                                </TouchableOpacity>
-                                                            </View>
+
+                                                            <TouchableOpacity
+                                                                onPress={() => navigation.navigate(route.params.routeName, {
+                                                                    Obj: item.key
+                                                                })}>
+                                                                <View style={tableStyles.tableCell}>
+                                                                    <View width={deviceWidth * 0.3} style={tableStyles.tableCellTitle}><Text style={{
+                                                                        fontSize: FontSize.medium,
+                                                                        color: Colors.fontColor,
+                                                                        alignSelf: 'flex-start'
+                                                                    }} >{item.code}</Text></View>
+                                                                    <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                        fontSize: FontSize.medium,
+                                                                        color: Colors.fontColor,
+                                                                        alignSelf: 'flex-start'
+                                                                    }} >{item.name}</Text></View>
+                                                                    <View width={deviceWidth * 0.3} style={tableStyles.tableCellTitle}><Text style={{
+                                                                        fontSize: FontSize.medium,
+                                                                        color: Colors.fontColor,
+                                                                        alignSelf: 'flex-start'
+                                                                    }} >{item.phone ? item.phone : 'ไม่มีข้อมูล'}</Text></View>
+                                                                </View>
+                                                            </TouchableOpacity>
                                                         </>
                                                     )
                                                 })}
@@ -250,7 +268,7 @@ const showAR = ({ route }) => {
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
                                 </ScrollView>
-                            </DataTable>
+                            </View>
                         </ScrollView>
 
                     </View>
@@ -296,7 +314,7 @@ const showAR = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth,
+      
     },
     container: {
         backgroundColor: '#fff',

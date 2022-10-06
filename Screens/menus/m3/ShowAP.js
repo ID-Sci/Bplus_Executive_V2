@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -52,7 +51,7 @@ import { fontSize } from 'styled-system';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const ShowAP = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -159,7 +158,7 @@ const ShowAP = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -176,7 +175,7 @@ const ShowAP = ({ route }) => {
                 <View style={tabbar} >
                     <View style={{
                         backgroundColor: '#fff', alignSelf: 'center',
-                        justifyContent: 'center', borderRadius: 20, flexDirection: 'row',borderWidth:1,  marginBottom: 10
+                        justifyContent: 'center', borderRadius: 20, flexDirection: 'row', borderWidth: 1, marginBottom: 10
                     }}>
 
                         <TextInput
@@ -205,53 +204,59 @@ const ShowAP = ({ route }) => {
                     </View>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <View  >
-                        <ScrollView horizontal={true}>
-                            <DataTable style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title ><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2, width: '60%'
-                                    }}>ชื่อเจ้าหนี้</Text></DataTable.Title>
-                                    <DataTable.Title ><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>เบอร์โทร</Text></DataTable.Title>
+                    <ScrollView horizontal={true}>
+                        <View style={tableStyles.table}>
+                            <View style={tableStyles.tableHeader}>
+                                <View width={deviceWidth * 0.6} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                    fontSize: FontSize.medium,
+                                    color: Colors.fontColor2,
+                                    alignSelf: 'center'
+                                }}>ชื่อเจ้าหนี้</Text></View>
+                                <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                    fontSize: FontSize.medium,
+                                    color: Colors.fontColor2,
+                                    alignSelf: 'center'
+                                }}>เบอร์โทร</Text></View>
 
-                                </DataTable.Header>
-                                <ScrollView>
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                        <TouchableNativeFeedback>
-                                            <View  >
-                                                {arrayObj.map((item) => {
-                                                    return (
-                                                        <>
-                                                            <View>
-                                                                <TouchableOpacity
-                                                                    onPress={() => navigation.navigate(route.params.routeName, {
-                                                                        Obj: item.key
-                                                                    })}>
-                                                                    <DataTable.Row>
-                                                                        <DataTable.Cell>{item.name}</DataTable.Cell>
-                                                                        <DataTable.Cell >{item.phone ? item.phone : 'ไม่มีข้อมูล'}</DataTable.Cell>
-                                                                    </DataTable.Row>
-                                                                </TouchableOpacity>
+                            </View>
+                            <ScrollView>
+                                <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                    <TouchableNativeFeedback>
+                                        <View  >
+                                            {arrayObj.map((item) => {
+                                                return (
+                                                    <>
+                                                        <TouchableOpacity
+                                                            onPress={() => navigation.navigate(route.params.routeName, {
+                                                                Obj: item.key
+                                                            })}>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.6} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.name}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.phone ? item.phone : 'ไม่มีข้อมูล'}</Text></View>
                                                             </View>
-                                                        </>
-                                                    )
-                                                })}
-                                            </View>
-                                        </TouchableNativeFeedback>
-                                    </KeyboardAvoidingView>
-                                </ScrollView>
-                            </DataTable>
-                        </ScrollView>
-
-                    </View>
-
-
-
+                                                        </TouchableOpacity>
+                                                    </>
+                                                )
+                                            })}
+                                        </View>
+                                    </TouchableNativeFeedback>
+                                </KeyboardAvoidingView>
+                            </ScrollView>
+                        </View>
+                    </ScrollView>
                 </View>
+
+
+
+
 
                 {loading && (
                     <View
@@ -290,7 +295,7 @@ const ShowAP = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth,
+      
     },
     container: {
         backgroundColor: '#fff',

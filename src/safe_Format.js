@@ -11,7 +11,7 @@ export const state_years = years;
 export const Day_Calendar = (year, mont) => {
     year = year - 543
     let getDate = new Date(`${year}/${mont + 1}/1`).getDay();
-   
+
     if (mont == 11) mont = 1
     else mont = mont + 2
 
@@ -42,13 +42,13 @@ export const Day_Calendar = (year, mont) => {
         dayObj.push(obj)
         obj = []
     }
-  
+
     return dayObj
 }
 export const Day_mont = (year, mont) => {
     year = year - 543
     let getDate = new Date(`${year}/${mont + 1}/1`).getDay();
- 
+
     if (mont == 11) mont = 1
     else mont = mont + 2
 
@@ -79,7 +79,7 @@ export const Day_mont = (year, mont) => {
         dayObj.push(obj)
         obj = []
     }
-  
+
     return days
 }
 export const regisMacAdd = async (urlser, serviceID, machineNum, userNameED, passwordED) => {
@@ -152,7 +152,7 @@ export const monthFormat = (month) => {
     return months_th[Number(month) - 1];
 }
 export const massageFormat = (text) => {
-    if (text.length>0) return text
+    if (text.length > 0) return text
     else return '-'
 }
 export const currencyFormat = (num) => {
@@ -211,6 +211,10 @@ export const Radio_menu = (index, val) => {
         year = year - 1
         sdate = new Date(year, 0, 1)
         edate = new Date(year, 12, 0)
+    } else if (val == 'lastAyear') {
+        year = year - 1
+        sdate = new Date(year, 12, 0)
+        edate = new Date(year, 12, 0)
     } else if (val == 'nowyear') {
         year = year
         sdate = new Date(year, 0, 1)
@@ -223,6 +227,11 @@ export const Radio_menu = (index, val) => {
     } else if (val == 'lastmonth') {
         month = month - 2
         sdate = new Date(year, month, 1)
+        edate = new Date(year, month + 1, 0)
+    }
+    else if (val == 'lastAmonth') {
+        month = month - 2
+        sdate =new Date(year, month + 1, 0)
         edate = new Date(year, month + 1, 0)
     }
     else if (val == 'lastday') {

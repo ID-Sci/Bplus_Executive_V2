@@ -28,7 +28,7 @@ import AutoLogin from './screens/AutoLogin';
 import LoginScreen from './screens/LoginScreen';
 import MainScreen from './screens/MainScreen';
 import Ereport from './screens/Ereport';
-import ReportScreen from './screens/ReportScreen';
+import ReportScreen from './screens/reports/ReportScreen';
 
 import M1 from './screens/menus/m1/M1';
 import M2 from './screens/menus/m2/M2';
@@ -153,7 +153,7 @@ const App = () => {
               />
               <MainStack.Screen
                 options={{ headerShown: false }}
-                name="Reports"
+                name="ReportScreen"
                 component={ReportScreen}
               />
 

@@ -26,7 +26,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
+
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -80,8 +80,8 @@ const AP_Address = ({ route }) => {
     const [radioIndex2, setRadioIndex2] = useState(4);
     const [radioIndex3, setRadioIndex3] = useState(4);
     const radio_props = [
-        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
-        { label: 'สิ้นปีก่อน', value: 'lastyear' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastAmonth' },
+        { label: 'สิ้นปีก่อน', value: 'lastAyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }

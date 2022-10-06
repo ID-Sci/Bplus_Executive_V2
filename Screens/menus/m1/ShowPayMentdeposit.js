@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -48,6 +47,7 @@ import * as databaseActions from '../../../src/actions/databaseActions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../../src/Colors';
 import * as safe_Format from '../../../src/safe_Format';
+import tableStyles from '../tableStyles'
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -239,7 +239,7 @@ const ShowPayMentdeposit = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -263,30 +263,35 @@ const ShowPayMentdeposit = ({ route }) => {
                     <View  >
 
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{ flex: 0.6 }}><Text style={{
+                            <View
+                                style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>วันที่</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>วันที่</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>รับชำระ</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>รับชำระ</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> จ่ายชำระ </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}> จ่ายชำระ </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> รับมัดจำ </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}> รับมัดจำ </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> จ่ายมัดจำ </Text></DataTable.Title>
-                                </DataTable.Header>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}> จ่ายมัดจำ </Text></View>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -294,14 +299,33 @@ const ShowPayMentdeposit = ({ route }) => {
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
-                                                            <View>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell style={{ flex: 0.6 }}>{safe_Format.dateFormat(item.date)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.arreceipt)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.appayment)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.ardeposit)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.apdepoit)}</DataTable.Cell>
-                                                                </DataTable.Row>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{safe_Format.dateFormat(item.date)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.arreceipt)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.appayment)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.ardeposit)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.apdepoit)}</Text></View>
+
                                                             </View>
                                                         </>
                                                     )
@@ -310,22 +334,38 @@ const ShowPayMentdeposit = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
-                                </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม</Text></DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                        </DataTable.Row>
+                                    {arrayObj.length > 0 ?
+                                    <View style={tableStyles.tableHeader}>
+                                        <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2,
+                                            alignSelf: 'flex-start'
+                                        }}>รวม</Text></View>
+                                        <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2,
+                                            alignSelf: 'flex-start'
+                                        }}> </Text></View>
+                                        <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2,
+                                            alignSelf: 'flex-start'
+                                        }}> </Text></View>
+                                        <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2,
+                                            alignSelf: 'flex-start'
+                                        }}> </Text></View>
+                                        <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                            fontSize: FontSize.medium,
+                                            color: Colors.fontColor2,
+                                            alignSelf: 'flex-end'
+                                        }}>{safe_Format.currencyFormat(sum)}</Text></View>
+
                                     </View> : null}
-                            </DataTable>
+                                </ScrollView>
+                           
+                            </View>
                         </ScrollView>
 
 
@@ -400,7 +440,7 @@ const ShowPayMentdeposit = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                         <View style={{
+                                            <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10,
                                             }}>
@@ -410,7 +450,7 @@ const ShowPayMentdeposit = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -431,7 +471,7 @@ const ShowPayMentdeposit = ({ route }) => {
                                                     onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}

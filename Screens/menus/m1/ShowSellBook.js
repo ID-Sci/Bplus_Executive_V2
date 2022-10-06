@@ -27,7 +27,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -54,7 +53,7 @@ import * as safe_Format from '../../../src/safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const ShowSellBook = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -245,7 +244,7 @@ const ShowSellBook = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -269,30 +268,34 @@ const ShowSellBook = ({ route }) => {
                     <View  >
 
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{ flex: 0.6 }}><Text style={{
+                            <View style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>วันที่</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>วันที่</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>ยอดขาย</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดขาย</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดจอง </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดจอง </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดซื้อ </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดซื้อ </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดสั่งซื้อ </Text></DataTable.Title>
-                                </DataTable.Header>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดสั่งซื้อ </Text></View>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -300,15 +303,34 @@ const ShowSellBook = ({ route }) => {
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
-                                                            <View>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell style={{ flex: 0.6 }}>{safe_Format.dateFormat(item.date)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sellamount)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.bookamount)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.purcamount)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.poamount)}</DataTable.Cell>
-                                                                </DataTable.Row>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{safe_Format.dateFormat(item.date)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.sellamount)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.bookamount)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.purcamount)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.poamount)}</Text></View>
                                                             </View>
+
                                                         </>
                                                     )
                                                 })}
@@ -316,36 +338,58 @@ const ShowSellBook = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
-                                </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ flex: 0.6 }} ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม </Text> </DataTable.Cell>
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_sellamount))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_bookamount))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_purcamount))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>
+                                    {arrayObj.length > 0 ?
+
+                                        <View style={tableStyles.tableHeader}>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
                                                 <Text style={{
                                                     fontSize: FontSize.medium,
-                                                    color: Colors.fontColor2
-                                                }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_poamount))}</Text></DataTable.Cell>
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-start'
+                                                }}>
+                                                    รวม
+                                                </Text>
+                                            </View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }}>
+                                                    {safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_sellamount))}
+                                                </Text>
+                                            </View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }} >
+                                                    {safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_bookamount))}
+                                                </Text>
+                                            </View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_purcamount))}</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }} >
+                                                    {safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_poamount))}
+                                                </Text>
+                                            </View>
 
-                                        </DataTable.Row>
-                                    </View>
-                                    : null}
-                            </DataTable>
+                                        </View>
+
+                                        : null}
+                                </ScrollView>
+
+                            </View>
                         </ScrollView>
 
                     </View>
@@ -429,7 +473,7 @@ const ShowSellBook = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -450,7 +494,7 @@ const ShowSellBook = ({ route }) => {
                                                     onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}

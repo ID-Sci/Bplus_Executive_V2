@@ -31,37 +31,31 @@ import { useNavigation } from '@react-navigation/native';
 // import CalendarScreen from '@blacksakura013/th-datepicker'
 import RNFetchBlob from 'rn-fetch-blob';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Language } from '../translations/I18n';
-import { FontSize } from '../components/FontSizeHelper';
-import Colors from '../src/Colors';
+import { Language } from '../../translations/I18n';
+import { FontSize } from '../../components/FontSizeHelper';
+import Colors from '../../src/Colors';
 import CalendarScreen from '@blacksakura013/th-datepicker'
 // import { NavigationComponent, Modal as RNNModal } from 'react-native-navigation';
-import * as loginActions from '../src/actions/loginActions';
-import * as registerActions from '../src/actions/registerActions';
-import * as databaseActions from '../src/actions/databaseActions';
-import * as activityActions from '../src/actions/activityActions';
-import * as safe_Format from '../src/safe_Format';
+import * as loginActions from '../../src/actions/loginActions';
+import * as registerActions from '../../src/actions/registerActions';
+import * as databaseActions from '../../src/actions/databaseActions';
+import * as activityActions from '../../src/actions/activityActions';
+import * as safe_Format from '../../src/safe_Format';
 import { fontSize } from 'styled-system';
 
+import { Data } from './DocumentType'
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 var ser_die = true
 let todate = new Date()
-const image = '../images/UI/Asset35.png';
+const image = '../../images/UI/Asset35.png';
 let clockCall = null;
 const defaultCountDown = -1;
 
-const fulldate = () => {
-    var daily = new Date()
 
-    let d = daily.getDate()
-    let m = daily.getMonth() + 1
-    let y = daily.getFullYear() + 543
-    return `${d.toString().length > 1 ? d : '0' + d}-${m.toString().length > 1 ? m : '0' + m}-${y}`
-}
-const Report_prints = ({ route }) => {
+const ReportScreen = ({ route }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);
@@ -72,6 +66,7 @@ const Report_prints = ({ route }) => {
     const [loading, setLoading] = useStateIfMounted(false);
     const [loading_backG, setLoading_backG] = useStateIfMounted(true);
     const [kye_token, setkye_token] = useState({});
+    const [TypeItem, setTypeItem] = useState(Data.filter((item) => { return item.CODE == "00" })[0]);
     const [printItem, setPrintItem] = useState({});
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
@@ -82,10 +77,25 @@ const Report_prints = ({ route }) => {
         fetchData()
         console.log(` RPTSVR_GRANT ${activityReducer.RPTSVR_GRANT}`)
         console.log('RPTSVR_DATA', activityReducer.RPTSVR_DATA)
+        for (var i in Data)
+            console.log(`Data[${i}] > ${Data[i].CODE}`)
+
+
     }, []);
 
+    useEffect(() => {
 
+        setPrintItem(REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE })[0])
+        console.log()
+        console.log(REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE })[0])
+        console.log()
+    }, [TypeItem]);
+    useEffect(() => {
 
+        console.log()
+        console.log(printItem)
+        console.log()
+    }, [printItem]);
 
     const decrementClock = () => {
         if (countdown === 0) {
@@ -128,13 +138,7 @@ const Report_prints = ({ route }) => {
         }
     });
 
-    // openPickDate = type =>()=>{
-    //     Navigation.showModal({
-    //         ...getScreenForNav(C_PickDate,null,{
-    //             onSelected: this.onSelect(type)
-    //         })
-    //     })
-    // }
+
 
     const fetchData = async () => {
         dieSer('fetchData')
@@ -161,7 +165,7 @@ const Report_prints = ({ route }) => {
                     if (responseData.RECORD_COUNT > 0) {
                         console.log(printItem)
                         await setREPORTNAME(responseData.GETREPORTNAME)
-                        await setPrintItem(printItem.RPTSVR_RPF_DD_FIELD ? printItem : responseData.GETREPORTNAME[0])
+                        await setPrintItem( printItem? printItem : responseData.GETREPORTNAME[0])
                     } else {
                         Alert.alert(Language.t('alert.errorTitle'), Language.t('report.noData'), [{
                             text: Language.t('alert.ok'), onPress: () => navigation.goBack()
@@ -179,8 +183,19 @@ const Report_prints = ({ route }) => {
                 setCountdown(-1)
             })
             .catch((error) => {
-                console.log(ser_die)
-                console.error('ERROR at fetchContent >> ' + error)
+
+                setCountdown(-1)
+                console.log(`Function Parameter Required >> ${error}`);
+                let temp_error = 'error_ser.' + 610;
+                console.log('>> ', temp_error)
+                Alert.alert(
+                    Language.t('alert.errorTitle'),
+                    Language.t(temp_error), [{
+                        text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                            navigation.replace('LoginScreen')
+                        )
+                    }]);
+                setLoading(false)
             })
     }
 
@@ -197,12 +212,12 @@ const Report_prints = ({ route }) => {
                 = printItem
         else
             tempprintItem
-                = REPORTNAME[0]
+                = REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE })[0]
         let sDate = safe_Format.setnewdateF(start_date)
         sDate = parseInt(sDate)
 
         let eDate = safe_Format.setnewdateF(end_date)
-        if (printItem.RPTSVR_RPF_DD_FIELD == 'ANYDATE')
+        if ( printItem.RPTSVR_RPF_DD_FIELD == 'ANYDATE')
             eDate = sDate
         else
             eDate = parseInt(eDate)
@@ -275,9 +290,19 @@ const Report_prints = ({ route }) => {
 
                 })
                 .catch((error) => {
-                    console.log(ser_die)
+
                     setCountdown(-1)
-                    console.error('ERROR at fetchContent >> ' + error)
+                    console.log(`Function Parameter Required >> ${error}`);
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginScreen')
+                            )
+                        }]);
+                    setLoading(false)
                 })
         }
         setCountdown(-1)
@@ -336,11 +361,18 @@ const Report_prints = ({ route }) => {
                 }
             })
             .catch((error) => {
-                console.log(ser_die)
-                console.error('ERROR at fetchContent >> ' + error)
+                console.log(`Function Parameter Required >> ${error}`);
+                let temp_error = 'error_ser.' + 610;
+                console.log('>> ', temp_error)
+                Alert.alert(
+                    Language.t('alert.errorTitle'),
+                    Language.t(temp_error), [{
+                        text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                            navigation.replace('LoginScreen')
+                        )
+                    }]);
+                setLoading(false)
             })
-
-
     }
 
     const DownloadReport = async (tempItem) => {
@@ -397,7 +429,17 @@ const Report_prints = ({ route }) => {
                 RNFetchBlob.android.actionViewIntent(base64, 'application/pdf')
             })
             .catch((error) => {
-                console.error('fetchActivityImg: ' + error);
+                console.log(`Function Parameter Required >> ${error}`);
+                let temp_error = 'error_ser.' + 610;
+                console.log('>> ', temp_error)
+                Alert.alert(
+                    Language.t('alert.errorTitle'),
+                    Language.t(temp_error), [{
+                        text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                            navigation.replace('LoginScreen')
+                        )
+                    }]);
+                setLoading(false)
             });
     }
 
@@ -407,57 +449,104 @@ const Report_prints = ({ route }) => {
             <ImageBackground source={require(image)} onLoadEnd={() => { setLoading_backG(false) }} resizeMode="cover" style={styles.image}>
                 <Image
                     style={styles.topImage}
-                    source={require(`../images/UI/Asset5.png`)} />
+                    source={require(`../../images/UI/Asset5.png`)} />
                 {!loading_backG && REPORTNAME.length > 0 ? <>
-                    <View style={{}} >
-                        <ScrollView   >
-                            <KeyboardAvoidingView keyboardVerticalOffset={1}>
-                                <View style={styles.body}>
-                                    <View style={styles.body1}>
-                                        <Text style={styles.textTitleInfo}>
-                                            {Language.t('report.reportName')} :
-                                        </Text>
-                                    </View>
-                                    <View style={{
-                                        marginTop: 10, flexDirection: 'row',
-                                        justifyContent: 'center', borderColor: REPORTNAME.length > 0 ? Colors.buttonColorPrimary : '#979797', backgroundColor: Colors.backgroundColorSecondary, borderWidth: 1, padding: 10, borderRadius: 10,
-                                    }}>
 
-                                        <Text style={{ fontSize: FontSize.large }}></Text>
+                    <ScrollView >
+                        <KeyboardAvoidingView keyboardVerticalOffset={1}>
+                            <View style={styles.body}>
+                                <View style={styles.body1}>
+                                    <Text style={styles.textTitleInfo}>
+                                        {Language.t('report.ReportType')} :
+                                    </Text>
+                                </View>
+                                <View style={{
+                                    marginTop: 10, flexDirection: 'row',
+                                    justifyContent: 'center', borderColor: Data.length > 0 ? Colors.buttonColorPrimary : '#979797', backgroundColor: Colors.backgroundColorSecondary, borderWidth: 1, padding: 10, borderRadius: 10,
+                                }}>
 
-                                        {REPORTNAME.length > 0 ? (
-                                            <Picker
-                                                selectedValue={printItem}
-                                                enabled={true}
-                                                mode="dropdown"
-                                                state={{ color: Colors.buttonColorPrimary, backgroundColor: Colors.backgroundColorSecondary }}
-                                                onValueChange={(itemValue, itemIndex) => setPrintItem(itemValue)}>
-                                                {REPORTNAME.map((obj, index) => {
-                                                    return (
-                                                        <Picker.Item label={obj.RPTSVR_NAME} color={Colors.buttonColorPrimary} value={obj} />
-                                                    )
-                                                })}
+                                    <Text style={{ fontSize: FontSize.large }}></Text>
 
-                                            </Picker>
-                                        ) : (
-                                            <Picker
-                                                selectedValue={printItem}
-                                                state={{ color: Colors.buttonColorPrimary, backgroundColor: Colors.buttonColorPrimary }}
-                                                onValueChange={(itemValue, itemIndex) => setPrintItem(itemValue)}
-                                                enabled={false}
-                                                mode="dropdown"
-                                            >
-                                                {
-                                                    <Picker.Item
-                                                        value="-1"
-                                                        color={"#979797"}
-                                                        label={Language.t('report.noData')}
-                                                    />
-                                                }
-                                            </Picker>
-                                        )}
-                                    </View>
-                                    {printItem.RPTSVR_RPF_DD_FIELD == 'ANYDATE' ? (
+                                    {Data.length > 0 ? (
+                                        <Picker
+                                            selectedValue={TypeItem}
+                                            enabled={true}
+                                            mode="dropdown"
+                                            state={{ color: Colors.buttonColorPrimary, backgroundColor: Colors.backgroundColorSecondary }}
+                                            onValueChange={(itemValue, itemIndex) => setTypeItem(itemValue)}>
+                                            {Data.map((obj, index) => {
+                                                return (
+                                                    <Picker.Item label={obj.THNAME} color={Colors.buttonColorPrimary} value={obj} />
+                                                )
+                                            })}
+
+                                        </Picker>
+                                    ) : (
+                                        <Picker
+                                            selectedValue={Data}
+                                            state={{ color: Colors.buttonColorPrimary, backgroundColor: Colors.buttonColorPrimary }}
+                                            onValueChange={(itemValue, itemIndex) => setTypeItem(itemValue)}
+                                            enabled={false}
+                                            mode="dropdown"
+                                        >
+                                            {
+                                                <Picker.Item
+                                                    value="-1"
+                                                    color={"#979797"}
+                                                    label={Language.t('report.noData')}
+                                                />
+                                            }
+                                        </Picker>
+                                    )}
+                                </View>
+                                <View style={styles.body1}>
+                                    <Text style={styles.textTitleInfo}>
+                                        {Language.t('report.reportName')} :
+                                    </Text>
+                                </View>
+                                <View style={{
+                                    marginTop: 10, flexDirection: 'row',
+                                    justifyContent: 'center', borderColor: REPORTNAME.length > 0 ? Colors.buttonColorPrimary : '#979797', backgroundColor: Colors.backgroundColorSecondary, borderWidth: 1, padding: 10, borderRadius: 10,
+                                }}>
+
+                                    <Text style={{ fontSize: FontSize.large }}></Text>
+
+                                    {REPORTNAME && REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE }).length > 0 ? (
+                                        <Picker
+                                            selectedValue={printItem}
+                                            enabled={true}
+                                            mode="dropdown"
+                                            state={{ color: Colors.buttonColorPrimary, backgroundColor: Colors.backgroundColorSecondary }}
+                                            onValueChange={(itemValue, itemIndex) => setPrintItem(itemValue)}>
+
+                                            {REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE }).map((obj, index) => {
+                                                return (
+                                                    <Picker.Item label={obj.RPTSVR_NAME} color={Colors.buttonColorPrimary} value={obj} />
+                                                )
+                                            })}
+
+                                        </Picker>
+                                    ) : (
+                                        <Picker
+                                            selectedValue={printItem}
+                                            state={{ color: Colors.buttonColorPrimary, backgroundColor: Colors.buttonColorPrimary }}
+                                            onValueChange={(itemValue, itemIndex) => setPrintItem(itemValue)}
+                                            enabled={false}
+                                            mode="dropdown"
+                                        >
+                                            {
+                                                <Picker.Item
+                                                    value="-1"
+                                                    color={"#979797"}
+                                                    label={Language.t('report.noData')}
+                                                />
+                                            }
+                                        </Picker>
+                                    )}
+                                </View>
+                                {REPORTNAME && REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE }).length > 0 &&
+
+                                    (printItem && printItem.RPTSVR_RPF_DD_FIELD == 'ANYDATE' ? (
                                         <>
                                             <View style={styles.body1}>
                                                 <Text style={styles.textTitleInfo}>
@@ -470,7 +559,7 @@ const Report_prints = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.buttonColorPrimary}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -497,7 +586,7 @@ const Report_prints = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.buttonColorPrimary}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -513,13 +602,13 @@ const Report_prints = ({ route }) => {
                                                     {Language.t('report.to')} :
                                                 </Text>
                                             </View>
-                                            <View style={{ marginTop: 10 }}>
+                                            <View style={{ marginTop: 10, marginBottom: 10 }}>
                                                 <CalendarScreen
                                                     value={end_date}
                                                     onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.buttonColorPrimary}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -531,26 +620,38 @@ const Report_prints = ({ route }) => {
                                                     borderRadius={10} />
                                             </View>
                                         </>
+                                    )
                                     )}
+                                <View style={{ marginTop: FontSize.large }}>
+                                    {
+                                        REPORTNAME && REPORTNAME.filter((item) => { return TypeItem.CODE == "00" ? item.RPTSVR_CODE == item.RPTSVR_CODE : item.RPTSVR_CODE.substring(0, 2) == TypeItem.CODE }).length > 0 ?
 
+                                            <TouchableOpacity
+                                                style={[styles.button, styles.buttonClose]}
+                                                onPress={() => {
+                                                    Alert.alert(Language.t('notiAlert.header'), `${Language.t('report.doPrint')} ${printItem.RPTSVR_NAME ? printItem.RPTSVR_NAME : REPORTNAME[0].RPTSVR_NAME} ${Language.t('report.YorN')}`, [{
+                                                        text: Language.t('selectBase.yes'), onPress: () => PushPRINTREPORT()
+                                                    }, { text: Language.t('selectBase.no'), onPress: () => console.log('cancel') }])
+                                                }}>
+                                                <Text style={styles.textTitle}> {Language.t('report.print')}</Text>
+                                            </TouchableOpacity> :
 
+                                            <TouchableOpacity
+                                                disabled={true}
+                                                style={[styles.Cbutton, styles.buttonClose]}
+                                                onPress={() => {
+                                                    console.log('Hit')
+                                                }}>
+                                                <Text style={styles.textTitle}> {Language.t('report.print')}</Text>
+                                            </TouchableOpacity>
+
+                                    }
                                 </View>
-                            </KeyboardAvoidingView>
-                        </ScrollView>
 
 
-                    </View>
-                    <View style={styles.footer}>
-                        <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => {
-                                Alert.alert(Language.t('notiAlert.header'), `${Language.t('report.doPrint')} ${printItem.RPTSVR_NAME ? printItem.RPTSVR_NAME : REPORTNAME[0].RPTSVR_NAME} ${Language.t('report.YorN')}`, [{
-                                    text: Language.t('selectBase.yes'), onPress: () => PushPRINTREPORT()
-                                }, { text: Language.t('selectBase.no'), onPress: () => console.log('cancel') }])
-                            }}>
-                            <Text style={styles.textTitle}> {Language.t('report.print')}</Text>
-                        </TouchableOpacity>
-                    </View>
+                            </View>
+                        </KeyboardAvoidingView>
+                    </ScrollView>
                 </> : <View
                     style={{
                         width: deviceWidth,
@@ -656,7 +757,7 @@ const styles = StyleSheet.create({
     },
     body: {
         margin: 10,
-        marginBottom: 60,
+
         borderRadius: 15,
     },
     body1e: {
@@ -758,6 +859,14 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.buttonColorPrimary,
         borderRadius: 10,
     },
+    Cbutton: {
+        marginTop: 10,
+        height: deviceHeight * 0.08,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.borderColor,
+        borderRadius: 10,
+    },
     textButton: {
         fontSize: FontSize.large,
         color: Colors.fontColor2,
@@ -815,4 +924,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Report_prints);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportScreen);

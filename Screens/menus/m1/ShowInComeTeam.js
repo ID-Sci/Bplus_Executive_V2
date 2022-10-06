@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -51,8 +50,9 @@ import Colors from '../../../src/Colors';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
+import tableStyles from '../tableStyles'
 
-const ShowSellBook = ({ route }) => {
+const ShowInComeTeam = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
 
@@ -215,7 +215,7 @@ const ShowSellBook = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -238,22 +238,25 @@ const ShowSellBook = ({ route }) => {
                 <View style={{ flex: 1 }}>
                     <View  >
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{ flex: 0.3 }}><Text style={{
+                            <View
+                                style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.3} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>รหัส</Text></DataTable.Title>
-                                    <DataTable.Title style={{ flex: 0.3 }}><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>รหัส</Text></View>
+                                    <View width={deviceWidth * 0.3} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>ชื่อทีมขาย</Text></DataTable.Title>
-                                    <DataTable.Title style={{ flex: 0.4 }} numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ชื่อทีมขาย</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }} > ยอดขาย </Text></DataTable.Title>
-                                </DataTable.Header>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดขาย </Text></View>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
                                         <TouchableNativeFeedback>
@@ -262,11 +265,23 @@ const ShowSellBook = ({ route }) => {
                                                     return (
                                                         <>
 
-                                                            <DataTable.Row>
-                                                                <DataTable.Cell style={{ flex: 0.3 }}>{item.code}</DataTable.Cell>
-                                                                <DataTable.Cell style={{ flex: 0.3 }}>{item.name}</DataTable.Cell>
-                                                                <DataTable.Cell style={{ flex: 0.4 }} numeric >{safe_Format.currencyFormat(item.sums)}</DataTable.Cell>
-                                                            </DataTable.Row>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.3} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.code}</Text></View>
+                                                                <View width={deviceWidth * 0.3} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.name}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.sums)}</Text></View>
+                                                            </View>
 
                                                         </>
                                                     )
@@ -275,22 +290,28 @@ const ShowSellBook = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
+
+                                    {arrayObj.length > 0 ?
+                                        <View style={tableStyles.tableHeader}>
+                                            <View width={deviceWidth * 0.3} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-start'
+                                            }}>รวม</Text></View>
+                                            <View width={deviceWidth * 0.3} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-start'
+                                            }}> </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-end'
+                                            }}>{safe_Format.currencyFormat(sum)}</Text></View>
+                                        </View>
+                                        : null}
                                 </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม</Text></DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                        </DataTable.Row>
-                                    </View> : null}
-                            </DataTable>
+                            </View>
                         </ScrollView>
 
 
@@ -365,7 +386,7 @@ const ShowSellBook = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                         <View style={{
+                                            <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10,
                                             }}>
@@ -375,7 +396,7 @@ const ShowSellBook = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -396,7 +417,7 @@ const ShowSellBook = ({ route }) => {
                                                     onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -458,7 +479,7 @@ const ShowSellBook = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth,
+      
     },
     container: {
         backgroundColor: '#fff',
@@ -597,4 +618,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default ShowSellBook;
+export default ShowInComeTeam;

@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -51,7 +50,7 @@ import Colors from '../../../src/Colors';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const AR_SellAmount = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -222,7 +221,7 @@ const AR_SellAmount = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -246,23 +245,25 @@ const AR_SellAmount = ({ route }) => {
                     <View  >
 
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{ flex: 0.2 }} ><Text style={{
+                            <View style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.2} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>ปี</Text></DataTable.Title>
-                                    <DataTable.Title style={{ flex: 0.3, padding: 10 }} ><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ปี</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>เดือน</Text></DataTable.Title>
-                                    <DataTable.Title style={{ flex: 0.6 }} numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>เดือน</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดขาย </Text></DataTable.Title>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}> ยอดขาย </Text></View>
 
-                                </DataTable.Header>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -270,12 +271,22 @@ const AR_SellAmount = ({ route }) => {
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
-                                                            <View>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell style={{ flex: 0.2 }} >{item.year}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   >{safe_Format.monthFormat(item.month)}</DataTable.Cell>
-                                                                    <DataTable.Cell style={{ flex: 0.5 }} numeric>{safe_Format.currencyFormat(item.sellAmount)}</DataTable.Cell>
-                                                                </DataTable.Row>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.2} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.year}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{safe_Format.monthFormat(item.month)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.sellAmount)}</Text></View>
                                                             </View>
                                                         </>
                                                     )
@@ -283,22 +294,30 @@ const AR_SellAmount = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
+                                    {arrayObj.length > 0 ?
+                                        <View style={tableStyles.tableHeader}>
+                                            <View width={deviceWidth * 0.2} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-start'
+                                                }}>รวม</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-start'
+                                                }}> </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }}>{safe_Format.currencyFormat(sum)}</Text></View>
+                                        </View> : null}
                                 </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ flex: 0.2, }}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม</Text></DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.3, padding: 10 }}   > </DataTable.Cell>
-                                            <DataTable.Cell style={{ flex: 0.5 }} numeric ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                        </DataTable.Row>
-                                    </View> : null}
-                            </DataTable>
+
+                            </View>
                         </ScrollView>
 
                     </View>
@@ -371,7 +390,7 @@ const AR_SellAmount = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                         <View style={{
+                                            <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10,
                                             }}>
@@ -381,7 +400,7 @@ const AR_SellAmount = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -402,7 +421,7 @@ const AR_SellAmount = ({ route }) => {
                                                     onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -464,7 +483,7 @@ const AR_SellAmount = ({ route }) => {
 const styles = StyleSheet.create({
 
     table: {
-        width: deviceWidth,
+
     },
     container: {
         backgroundColor: '#fff',

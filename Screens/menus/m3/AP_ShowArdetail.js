@@ -26,7 +26,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -52,7 +51,7 @@ import * as safe_Format from '../../../src/safe_Format';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+import tableStyles from '../tableStyles'
 const AP_ShowArdetail = ({ route }) => {
     const dispatch = useDispatch();
     let arrayResult = [];
@@ -81,8 +80,8 @@ const AP_ShowArdetail = ({ route }) => {
     const [radioIndex2, setRadioIndex2] = useState(4);
     const [radioIndex3, setRadioIndex3] = useState(4);
     const radio_props = [
-        { label: 'สิ้นเดือนก่อน', value: 'lastmonth' },
-        { label: 'สิ้นปีก่อน', value: 'lastyear' },
+        { label: 'สิ้นเดือนก่อน', value: 'lastAmonth' },
+        { label: 'สิ้นปีก่อน', value: 'lastAyear' },
         { label: 'เมื่อวาน', value: 'lastday' },
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
@@ -123,10 +122,10 @@ const AP_ShowArdetail = ({ route }) => {
         setLoading(true)
         await fetchInCome()
         setModalVisible(!modalVisible)
-        setArrayObj(arrayResult)
-        apd_A_mtsetArrayObj(sum_apd_A_mt)
-        sumpaymentsetArrayObj(sum_sumpayment)
-        ard_sumpaymentsetArrayObj(sum_apd_sumpayment)
+        await setArrayObj(arrayResult)
+        await apd_A_mtsetArrayObj(sum_apd_A_mt)
+        await sumpaymentsetArrayObj(sum_sumpayment)
+        await ard_sumpaymentsetArrayObj(sum_apd_sumpayment)
 
     }
     const fetchInCome = async (tempGuid) => {
@@ -234,7 +233,7 @@ const AP_ShowArdetail = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -258,32 +257,35 @@ const AP_ShowArdetail = ({ route }) => {
                     <View  >
 
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title ><Text style={{
+                            <View style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>วันที่</Text></DataTable.Title>
-                                    <DataTable.Title ><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>วันที่</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>เอกสาร</Text></DataTable.Title>
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>เอกสาร</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดหนี้ </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ชำระแล้ว </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                        fontSize: FontSize.medium,
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>คงค้าง </Text></View>
 
-                                    <DataTable.Title numeric><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดหนี้ </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ชำระแล้ว </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
-                                        fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> คงค้าง </Text></DataTable.Title>
-
-                                </DataTable.Header>
+                                </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
                                         <TouchableNativeFeedback>
@@ -291,14 +293,32 @@ const AP_ShowArdetail = ({ route }) => {
                                                 {arrayObj.map((item) => {
                                                     return (
                                                         <>
-                                                            <View>
-                                                                <DataTable.Row>
-                                                                    <DataTable.Cell>{safe_Format.dateFormat(item.date)}</DataTable.Cell>
-                                                                    <DataTable.Cell >{item.id_ref}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.apd_A_mt)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat(item.sumpayment)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric>{safe_Format.currencyFormat((item.apd_A_mt - item.sumpayment))}</DataTable.Cell>
-                                                                </DataTable.Row>
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{safe_Format.dateFormat(item.date)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >{item.id_ref}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.apd_A_mt)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.sumpayment)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat((item.apd_A_mt - item.sumpayment))}</Text></View>
                                                             </View>
                                                         </>
                                                     )
@@ -306,37 +326,38 @@ const AP_ShowArdetail = ({ route }) => {
                                             </View>
                                         </TouchableNativeFeedback>
                                     </KeyboardAvoidingView>
+                                    {arrayObj.length > 0 ?
+                                        <View style={tableStyles.tableHeader}>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-start'
+                                            }}>รวม</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-start'
+                                            }}> </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-end'
+                                            }}>{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_apd_A_mt))}</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-end'
+                                            }}>{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_sumpayment))}</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-end'
+                                            }}>{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_ard_sumpayment))}</Text></View>
+                                        </View>
+                                        : null}
                                 </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >รวม </Text> </DataTable.Cell>
 
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} > </Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_apd_A_mt))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>   <Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_sumpayment))}</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric>
-                                                <Text style={{
-                                                    fontSize: FontSize.medium,
-                                                    color: Colors.fontColor2
-                                                }} >{safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_ard_sumpayment))}</Text></DataTable.Cell>
-
-                                        </DataTable.Row>
-                                    </View>
-                                    : null}
-                            </DataTable>
+                            </View>
                         </ScrollView>
                     </View>
                     <View style={styles.centeredView}>
@@ -395,7 +416,7 @@ const AP_ShowArdetail = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                                <View style={{
+                                            <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10,
                                             }}>
@@ -405,7 +426,7 @@ const AP_ShowArdetail = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -434,7 +455,7 @@ const AP_ShowArdetail = ({ route }) => {
 
 
 
-            </SafeAreaView>
+            </SafeAreaView >
 
             {loading && (
                 <View

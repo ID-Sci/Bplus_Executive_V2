@@ -213,7 +213,7 @@ const MainScreen = () => {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('Reports')}
+                    onPress={() => navigation.navigate('ReportScreen')}
                     style={{
                       backgroundColor: Colors.backgroundLoginColorSecondary,
                       flexDirection: 'column',
@@ -249,7 +249,7 @@ const MainScreen = () => {
                     </View>
                   </TouchableOpacity>
 
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     style={{
                       backgroundColor: Colors.backgroundLoginColorSecondary,
                       flexDirection: 'column',
@@ -355,7 +355,8 @@ const MainScreen = () => {
                         }}>สอบถามข้อมูลการซื้อ</Text>
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
+
                   <TouchableOpacity
                     onPress={() => navigation.navigate('DailyCalendarScreen')}
                     style={{

@@ -13,7 +13,6 @@ import {
     Platform,
     BackHandler,
     StatusBar,
-
     TouchableOpacity,
     Modal, Pressable,
 } from 'react-native';
@@ -26,7 +25,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataTable } from 'react-native-paper';
+
 
 import { useStateIfMounted } from 'use-state-if-mounted';
 
@@ -52,8 +51,8 @@ import { height } from 'styled-system';
 import * as safe_Format from '../../../src/safe_Format';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
-const ShowSellBook = ({ route }) => {
+import tableStyles from '../tableStyles'
+const ShowBank = ({ route }) => {
 
     const dispatch = useDispatch();
 
@@ -224,7 +223,7 @@ const ShowSellBook = ({ route }) => {
         <>
             <SafeAreaView style={container}>
                 <StatusBar hidden={true} />
-                <View style={tabbar}>
+                <View style={tableStyles.tabbar}>
                     <View style={{ flexDirection: 'row', }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}>
@@ -247,80 +246,98 @@ const ShowSellBook = ({ route }) => {
                 <View style={{ flex: 1 }}>
                     <View  >
                         <ScrollView horizontal={true}>
-                            <DataTable
-                                style={styles.table}>
-                                <DataTable.Header style={styles.tableHeader}>
-                                    <DataTable.Title style={{ alignItems: 'center' }} ><Text style={{
+                            <View
+                                style={tableStyles.table}>
+                                <View style={tableStyles.tableHeader}>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2,
-
-                                    }}>ชื่อบัญชี</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        alignSelf: 'center'
+                                    }}>ชื่อบัญชี</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}>ยอดเงินคงเหลือ</Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}>ยอดเงินคงเหลือ</Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดเดือนนี้ </Text></DataTable.Title>
-                                    <DataTable.Title numeric><Text style={{
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}> ยอดเดือนนี้ </Text></View>
+                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
-                                        color: Colors.fontColor2
-                                    }}> ยอดยกมา </Text></DataTable.Title>
-                                </DataTable.Header>
-                                <ScrollView>
-                                    <KeyboardAvoidingView keyboardVerticalOffset={1} >
-                                        <TouchableNativeFeedback>
-                                            <View >
-                                                {arrayObj.map((item) => {
-                                                    return (
-                                                        <>
-                                                            <View>
-                                                                <DataTable.Row style={{ borderBottomWidth: 0 }} >
-                                                                    <DataTable.Cell style={{ alignItems: 'flex-end' }} >   {item.name.account}   </DataTable.Cell>
-                                                                    <DataTable.Cell numeric > </DataTable.Cell>
-                                                                    <DataTable.Cell numeric > </DataTable.Cell>
-                                                                    <DataTable.Cell numeric > </DataTable.Cell>
-                                                                </DataTable.Row>
-
-                                                                <DataTable.Row style={{ borderBottomWidth: 0 }}>
-                                                                    <DataTable.Cell style={{ alignItems: 'center' }}>       {item.name.code}  </DataTable.Cell>
-                                                                    <DataTable.Cell numeric >{safe_Format.currencyFormat(item.balance)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric >{safe_Format.currencyFormat(item.thismonth)}</DataTable.Cell>
-                                                                    <DataTable.Cell numeric >{safe_Format.currencyFormat(item.forward)}</DataTable.Cell>
-                                                                </DataTable.Row>
-                                                                <DataTable.Row  >
-                                                                    <DataTable.Cell style={{ alignItems: 'flex-start' }}  >   {item.name.bnk} {' '}  {item.name.branch}  </DataTable.Cell>
-                                                                    <DataTable.Cell numeric > </DataTable.Cell>
-                                                                    <DataTable.Cell numeric > </DataTable.Cell>
-                                                                    <DataTable.Cell numeric > </DataTable.Cell>
-                                                                </DataTable.Row>
-
+                                        color: Colors.fontColor2,
+                                        alignSelf: 'center'
+                                    }}> ยอดยกมา </Text></View>
+                                </View>
+                                <View  >
+                                    <ScrollView>
+                                        <KeyboardAvoidingView keyboardVerticalOffset={1} >
+                                            <TouchableNativeFeedback>
+                                                <View >
+                                                    {arrayObj.map((item) => {
+                                                        return (
+                                                            <View style={tableStyles.tableCell}>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-start'
+                                                                }} >
+                                                                    {`${item.name.account && (item.name.account)} ${item.name.code && (item.name.code)} ${item.name.bnk && (item.name.bnk)} ${item.name.branch && (item.name.branch)}`}
+                                                                </Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >
+                                                                    {safe_Format.currencyFormat(item.balance)}
+                                                                </Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >
+                                                                    {safe_Format.currencyFormat(item.thismonth)}
+                                                                </Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >
+                                                                    {safe_Format.currencyFormat(item.forward)}
+                                                                </Text></View>
                                                             </View>
-                                                        </>
-                                                    )
-                                                })}
+                                                        )
+                                                    })}
 
-                                            </View>
-                                        </TouchableNativeFeedback>
-                                    </KeyboardAvoidingView>
-                                </ScrollView>
-                                {arrayObj.length > 0 ?
-                                    <View >
-                                        <DataTable.Row style={styles.tabbuttomsum}>
-                                            <DataTable.Cell style={{ alignItems: 'center' }}><Text style={{
+                                                </View>
+                                            </TouchableNativeFeedback>
+                                        </KeyboardAvoidingView>
+                                  
+                                    {arrayObj.length > 0 ?
+                                        <View style={tableStyles.tableHeader}>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                            }}>รวม</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2
-                                            }} >รวม</Text></DataTable.Cell>
-                                            <DataTable.Cell numeric > </DataTable.Cell>
-                                            <DataTable.Cell numeric > </DataTable.Cell>
-                                            <DataTable.Cell numeric ><Text style={{
+                                            }}></Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2
-                                            }} >{safe_Format.currencyFormat(sum)}</Text></DataTable.Cell>
-                                        </DataTable.Row>
-                                    </View> : null}
-                            </DataTable>
+                                            }}>  </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                                fontSize: FontSize.medium,
+                                                color: Colors.fontColor2,
+                                                alignSelf: 'flex-end'
+                                            }}> {safe_Format.currencyFormat(sum)} </Text></View>
+                                        </View> : null}
+                                        </ScrollView>
+                                </View>
+
+                            </View>
                         </ScrollView>
 
                     </View>
@@ -394,7 +411,7 @@ const ShowSellBook = ({ route }) => {
                                                     </RadioButton>
                                                 </RadioGroup>
                                             </View>
-                                         <View style={{
+                                            <View style={{
                                                 flexDirection: 'row', justifyContent: 'space-between',
                                                 alignItems: 'center', marginBottom: 10,
                                             }}>
@@ -404,7 +421,7 @@ const ShowSellBook = ({ route }) => {
                                                     onChange={(vel) => setS_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -425,7 +442,7 @@ const ShowSellBook = ({ route }) => {
                                                     onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
-                                                    format={'dd mon yyyy'}
+                                                    format={'DD/MM/YYYY'}
                                                     borderColor={Colors.primaryColor}
                                                     linkTodateColor={Colors.itemColor}
                                                     calendarModel={{ backgroundColor: Colors.backgroundColor, buttonSuccess: { backgroundColor: Colors.itemColor }, pickItem: { color: Colors.itemColor } }}
@@ -626,4 +643,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default ShowSellBook;
+export default ShowBank;

@@ -122,6 +122,10 @@ export const Radio_menu = (index, val) => {
         year = year - 1
         sdate = new Date(year, 0, 1)
         edate = new Date(year, 12, 0)
+    } else if (val == 'lastAyear') {
+        year = year - 1
+        sdate = new Date(year, 12, 0)
+        edate = new Date(year, 12, 0)
     } else if (val == 'nowyear') {
         year = year
         sdate = new Date(year, 0, 1)
@@ -134,6 +138,11 @@ export const Radio_menu = (index, val) => {
     } else if (val == 'lastmonth') {
         month = month - 2
         sdate = new Date(year, month, 1)
+        edate = new Date(year, month + 1, 0)
+    }
+    else if (val == 'lastAmonth') {
+        month = month - 2
+        sdate =new Date(year, month + 1, 0)
         edate = new Date(year, month + 1, 0)
     }
     else if (val == 'lastday') {

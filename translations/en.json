@@ -234,6 +234,7 @@
   "report": {
     "Failed": "Failed to create document",
     "FailedInfo": "Please specify the correct document creation date.",
+    "ReportType": "Report type",
     "reportName": "Report name",
     "noData": "No Data",
     "asof": "As of",
