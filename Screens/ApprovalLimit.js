@@ -126,13 +126,15 @@ const ApprovalLimit = () => {
                                 <View>
                                     <TouchableOpacity
                                        
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -143,8 +145,8 @@ const ApprovalLimit = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 50, width: 50 }}
                                                 resizeMode={'contain'}
@@ -161,13 +163,15 @@ const ApprovalLimit = () => {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -178,8 +182,8 @@ const ApprovalLimit = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 50, width: 50 }}
                                                 resizeMode={'contain'}

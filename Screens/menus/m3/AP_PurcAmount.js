@@ -88,6 +88,9 @@ const AP_PurcAmount = ({ route }) => {
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
+    useEffect(()=>{
+        setRadio_menu3(1, radio_props[5].value)
+    },[])
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
     var ser_die = true
@@ -176,7 +179,7 @@ const AP_PurcAmount = ({ route }) => {
                         Language.t('alert.errorTitle'),
                         Language.t(temp_error), [{
                             text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-                                navigation.replace('LoginStackScreen')
+                                navigation.replace('LoginScreen')
                             )
                         }]);
                     setLoading(false)

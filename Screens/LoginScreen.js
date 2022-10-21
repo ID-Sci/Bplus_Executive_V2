@@ -460,7 +460,7 @@ const LoginScreen = () => {
               </View>
 
             </KeyboardAvoidingView>
-
+   
           </ScrollView> : <View
             style={{
               width: deviceWidth,

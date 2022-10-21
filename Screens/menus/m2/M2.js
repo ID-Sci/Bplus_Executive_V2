@@ -126,13 +126,15 @@ const M2 = () => {
                                 <View>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_SellAmount' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -143,8 +145,8 @@ const M2 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -162,13 +164,15 @@ const M2 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_ShowArdetail' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -179,8 +183,8 @@ const M2 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -198,13 +202,15 @@ const M2 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_SellAmountByIcDept' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -215,8 +221,8 @@ const M2 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -234,13 +240,15 @@ const M2 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_GoodsBooking' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -251,8 +259,8 @@ const M2 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -270,13 +278,15 @@ const M2 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAR', { nav: 'ShowAR', routeName: 'AR_Address' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -287,8 +297,8 @@ const M2 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}

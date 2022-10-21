@@ -144,7 +144,7 @@ const ShowPos = ({ route }) => {
                         Language.t('alert.errorTitle'),
                         Language.t(temp_error), [{
                             text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-                                navigation.replace('LoginStackScreen')
+                                navigation.replace('LoginScreen')
                             )
                         }]);
                     setLoading(false)

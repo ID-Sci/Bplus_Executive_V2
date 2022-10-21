@@ -106,7 +106,7 @@ const App = () => {
 
         <LoginStack.Screen
           options={{ headerShown: false }}
-          name="Login"
+          name="LoginScreen"
           component={LoginScreen}
         />
 

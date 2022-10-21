@@ -81,7 +81,7 @@ const OrderScreen = () => {
 
     const [loading, setLoading] = useStateIfMounted(false);
     const [loading_backG, setLoading_backG] = useStateIfMounted(true);
-
+    //8852099021532
     const [textsearch, setSearch] = useState('');
     const [arrayObj, setArrayObj] = useState([]);
     const [data, setData] = useStateIfMounted({
@@ -135,7 +135,7 @@ const OrderScreen = () => {
             .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-                    console.log(responseData.SearchGoodsInfoWPurcPrice[0])
+                    console.log(responseData.SearchGoodsInfoWPurcPrice)
                     setArrayObj(responseData.SearchGoodsInfoWPurcPrice)
                 } else {
                     Alert.alert("ไม่พบข้อมูล");
@@ -154,7 +154,7 @@ const OrderScreen = () => {
                         Language.t('alert.errorTitle'),
                         Language.t(temp_error), [{
                             text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-                                navigation.replace('LoginStackScreen')
+                                navigation.replace('LoginScreen')
                             )
                         }]);
                     setLoading(false)

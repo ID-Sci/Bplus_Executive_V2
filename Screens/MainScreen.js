@@ -319,7 +319,7 @@ const MainScreen = () => {
                         }}>อนุมัติวงเงิน</Text>
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <TouchableOpacity
                     onPress={() => navigation.navigate('OrderScreen')}
                     style={{
@@ -355,7 +355,7 @@ const MainScreen = () => {
                         }}>สอบถามข้อมูลการซื้อ</Text>
                       </View>
                     </View>
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() => navigation.navigate('DailyCalendarScreen')}

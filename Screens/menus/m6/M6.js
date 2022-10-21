@@ -126,13 +126,15 @@ const M6 = () => {
                                 <View>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('IncomeBySlmn', { nav: 'IncomeBySlmn', routeName: 'IncomeBySlmn' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -143,8 +145,8 @@ const M6 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -162,13 +164,15 @@ const M6 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('IncomeByPos', { nav: 'IncomeByPos', routeName: 'IncomeByPos' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -179,8 +183,8 @@ const M6 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -198,13 +202,15 @@ const M6 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowSlmn', { nav: 'ShowSlmn', routeName: 'SlmnByYearMonth' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -215,8 +221,8 @@ const M6 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}
@@ -234,13 +240,15 @@ const M6 = () => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowPos', { nav: 'ShowPos', routeName: 'PosByYearMonth' })}
-                                        style={{
+                                             >
+                                        <View
+                                           style={{
                                             backgroundColor: Colors.backgroundLoginColorSecondary,
                                             flexDirection: 'column',
                                             margin: 10,
                                             borderRadius: 10,
                                             paddingLeft: 10,
-                                            paddingRight: 10,
+                                            paddingRight: 50,
                                             paddingTop: 10,
                                             paddingBottom: 10,
                                             shadowColor: Colors.borderColor,
@@ -251,8 +259,8 @@ const M6 = () => {
                                             shadowOpacity: 0.5,
                                             shadowRadius: 1.0,
                                             elevation: 15,
-                                        }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            flexDirection: 'row', alignItems: 'center' 
+                                       }}>
                                             <Image
                                                 style={{ height: 40, width: 40 }}
                                                 resizeMode={'contain'}

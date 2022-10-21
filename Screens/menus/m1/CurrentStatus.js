@@ -87,6 +87,10 @@ const CurrentStatus = ({ route }) => {
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
+    useEffect(()=>{
+        setRadio_menu2(1, radio_props[3].value)
+    },[])
+   
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
 
@@ -98,8 +102,12 @@ const CurrentStatus = ({ route }) => {
     let sum_this_year = []
     let sum_last_year = []
     var ser_die = true
+    useEffect(()=>{
+        setRadio_menu2(1, radio_props[3].value)
+    },[])
     useEffect(() => {
         setPage(0);
+        
     }, [itemsPerPage])
     useEffect(() => {
         console.log(arrayObj_last_month)
