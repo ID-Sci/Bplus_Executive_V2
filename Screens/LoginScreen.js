@@ -97,11 +97,11 @@ const LoginScreen = () => {
   const image = '../images/UI/Login/Asset4.png';
 
   useEffect(() => {
-    const RPTSVR_GRANT = '{C09D5B05-3CE9-4F0D-B647-A20E1F4D51AB}'
 
+    const serviceID = '{167f0c96-86fd-488f-94d1-cc3169d60b1a}'
+    if (serviceID != loginReducer.serviceID)
+      dispatch(loginActions.serviceID(serviceID))
 
-    if (RPTSVR_GRANT != activityReducer.RPTSVR_GRANT)
-      dispatch(activityActions.RPTSVR_GRANT(RPTSVR_GRANT))
     console.log('>> isSFeatures : ', isSFeatures)
     if (registerReducer.machineNum.length == 0)
       getMac()
@@ -109,6 +109,13 @@ const LoginScreen = () => {
     console.log('>> Language : ', Language.getLang())
 
   }, []);
+  useEffect(() => {
+    if (!databaseReducer.Data.urlser && !loading_backG)
+      Alert.alert(
+        Language.t('notiAlert.header'),
+        Language.t('notiAlert.connectBusiness'), [{ text: Language.t('alert.ok'), onPress: () => navigation.navigate('SelectScreen', { data: '' }) }]);
+
+  }, [loading_backG]);
   useEffect(() => {
     dispatch(loginActions.setFingerprint(isSFeatures));
 
@@ -142,23 +149,22 @@ const LoginScreen = () => {
     await DeviceInfo.getMacAddress().then((mac) => {
       var a = Math.floor(100000 + Math.random() * 900000);
       console.log(DeviceInfo.getDeviceName())
-      console.log('\nmachine > > ' + mac + ':' + a)
-      if (mac.length > 0) dispatch(registerActions.machine(mac + ':' + a));
+      console.log('\nmachine > > ' + mac)
+      if (mac.length > 0) dispatch(registerActions.machine(mac));
       else NetworkInfo.getBSSID().then(macwifi => {
-        console.log('\nmachine(wifi) > > ' + macwifi + ':' + a)
-        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi + ':' + a));
-        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a));
-      }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a)));
-    }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e' + ':' + a)));
+        console.log('\nmachine(wifi) > > ' + macwifi)
+        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi));
+        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'));
+      }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e')));
+    }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e')));
   }
 
-  useEffect(() => {
-  }, [])
+
 
 
   const tslogin = async () => {
     await setLoading(true)
-
+    await UnRegister()
     await regisMacAdd()
     await setLoading(false)
   }
@@ -187,7 +193,7 @@ const LoginScreen = () => {
           console.log('>> ', temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
         }
       })
       .catch((error) => {
@@ -196,18 +202,50 @@ const LoginScreen = () => {
         if (databaseReducer.Data.urlser == '') {
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t('alert.internetError'), [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
         }
 
       });
   };
+  const UnRegister = async () => {
+
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
+      method: 'POST',
+      body: JSON.stringify({
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
+        'BPAPUS-LOGIN-GUID': '',
+        'BPAPUS-FUNCTION': 'UnRegister',
+        'BPAPUS-PARAM':
+          '{"BPAPUS-MACHINE": "' +
+          registerReducer.machineNum +
+          '" }',
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+
+        console.log(json);
+
+      })
+      .catch((error) => {
+        console.error('ERROR at _fetchGuidLogin' + error);
+
+      });
+
+  };
 
   const _fetchGuidLog = async () => {
     console.log('FETCH GUID LOGIN ', databaseReducer.Data.urlser);
+    let tempusername = username.toUpperCase()
+    let temppassword = password.toUpperCase()
+    if (loginReducer.guid.length > 0) {
+      tempusername = loginReducer.userNameED
+      temppassword = loginReducer.passwordED
+    }
     await fetch(databaseReducer.Data.urlser + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
@@ -218,23 +256,23 @@ const LoginScreen = () => {
           '{"BPAPUS-MACHINE": "' +
           registerReducer.machineNum +
           '","BPAPUS-USERID": "' +
-          username.toUpperCase() +
+          tempusername +
           '","BPAPUS-PASSWORD": "' +
-          password.toUpperCase() +
-          '"}',
+          temppassword + '"}',
       }),
     })
       .then((response) => response.json())
       .then((json) => {
+        console.log(json)
         if (json && json.ResponseCode == '635') {
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
           console.log('NOT FOUND MEMBER');
         } else if (json && json.ResponseCode == '629') {
           Alert.alert(
             Language.t('alert.errorTitle'),
-            'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
         } else if (json && json.ResponseCode == '200') {
           let responseData = JSON.parse(json.ResponseData)
           dispatch(loginActions.guid(responseData.BPAPUS_GUID))
@@ -251,7 +289,7 @@ const LoginScreen = () => {
           console.log('>> ', temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
         }
       })
       .catch((error) => {
@@ -259,12 +297,12 @@ const LoginScreen = () => {
         if (databaseReducer.Data.urlser == '') {
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t('selectBase.error'), [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
 
         } else {
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t('alert.internetError') + "1", [{ text: Language.t('alert.ok'), onPress: () => dispatch(loginActions.guid([])) }]);
         }
       });
     setLoading(false)
@@ -277,7 +315,13 @@ const LoginScreen = () => {
 
     <SafeAreaView style={container1}>
       <StatusBar hidden={true} />
-      <ImageBackground source={require(image)} onLoadEnd={() => { setLoading_backG(false) }} resizeMode="cover" style={styles.image}>
+      <ImageBackground source={require(image)} onLoadEnd={async () => {
+        setLoading_backG(false)
+        if (loginReducer.guid.length > 0) {
+
+          await tslogin()
+        }
+      }} resizeMode="cover" style={styles.image}>
         {!loading_backG ?
           <ScrollView>
             <View style={tabbar}>
@@ -288,179 +332,175 @@ const LoginScreen = () => {
               <Text
                 style={{
                   marginLeft: 12,
-                  fontSize: FontSize.medium,
-                  color: Colors.backgroundLoginColorSecondary,
-                }}></Text>
+                  fontSize: FontSize.small,
+                  color: Colors.borderColor,
+                }}>{databaseReducer.Data.nameser ? databaseReducer.Data.nameser : 'ไม่มีการเชื่อมต่อกิจการ'}</Text>
             </View>
-
-            <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
-              <View style={{ padding: 20, marginTop: deviceHeight / 2.3 }}>
-                <View>
-                  <View
-                    style={{
-                      backgroundColor: Colors.backgroundLoginColorSecondary,
-                      flexDirection: 'column',
-                      borderRadius: 10,
-                      paddingLeft: 10,
-                      paddingRight: 10,
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      shadowColor: Colors.borderColor,
-                      shadowOffset: {
-                        width: 0,
-                        height: 6,
-                      },
-                      shadowOpacity: 0.5,
-                      shadowRadius: 1.0,
-                      elevation: 15,
-                    }}>
-                    <View style={{ height: 40, flexDirection: 'row', alignItems: 'center' }}>
-                      <Image
-                        style={{ height: 30, width: 30 }}
-                        resizeMode={'contain'}
-                        source={require('../images/UI/Login/Asset2.png')}
-                      />
-                      <TextInput
-                        style={{
-                          flex: 8,
-                          marginLeft: 10,
-                          borderBottomColor: Colors.buttonColorPrimary,
-                          color: Colors.fontColor,
-                          paddingVertical: 7,
-                          fontSize: FontSize.medium,
-                          borderBottomWidth: 0.7,
-                        }}
-
-                        placeholderTextColor={Colors.fontColorSecondary}
-                        value={username}
-                        maxLength={10}
-                        placeholder={Language.t('login.username')}
-                        onChangeText={(val) => {
-                          setUsername(val);
-                        }}></TextInput>
-                    </View>
-                  </View>
-                </View>
-
-                <View style={{ marginTop: 10 }}>
-                  <View
-                    style={{
-                      backgroundColor: Colors.backgroundLoginColorSecondary,
-                      flexDirection: 'column',
-
-                      borderRadius: 10,
-                      paddingLeft: 10,
-                      paddingRight: 10,
-                      paddingTop: 10,
-                      paddingBottom: 10,
-
-                      shadowColor: Colors.borderColor,
-                      shadowOffset: {
-                        width: 0,
-                        height: 6,
-                      },
-                      shadowOpacity: 0.5,
-                      shadowRadius: 1.0,
-
-                      elevation: 15,
-                    }}>
-
-                    <View style={{ height: 40, flexDirection: 'row', alignItems: 'center' }}>
-                      <Image
-                        style={{ height: 30, width: 30 }}
-                        resizeMode={'contain'}
-                        source={require('../images/UI/Login/Asset3.png')}
-                      />
-
-                      <TextInput
-                        style={{
-                          flex: 8,
-                          marginLeft: 10,
-                          color: Colors.fontColor,
-                          paddingVertical: 7,
-                          fontSize: FontSize.medium,
-                          borderBottomColor: Colors.buttonColorPrimary,
-                          borderBottomWidth: 0.7,
-                        }}
-                        secureTextEntry={data.secureTextEntry ? true : false}
-                        keyboardType="default"
-                        maxLength={8}
-                        value={password}
-                        placeholderTextColor={Colors.fontColorSecondary}
-                        placeholder={Language.t('login.password')}
-                        onChangeText={(val) => {
-                          setPassword(val);
-                        }}
-                      />
-
-                      <TouchableOpacity onPress={updateSecureTextEntry}>
-                        {data.secureTextEntry ? (
-                          <FontAwesomeIcon
-                            name="eye-slash"
-                            size={25}
-                            color={Colors.buttonColorPrimary}
-                          />
-                        ) : (
-                          <FontAwesomeIcon
-                            name="eye"
-                            size={25}
-                            color={Colors.buttonColorPrimary}></FontAwesomeIcon>
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.checkboxContainer} >
-                  <View></View>
-                  <CheckBox
-                    value={isSelected}
-                    onValueChange={(value) => setSelection(value)}
-
-                    tintColors={{ true: Colors.fontColor, false: Colors.fontColor }}
-                    style={styles.checkbox}
-                  />
-                  <Text style={styles.label} onPress={() => setSelection(!isSelected)}>{Language.t('login.rememberpassword')}</Text>
-                </View>
-                <View>
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                     
-                    }}>
-                    <TouchableNativeFeedback
-                      onPress={() => tslogin()}>
-                      <View
-                        style={{
-                          borderRadius: 20,
-                          flexDirection: 'column',
-                          padding: 20,
-                          backgroundColor: Colors.buttonColorPrimary,
-                        }}>
-                        <Text
+            {loginReducer.guid.length == 0 && (
+              <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
+                <View style={{ padding: 20, marginTop: deviceHeight / 2.3 }}>
+                  <View>
+                    <View
+                      style={{
+                        backgroundColor: Colors.backgroundLoginColorSecondary,
+                        flexDirection: 'column',
+                        borderRadius: 10,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        shadowColor: Colors.borderColor,
+                        shadowOffset: {
+                          width: 0,
+                          height: 6,
+                        },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 1.0,
+                        elevation: 15,
+                      }}>
+                      <View style={{ height: 40, flexDirection: 'row', alignItems: 'center' }}>
+                        <Image
+                          style={{ height: 30, width: 30 }}
+                          resizeMode={'contain'}
+                          source={require('../images/UI/Login/Asset2.png')}
+                        />
+                        <TextInput
                           style={{
-                            color: Colors.buttonTextColor,
-                            alignSelf: 'center',
+                            flex: 8,
+                            marginLeft: 10,
+                            borderBottomColor: Colors.buttonColorPrimary,
+                            color: Colors.fontColor,
+                            paddingVertical: 7,
                             fontSize: FontSize.medium,
-                            fontWeight: 'bold',
-                          }}>
-                          {Language.t('login.buttonLogin')}
-                        </Text>
+                            borderBottomWidth: 0.7,
+                          }}
+
+                          placeholderTextColor={Colors.fontColorSecondary}
+                          value={username}
+                          maxLength={10}
+                          placeholder={Language.t('login.username')}
+                          onChangeText={(val) => {
+                            setUsername(val);
+                          }}></TextInput>
                       </View>
-                    </TouchableNativeFeedback>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      alignItems:'center'
-                    }}>
-                    <Text style={Colors.borderColor}>version 2.5.3</Text>
+                    </View>
                   </View>
 
+                  <View style={{ marginTop: 10 }}>
+                    <View
+                      style={{
+                        backgroundColor: Colors.backgroundLoginColorSecondary,
+                        flexDirection: 'column',
+
+                        borderRadius: 10,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+
+                        shadowColor: Colors.borderColor,
+                        shadowOffset: {
+                          width: 0,
+                          height: 6,
+                        },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 1.0,
+
+                        elevation: 15,
+                      }}>
+
+                      <View style={{ height: 40, flexDirection: 'row', alignItems: 'center' }}>
+                        <Image
+                          style={{ height: 30, width: 30 }}
+                          resizeMode={'contain'}
+                          source={require('../images/UI/Login/Asset3.png')}
+                        />
+
+                        <TextInput
+                          style={{
+                            flex: 8,
+                            marginLeft: 10,
+                            color: Colors.fontColor,
+                            paddingVertical: 7,
+                            fontSize: FontSize.medium,
+                            borderBottomColor: Colors.buttonColorPrimary,
+                            borderBottomWidth: 0.7,
+                          }}
+                          secureTextEntry={data.secureTextEntry ? true : false}
+                          keyboardType="default"
+                          maxLength={8}
+                          value={password}
+                          placeholderTextColor={Colors.fontColorSecondary}
+                          placeholder={Language.t('login.password')}
+                          onChangeText={(val) => {
+                            setPassword(val);
+                          }}
+                        />
+                        <TouchableOpacity onPress={updateSecureTextEntry}>
+                          {data.secureTextEntry ? (
+                            <FontAwesomeIcon
+                              name="eye-slash"
+                              size={25}
+                              color={Colors.buttonColorPrimary}
+                            />
+                          ) : (
+                            <FontAwesomeIcon
+                              name="eye"
+                              size={25}
+                              color={Colors.buttonColorPrimary}></FontAwesomeIcon>
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.checkboxContainer} >
+                    <View></View>
+                    <CheckBox
+                      value={isSelected}
+                      onValueChange={(value) => setSelection(value)}
+
+                      tintColors={{ true: Colors.fontColor, false: Colors.fontColor }}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label} onPress={() => setSelection(!isSelected)}>{Language.t('login.rememberpassword')}</Text>
+                  </View>
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                      }}>
+                      <TouchableNativeFeedback
+                        onPress={() => tslogin()}>
+                        <View
+                          style={{
+                            borderRadius: 20,
+                            flexDirection: 'column',
+                            padding: 20,
+                            backgroundColor: Colors.buttonColorPrimary,
+                          }}>
+                          <Text
+                            style={{
+                              color: Colors.buttonTextColor,
+                              alignSelf: 'center',
+                              fontSize: FontSize.medium,
+                              fontWeight: 'bold',
+                            }}>
+                            {Language.t('login.buttonLogin')}
+                          </Text>
+                        </View>
+                      </TouchableNativeFeedback>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                      }}>
+                      <Text style={Colors.borderColor}>version 2.5.7</Text>
+                    </View>
+
+                  </View>
                 </View>
-              </View>
-
-            </KeyboardAvoidingView>
-   
+              </KeyboardAvoidingView>)}
           </ScrollView> : <View
             style={{
               width: deviceWidth,
@@ -479,7 +519,7 @@ const LoginScreen = () => {
               width: deviceWidth,
               height: deviceHeight,
               opacity: 0.5,
-              backgroundColor: 'black',
+              backgroundColor: loginReducer.guid.length > 0 ? '' : 'black',
               alignSelf: 'center',
               justifyContent: 'center',
               alignContent: 'center',

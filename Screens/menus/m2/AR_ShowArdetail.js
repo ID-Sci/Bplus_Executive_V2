@@ -161,6 +161,7 @@ const AR_ShowArdetail = ({ route }) => {
 
                 if (responseData.RECORD_COUNT > 0) {
                     for (var i in responseData.SHOWARBALANCEBYARKEY) {
+                        console.log(responseData.SHOWARBALANCEBYARKEY)
                         let jsonObj = {
                             id: i,
                             date: responseData.SHOWARBALANCEBYARKEY[i].DI_DATE,

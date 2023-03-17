@@ -93,17 +93,19 @@ const SelectBase = ({ route }) => {
       navigation.replace('SelectScreen', { data: a })
     )
   }
+
   useEffect(() => {
     if (databaseReducer.Data.nameser)
       _onPressSelectbaseValue(databaseReducer.Data.nameser)
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (route.params?.post) {
       setBasename(route.params.post.value)
       setBsaeurl(route.params.post.label)
     }
-  }, [route.params?.post]);
+  }, [route.params?.post])
+
   useEffect(() => {
     if (loginReducer.language && loginReducer.language != Language.getLang()) {
       console.log('loginReducer.Language >> ', loginReducer.language)
@@ -111,9 +113,9 @@ const SelectBase = ({ route }) => {
       setlanguage(loginReducer.language)
       RNRestart.Restart();
     }
-
     //backsakura 
-  }, [loginReducer.language]);
+  }, [loginReducer.language])
+
   const _onPressSelectbaseValue = async (itemValue) => {
     console.log(itemValue)
     setSelectbaseValue(itemValue)
@@ -134,44 +136,31 @@ const SelectBase = ({ route }) => {
       setPassword('')
     }
   }
+
   const closeLoading = () => {
     setLoading(false);
-  };
+  }
+
   const letsLoading = () => {
     setLoading(true);
-  };
-
-
+  }
 
   const checkValue = () => {
     let c = true
-    if (basename == '') {
-
-      c = false
-    }
-    else if (baseurl == '') {
-
-      c = false
-    }
-    else if (username == '') {
-
-      c = false
-    }
-    else if (password == '') {
-
-      c = false
-    }
+    if (basename == '') c = false
+    else if (baseurl == '') c = false
+    else if (username == '') c = false
+    else if (password == '') c = false
     return c
   }
-  const _onPressUpdate = async (basename, newurl) => {
 
+  const _onPressUpdate = async (basename, newurl) => {
     if (checkValue() == true) {
       await checkIPAddress('-1')
     }
   }
+
   const _onPressDelete = async () => {
-
-
     let temp = loginReducer.ipAddress;
     let tempurl = baseurl.split('.dll')
     let newurl = tempurl[0] + '.dll'
@@ -229,7 +218,7 @@ const SelectBase = ({ route }) => {
             ) {
               Alert.alert(Language.t('selectBase.Alert'), Language.t('selectBase.Alert2') + Language.t('selectBase.url'), [{
                 text: Language.t('selectBase.yes'), onPress: () => _onPressUpdate(basename, newurl)
-              }, { text: Language.t('selectBase.no'), onPress: () => console.log('cancel Pressed') }]);
+              }, { text: Language.t('selectBase.no'), onPress: () => setLoading(false) }]);
               check = true;
               break;
             } else if (
@@ -237,7 +226,7 @@ const SelectBase = ({ route }) => {
             ) {
               Alert.alert(Language.t('selectBase.Alert'), Language.t('selectBase.Alert2') + Language.t('selectBase.name'), [{
                 text: Language.t('selectBase.yes'), onPress: () => _onPressUpdate(basename, newurl)
-              }, { text: Language.t('selectBase.no'), onPress: () => console.log('cancel Pressed') }]);
+              }, { text: Language.t('selectBase.no'), onPress: () => setLoading(false) }]);
               check = true;
               break;
             }
@@ -259,106 +248,139 @@ const SelectBase = ({ route }) => {
         Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
       setLoading(false)
     }
-
   }
-
-
 
   const checkIPAddress = async (state) => {
     let tempurl = baseurl.split('.dll')
     let newurl = tempurl[0] + '.dll'
     let temp = []
-
-    await fetch(baseurl + '/DevUsers', {
+    fetch(newurl + '/DevUsers', {
       method: 'POST',
       body: JSON.stringify({
         'BPAPUS-BPAPSV': loginReducer.serviceID,
-        'BPAPUS-LOGIN-GUID': '',
-        'BPAPUS-FUNCTION': 'Register',
+        'BPAPUS-LOGIN-GUID': "",
+        'BPAPUS-FUNCTION': 'UnRegister',
         'BPAPUS-PARAM':
-          '{ "BPAPUS-MACHINE": "11111122","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "mobile login"}',
+          '{"BPAPUS-MACHINE":  "' +
+          registerReducer.machineNum +
+          '"}',
       }),
     })
       .then((response) => response.json())
-      .then((json) => {
-        if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
-          fetch(newurl + '/DevUsers', {
+      .then(async (json) => {
+        if (json && json.ResponseCode == '200') {
+          await fetch(baseurl + '/DevUsers', {
             method: 'POST',
             body: JSON.stringify({
               'BPAPUS-BPAPSV': loginReducer.serviceID,
               'BPAPUS-LOGIN-GUID': '',
-              'BPAPUS-FUNCTION': 'Login',
+              'BPAPUS-FUNCTION': 'Register',
               'BPAPUS-PARAM':
-                '{"BPAPUS-MACHINE": "11111122","BPAPUS-USERID": "' +
-                username.toUpperCase() +
-                '","BPAPUS-PASSWORD": "' +
-                password.toUpperCase() +
-                '"}',
+                '{ "BPAPUS-MACHINE":  "' +
+                registerReducer.machineNum +
+                '","BPAPUS-CNTRY-CODE": "66", "BPAPUS-MOBILE": "mobile login"}',
             }),
           })
             .then((response) => response.json())
             .then((json) => {
-              if (json && json.ResponseCode == '200') {
-                let newObj = {
-                  nameser: basename,
-                  urlser: newurl,
-                  usernameser: username.toUpperCase(),
-                  passwordser: password.toUpperCase()
-                }
-                console.log(json.ResponseCode)
-                if (state == '-1') {
-                  for (let i in loginReducer.ipAddress) {
-                    if (i == updateindex) {
-                      temp.push(newObj)
-                    } else {
-                      temp.push(loginReducer.ipAddress[i])
-                    }
-                  }
-                  dispatch(loginActions.ipAddress(temp))
-                  dispatch(databaseActions.setData(newObj))
-                } else if (state == '1') {
-                  if (items.length > 0) {
-                    for (let i in items) {
-                      temp.push(items[i])
-                    }
-                  }
-                  temp.push(newObj)
-                  dispatch(loginActions.ipAddress(temp))
-                  dispatch(databaseActions.setData(newObj))
-                } else if (state == '0') {
-                  dispatch(databaseActions.setData(newObj))
-                }
-
-
+              if (json.ResponseCode == 200 && json.ReasonString == 'Completed') {
                 fetch(newurl + '/DevUsers', {
                   method: 'POST',
                   body: JSON.stringify({
                     'BPAPUS-BPAPSV': loginReducer.serviceID,
-                    'BPAPUS-LOGIN-GUID': "",
-                    'BPAPUS-FUNCTION': 'UnRegister',
+                    'BPAPUS-LOGIN-GUID': '',
+                    'BPAPUS-FUNCTION': 'Login',
                     'BPAPUS-PARAM':
-                      '{"BPAPUS-MACHINE": "11111122"}',
+                      '{"BPAPUS-MACHINE":  "' +
+                      registerReducer.machineNum +
+                      '","BPAPUS-USERID": "' +
+                      username.toUpperCase() +
+                      '","BPAPUS-PASSWORD": "' +
+                      password.toUpperCase() +
+                      '"}',
                   }),
                 })
                   .then((response) => response.json())
                   .then((json) => {
                     if (json && json.ResponseCode == '200') {
+                      let newObj = {
+                        nameser: basename,
+                        urlser: newurl,
+                        usernameser: username.toUpperCase(),
+                        passwordser: password.toUpperCase()
+                      }
+                      console.log(json.ResponseCode)
+                      if (state == '-1') {
+                        for (let i in loginReducer.ipAddress) {
+                          if (i == updateindex) {
+                            temp.push(newObj)
+                          } else {
+                            temp.push(loginReducer.ipAddress[i])
+                          }
+                        }
+                        dispatch(loginActions.ipAddress(temp))
+                        dispatch(databaseActions.setData(newObj))
+                      } else if (state == '1') {
+                        if (items.length > 0) {
+                          for (let i in items) {
+                            temp.push(items[i])
+                          }
+                        }
+                        temp.push(newObj)
+                        dispatch(loginActions.ipAddress(temp))
+                        dispatch(databaseActions.setData(newObj))
+                      } else if (state == '0') {
+                        dispatch(databaseActions.setData(newObj))
+                      }
+                      fetch(newurl + '/DevUsers', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                          'BPAPUS-BPAPSV': loginReducer.serviceID,
+                          'BPAPUS-LOGIN-GUID': "",
+                          'BPAPUS-FUNCTION': 'UnRegister',
+                          'BPAPUS-PARAM':
+                            '{"BPAPUS-MACHINE":  "' +
+                            registerReducer.machineNum +
+                            '"}',
+                        }),
+                      })
+                        .then((response) => response.json())
+                        .then((json) => {
+                          if (json && json.ResponseCode == '200') {
+                            Alert.alert(
+                              Language.t('alert.succeed'),
+                              Language.t('selectBase.connect') + ' ' + basename + ' ' + Language.t('alert.succeed'), [{
+                                text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                  navigation.replace('LoginScreen')
+                                )
+                              }])
+                          }
+                        })
+                    } else {
+                      console.log('Function Parameter Required');
+                      let temp_error = 'error_ser.' + json.ResponseCode;
+                      console.log('>> ', temp_error)
                       Alert.alert(
-                        Language.t('alert.succeed'),
-                        Language.t('selectBase.connect') + ' ' + basename + ' ' + Language.t('alert.succeed'), [{
-                          text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-                            navigation.replace('LoginScreen')
-                          )
-                        }])
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
+                      setLoading(false)
                     }
+
                   })
+                  .catch((error) => {
+                    Alert.alert(
+                      Language.t('alert.errorTitle'),
+                      Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
+                    console.error('_fetchGuidLogin ' + error);
+                    setLoading(false)
+                  });
               } else {
                 console.log('Function Parameter Required');
                 let temp_error = 'error_ser.' + json.ResponseCode;
                 console.log('>> ', temp_error)
                 Alert.alert(
                   Language.t('alert.errorTitle'),
-                  Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
+                  Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
                 setLoading(false)
               }
 
@@ -366,17 +388,18 @@ const SelectBase = ({ route }) => {
             .catch((error) => {
               Alert.alert(
                 Language.t('alert.errorTitle'),
-                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
-              console.error('_fetchGuidLogin ' + error);
+                Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+              console.log('checkIPAddress');
               setLoading(false)
-            });
+            })
+
         } else {
           console.log('Function Parameter Required');
           let temp_error = 'error_ser.' + json.ResponseCode;
           console.log('>> ', temp_error)
           Alert.alert(
             Language.t('alert.errorTitle'),
-            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
+            Language.t(temp_error), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
           setLoading(false)
         }
 
@@ -384,8 +407,8 @@ const SelectBase = ({ route }) => {
       .catch((error) => {
         Alert.alert(
           Language.t('alert.errorTitle'),
-          Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
-        console.log('checkIPAddress');
+          Language.t('alert.errorDetail'), [{ text: Language.t('alert.ok'), onPress: () => _onPressSelectbaseValue(selectbaseValue) }]);
+        console.error('_fetchGuidLogin ' + error);
         setLoading(false)
       });
 

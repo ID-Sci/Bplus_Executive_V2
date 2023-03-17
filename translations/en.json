@@ -68,7 +68,12 @@
     "changeLanguage": "Change Language",
     "language": "English",
     "logout": "Logout",
+    "alertsave0Message": "The price data is 0 or is empty.",
+    "alertsaveMessage": "Do you want to save?",
+    "alertunsaveMessage": "You don't want to save?",
     "alertLogoutMessage": "Do you want to log out?",
+    "exitProgram": "exit the program",
+    "DoexitProgram": "Do you want to exit the program?",
     "cancel": "Cancel"
   },
   "profile": {
@@ -157,7 +162,8 @@
     "alert": "Would you like to turn on Fingerprint ?"
   },
   "notiAlert": {
-    "header": "Notification"
+    "header": "Notification",
+    "connectBusiness":"You are not connected to the business.\nPlease connect the business you want."
   },
   "alert": {
     "errorTitle": "Error",

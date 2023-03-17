@@ -379,8 +379,8 @@ const ApDueDate = ({ route }) => {
                                             }}>
                                                 <Text style={{ fontSize: FontSize.medium, marginRight: 5, color: 'black', fontWeight: 'bold', }}>ตั้งแต่</Text>
                                                 <CalendarScreen
-                                                    value={start_date}
-                                                    onChange={(vel) => setS_date(vel)}
+                                                    value={end_date}
+                                                    onChange={(vel) => setE_date(vel)}
                                                     language={'th'}
                                                     era={'be'}
                                                     format={'DD/MM/YYYY'}

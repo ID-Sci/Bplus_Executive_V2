@@ -200,7 +200,7 @@ const M6 = () => {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowSlmn', { nav: 'ShowSlmn', routeName: 'SlmnByYearMonth' })}
                                              >
                                         <View
@@ -272,10 +272,10 @@ const M6 = () => {
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>แสดงยอดเครื่องบันทึกเงินสด</Text>
+                                                }}>แสดงยอดเครื่องบันทึกเงินสดแต่ละเดือน</Text>
                                             </View>
                                         </View>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                    
 
                                     <TouchableNativeFeedback

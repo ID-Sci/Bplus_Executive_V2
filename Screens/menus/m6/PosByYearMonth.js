@@ -234,7 +234,7 @@ const PosByYearMonth = ({ route }) => {
                                 marginLeft: 12,
                                 fontSize: FontSize.medium,
                                 color: 'black'
-                            }}>{`แสดงยอดเครื่องบันทึกเงินสด`}</Text>
+                            }}>{`แสดงยอดเครื่องบันทึกเงินสดแต่ละเดือน`}</Text>
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>

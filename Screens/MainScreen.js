@@ -100,11 +100,67 @@ const MainScreen = () => {
     console.log('>> machineNum :', registerReducer.machineNum + '\n\n\n\n')
   }, [registerReducer.machineNum]);
 
+  useEffect(() => {
+
+    console.log()
+    console.log()
+    console.log('index >> ', navigation.getState().index)
+
+    const backAction = () => {
+      if (navigation.getState().index == 0) {
+
+
+        Alert.alert(Language.t('menu.exitProgram'), Language.t('menu.DoexitProgram'), [
+          { text: Language.t('alert.confirm'), onPress: () => logOutForexitApp() },
+          {
+            text: Language.t('alert.cancel'),
+            onPress: () => null,
+            style: "cancel"
+          }
+        ]);
+        return true;
+      };
+    }
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   const closeLoading = () => {
     setLoading(false);
   };
   const letsLoading = () => {
     setLoading(true);
+  };
+  const logOutForexitApp = async () => {
+    setLoading(true)
+    await fetch(databaseReducer.Data.urlser + '/DevUsers', {
+      method: 'POST',
+      body: JSON.stringify({
+        'BPAPUS-BPAPSV': loginReducer.serviceID,
+        'BPAPUS-LOGIN-GUID': '',
+        'BPAPUS-FUNCTION': 'UnRegister',
+        'BPAPUS-PARAM':
+          '{"BPAPUS-MACHINE": "' +
+          registerReducer.machineNum +
+          '" }',
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        setLoading(false)
+
+
+      })
+      .catch((error) => {
+      });
+
+    dispatch(loginActions.guid([]))
+    BackHandler.exitApp()
+
   };
 
   const logOut = async () => {
@@ -134,7 +190,7 @@ const MainScreen = () => {
             Language.t('alert.errorTitle'),
             'Function Parameter Required', [{ text: Language.t('alert.ok'), onPress: () => console.log('OK Pressed') }]);
         } else if (json && json.ResponseCode == '200') {
-
+          dispatch(loginActions.guid([]))
           navigation.dispatch(
             navigation.replace('LoginScreen')
           )
@@ -394,7 +450,7 @@ const MainScreen = () => {
                     </View>
                   </TouchableOpacity>
                   <TouchableNativeFeedback
-                    onPress={() => logOut()}>
+                    onPress={() => Alert.alert('', Language.t('menu.alertLogoutMessage'), [{ text: Language.t('alert.ok'), onPress: () => logOut() }, { text: Language.t('alert.cancel'), onPress: () => { } }])}>
                     <View
                       style={{
                         margin: 10,

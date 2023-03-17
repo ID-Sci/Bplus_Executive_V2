@@ -91,12 +91,13 @@ const ShowSellBook = ({ route }) => {
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
-    useEffect(()=>{
+    useEffect(() => {
         setRadio_menu3(1, radio_props[5].value)
-    },[])
+    }, [])
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
 
+    const [ArrayOe002404Obj, setArrayOe002404Obj] = useState([]);
     const [arrayObj_sellamount, sellamountsetArrayObj] = useState([]);
     const [arrayObj_bookamount, bookamountsetArrayObj] = useState([]);
     const [arrayObj_purcamount, purcamountsetArrayObj] = useState([]);
@@ -207,7 +208,84 @@ const ShowSellBook = ({ route }) => {
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
+    const fetchOe002404 = async (tempGuid) => {
+        setArrayOe002404Obj([])
 
+        await fetch(databaseReducer.Data.urlser + '/LookupErp', {
+            method: 'POST',
+            body: JSON.stringify({
+                'BPAPUS-BPAPSV': loginReducer.serviceID,
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
+                'BPAPUS-FUNCTION': 'Oe002404',
+                'BPAPUS-PARAM': '',
+                'BPAPUS-FILTER': "AND ( DI_DATE  >='" + safe_Format.setnewdateF(safe_Format.checkDate(start_date)) + "') AND ( DI_DATE  <='" + safe_Format.setnewdateF(safe_Format.checkDate(end_date)) + "') ",
+                'BPAPUS-ORDERBY': 'ORDER BY DI_DATE DESC',
+                'BPAPUS-OFFSET': '0',
+                'BPAPUS-FETCH': '0',
+            }),
+        })
+            .then((response) => response.json())
+            .then(async (json) => {
+                let responseData = JSON.parse(json.ResponseData);
+                let ArrayResponseData = []
+                if (responseData.RECORD_COUNT > 0) {
+                    console.log(responseData.RECORD_COUNT)
+                    for (var i in responseData.Oe002404.sort((a, b) => {
+                        return a.DI_DATE - b.DI_DATE;
+                    })) {
+                        let objOe002404 = {
+                            DI_DATE: responseData.Oe002404[i].DI_DATE,
+                            DOCNUM: 1,
+                            APPO_B_AMT: responseData.Oe002404[i].APPO_B_AMT
+                        }
+                        ArrayResponseData.push(objOe002404)
+                    }
+                    const sumsByDate = {};
+
+                    ArrayResponseData.forEach(item => {
+                        const date = item["DI_DATE"];
+                        const amount = parseFloat(item["APPO_B_AMT"]);
+                        const docnum = item["DOCNUM"];
+                        if (date in sumsByDate) {
+                            sumsByDate[date].amount += amount;
+                            sumsByDate[date].docnum += docnum;
+                        } else {
+                            sumsByDate[date] = { amount, docnum };
+                        }
+                    });
+
+                    setArrayOe002404Obj(Object.keys(sumsByDate).map(key => ({
+                        DI_DATE: key,
+                        APPO_B_AMT: sumsByDate[key].amount,
+                        DOCNUM: sumsByDate[key].docnum
+                    })))
+
+
+                }
+
+            })
+            .catch((error) => {
+                if (ser_die) {
+                    ser_die = false
+                    regisMacAdd()
+                } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginScreen')
+                            )
+                        }]);
+
+                }
+                console.error('ERROR at fetchContent >> ' + error)
+            })
+
+
+    }
     const setRadio_menu1 = (index, val) => {
         const Radio_Obj = safe_Format.Radio_menu(index, val)
         setRadioIndex1(Radio_Obj.index)

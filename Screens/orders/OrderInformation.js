@@ -76,17 +76,14 @@ const OrderInformation = ({ route }) => {
         buttonContainer,
     } = styles;
     var ser_die = true
-    useEffect(() => {
-        console.log('InCome> ', route.params.data)
-        InCome()
-    }, []);
+
     const [btn, setBtn] = useState([{ name: 'ประวัติการซื้อ', state: true }, { name: 'ประวัติการขาย', state: false }, { name: 'จำนวนคงเหลือ', state: false, }, { name: 'ราคาขาย', state: false }]);
 
     const [loading, setLoading] = useStateIfMounted(true);
     const [loading_backG, setLoading_backG] = useStateIfMounted(true);
     const [Sp000211Objloading, setSp000211Objloading] = useState([]);
-    const [Oe404Objloading, setOe404Objloading] = useStateIfMounted(true);
-    const [Oe304Objloading, setOe304Objloading] = useStateIfMounted(true);
+    const [Oe404Objloading, setOe404Objloading] = useStateIfMounted(false);
+    const [Oe304Objloading, setOe304Objloading] = useStateIfMounted(false);
 
     const [SHOWWLSKUQTYBYGOODSKEY, setSHOWWLSKUQTYBYGOODSKEY] = useState([]);
 
@@ -94,7 +91,7 @@ const OrderInformation = ({ route }) => {
     const [arraySp000211, setArraySp000211] = useState([]);
     const [arrayOe404Obj, setArrayOe404Obj] = useState([]);
     const [arrayOe304Obj, setArrayOe304Obj] = useState([]);
-    const [arrayObj, setArrayObj] = useState([]);
+    const [GoodsInfo, setGoodsInfo] = useState([]);
 
     const [data, setData] = useStateIfMounted({
         secureTextEntry: true,
@@ -105,8 +102,7 @@ const OrderInformation = ({ route }) => {
     const [radioIndex3, setRadioIndex3] = useState(6);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
-    const [Fstart_date, setFS_date] = useState(start_date);
-    const [Fend_date, setFE_date] = useState(end_date)
+
     const image = '../../images/UI/Asset35.png';
     const radio_props = [
         { label: 'ปีก่อน', value: 'lastyear' },
@@ -117,6 +113,22 @@ const OrderInformation = ({ route }) => {
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
+    useEffect(() => {
+        console.log('InCome> ', route.params.data)
+
+        stacklode()
+    }, []);
+
+    const stacklode = async () => {
+        await getSKUINFOBYGOODSCODE()
+        for (var i in GoodsInfo.GOODSMASTER) {
+            console.log('\n\n\n[' + i + ']\n->\t' + GoodsInfo.GOODSMASTER[i].GOODS_CODE)
+        }
+
+        await setLoading(false)
+
+
+    }
     useEffect(() => {
         setRadio_menu3(1, radio_props[5].value)
     }, [])
@@ -164,8 +176,7 @@ const OrderInformation = ({ route }) => {
 
     const InCome = async () => {
 
-        setFS_date(start_date)
-        setFE_date(end_date)
+
         await letsLoading()
 
         await fetchInCome()
@@ -173,11 +184,11 @@ const OrderInformation = ({ route }) => {
         //  setArrayObj(arrayResult)
     }
     const SInCome = async () => {
-        setFS_date(start_date)
-        setFE_date(end_date)
-        await fetchSHOWWLSKUQTYBYGOODSKEY()
-        // await letsLoading()
         setModalVisible(false)
+
+        await fetchInCome()
+        // await letsLoading()
+
         // await fetchInCome()
 
         //  setArrayObj(arrayResult)
@@ -209,35 +220,116 @@ const OrderInformation = ({ route }) => {
         }
         setBtn(temp_stateBtn)
     }
-
-    const fetchInCome = async (tempGuid) => {
-        console.log(tempGuid)
+    const m1 = async (tempGuid) => {
         if (tempGuid) {
             console.log('(tempGuid)')
-            await fetchSHOWWLSKUQTYBYGOODSKEY(tempGuid)
-            await closeLoading()
             await fetchOe404(tempGuid)
             await setOe404Objloading(false)
-            await fetchOe304(tempGuid)
-            await setOe304Objloading(false)
-            await fetchSp000211(tempGuid)
-            await setSp000211Objloading(false)
-
         } else {
             console.log('()')
-            await fetchSHOWWLSKUQTYBYGOODSKEY()
-            await closeLoading()
             await fetchOe404()
             await setOe404Objloading(false)
-            await fetchOe304()
-            await setOe304Objloading(false)
-            await fetchSp000211()
-            await setSp000211Objloading(false)
-
         }
 
     }
 
+    const m2 = async (tempGuid) => {
+        if (tempGuid) {
+            console.log('(tempGuid)')
+            await fetchSHOWWLSKUQTYBYGOODSKEY(tempGuid)
+            await closeLoading()
+        } else {
+            console.log('()')
+            await fetchSHOWWLSKUQTYBYGOODSKEY()
+            await closeLoading()
+        }
+
+    }
+    const m3 = async (tempGuid) => {
+        if (tempGuid) {
+            console.log('(tempGuid)')
+            await fetchOe304(tempGuid)
+            await setOe304Objloading(false)
+        } else {
+            console.log('()')
+            await fetchOe304()
+            await setOe304Objloading(false)
+        }
+    }
+    const m4 = async (tempGuid) => {
+        if (tempGuid) {
+            console.log('(tempGuid)')
+            await fetchSp000211(tempGuid)
+            await setSp000211Objloading(false)
+        } else {
+            console.log('()')
+            await fetchSp000211()
+            await setSp000211Objloading(false)
+        }
+    }
+    const fetchInCome = async (tempGuid) => {
+        console.log(tempGuid)
+        setOe404Objloading(true)
+        setOe304Objloading(true)
+        if (tempGuid) {
+            m1(tempGuid)
+            m2(tempGuid)
+            m3(tempGuid)
+            m4(tempGuid)
+        } else {
+            m1()
+            m2()
+            m3()
+            m4()
+        }
+    }
+    const getSKUINFOBYGOODSCODE = async (tempGuid) => {
+
+        await fetch(databaseReducer.Data.urlser + '/SetupErp', {
+            method: 'POST',
+            body: JSON.stringify({
+                'BPAPUS-BPAPSV': loginReducer.serviceID,
+                'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
+                'BPAPUS-FUNCTION': 'GETSKUINFOBYGOODSCODE',
+                'BPAPUS-PARAM': '{"GOODS_CODE": "' +
+                    route.params.data.GOODS_CODE + '"}',
+                'BPAPUS-FILTER': "",
+                'BPAPUS-ORDERBY': '',
+                'BPAPUS-OFFSET': '0',
+                'BPAPUS-FETCH': '0',
+            }),
+        })
+            .then((response) => response.json())
+            .then(async (json) => {
+                let responseData = JSON.parse(json.ResponseData);
+                if (responseData.RECORD_COUNT > 0) {
+
+                    let obj = {
+                        DOCINFO: responseData.DOCINFO,
+                        GOODSMASTER: responseData.GOODSMASTER
+                    }
+                    setGoodsInfo(obj)
+                }
+            }).catch((error) => {
+                if (ser_die) {
+                    ser_die = false
+                    regisMacAdd()
+                } else {
+                    console.log('Function Parameter Required');
+                    let temp_error = 'error_ser.' + 610;
+                    console.log('>> ', temp_error)
+                    Alert.alert(
+                        Language.t('alert.errorTitle'),
+                        Language.t(temp_error), [{
+                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                navigation.replace('LoginScreen')
+                            )
+                        }]);
+
+                }
+                console.error('ERROR at fetchContent >> ' + error)
+            })
+    }
     const fetchSHOWWLSKUQTYBYGOODSKEY = async (tempGuid) => {
         console.log('fetchSHOWWLSKUQTYBYGOODSKEY >> ')
         await fetch(databaseReducer.Data.urlser + '/Executive', {
@@ -246,7 +338,7 @@ const OrderInformation = ({ route }) => {
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'SHOWWLSKUQTYBYGOODSKEY',
-                'BPAPUS-PARAM': '{\"TO_DATE\": \"' + safe_Format.setnewdateF(safe_Format.checkDate(Fend_date)) + '\",\"GOODS_KEY\": \"' + route.params.data.GOODS_KEY + '\"}',
+                'BPAPUS-PARAM': '{\"TO_DATE\": \"' + safe_Format.setnewdateF(safe_Format.checkDate(end_date)) + '\",\"GOODS_KEY\": \"' + route.params.data.GOODS_KEY + '\"}',
                 'BPAPUS-FILTER': '',
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -258,7 +350,8 @@ const OrderInformation = ({ route }) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
                     console.log('SHOWWLSKUQTYBYGOODSKEY >> ', responseData.SHOWWLSKUQTYBYGOODSKEY)
-                    setSHOWWLSKUQTYBYGOODSKEY(responseData.SHOWWLSKUQTYBYGOODSKEY)
+                    const unique = [...new Set(responseData.SHOWWLSKUQTYBYGOODSKEY.map(item => JSON.stringify(item)))].map(item => JSON.parse(item));
+                    setSHOWWLSKUQTYBYGOODSKEY(unique)
                 }
 
             })
@@ -281,6 +374,7 @@ const OrderInformation = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
+
     }
     const fetchSp000211 = async (tempGuid) => {
         console.log('fetchSp000211 >> ')
@@ -305,7 +399,7 @@ const OrderInformation = ({ route }) => {
                 if (responseData.RECORD_COUNT > 0) {
                     console.log('Sp000211 >> ', responseData.Sp000211)
                     for (var i in responseData.Sp000211) {
-                        await SearchGoodsInfoWPurcPrice(tempGuid ? tempGuid : loginReducer.guid, responseData.Sp000211[i])
+                        await fetchSp000221(tempGuid ? tempGuid : loginReducer.guid, responseData.Sp000211[i])
                     }
                 }
 
@@ -330,16 +424,81 @@ const OrderInformation = ({ route }) => {
                 console.error('ERROR at fetchContent >> ' + error)
             })
     }
-    const SearchGoodsInfoWPurcPrice = async (tempGuid, Sp211) => {
+    const fetchSp000221 = async (tempGuid, Sp211) => {
         let Sp000211 = arraySp000211
 
-        await fetch(databaseReducer.Data.urlser + '/UpdateErp', {
+        for (var i in GoodsInfo.GOODSMASTER) {
+
+            await fetch(databaseReducer.Data.urlser + '/LookupErp', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'BPAPUS-BPAPSV': loginReducer.serviceID,
+                    'BPAPUS-LOGIN-GUID': tempGuid,
+                    'BPAPUS-FUNCTION': 'Sp000221',
+                    'BPAPUS-PARAM': '',
+                    'BPAPUS-FILTER': "AND ( ARPRB_CODE ='" + Sp211.ARPRB_CODE + "') AND ( GOODS_CODE ='" + GoodsInfo.GOODSMASTER[i].GOODS_CODE + "')  ",
+                    'BPAPUS-ORDERBY': '',
+                    'BPAPUS-OFFSET': '0',
+                    'BPAPUS-FETCH': '0',
+                }),
+            })
+                .then((response) => response.json())
+                .then(async (json) => {
+                    let responseData = JSON.parse(json.ResponseData);
+                    if (responseData.RECORD_COUNT > 0) {
+
+                        let Sp000221 = responseData.Sp000221
+                        if (Sp000221.length > 0) {
+                            let obj = {
+                                WPurcPrice: Sp211,
+                                Sp000221: Sp000221,
+                                SKU_STD_COST: await READSKU('SKU_STD_COST', GoodsInfo.DOCINFO.SKU_KEY),
+                                SKU_STD_COST_TY: Number(await READSKU('SKU_STD_COST', GoodsInfo.DOCINFO.SKU_KEY)) + Number(await READSKU('SKU_COST_TY', GoodsInfo.DOCINFO.SKU_KEY))
+
+                            }
+
+                            console.log('dir')
+                            console.log(obj)
+                            Sp000211.push(obj)
+                        }
+
+                    }
+                })
+                .catch((error) => {
+                    if (ser_die) {
+                        ser_die = false
+                        regisMacAdd()
+                    } else {
+                        console.log('Function Parameter Required');
+                        let temp_error = 'error_ser.' + 610;
+                        console.log('>> ', temp_error)
+                        Alert.alert(
+                            Language.t('alert.errorTitle'),
+                            Language.t(temp_error), [{
+                                text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
+                                    navigation.replace('LoginScreen')
+                                )
+                            }]);
+
+                    }
+                    console.error('ERROR at fetchContent >> ' + error)
+                })
+        }
+        const unique = [...new Set(Sp000211.map(item => JSON.stringify(item)))].map(item => JSON.parse(item));
+        await setArraySp000211(unique)
+    }
+
+    const READSKU = async (SKU_FIELDNAME, SKU_KEY) => {
+        console.log(`\n\tREADSKU +> ${SKU_FIELDNAME}\n`)
+
+        let temReturnData = 0
+        await fetch(databaseReducer.Data.urlser + '/ReadErp', {
             method: 'POST',
             body: JSON.stringify({
                 'BPAPUS-BPAPSV': loginReducer.serviceID,
-                'BPAPUS-LOGIN-GUID': tempGuid,
-                'BPAPUS-FUNCTION': 'SearchGoodsInfoWPurcPrice',
-                'BPAPUS-PARAM': '{\"APPRB_KEY\":\"' + Sp211.ARPRB_KEY + '\"}',
+                'BPAPUS-LOGIN-GUID': loginReducer.guid,
+                'BPAPUS-FUNCTION': 'READSKUATTRBYSKUKEYANDATTRFIELDNAME',
+                'BPAPUS-PARAM': '{\"SKU_FIELDNAME\":\"' + SKU_FIELDNAME + '\",\"SKU_KEY\": \"' + SKU_KEY + '\"}',
                 'BPAPUS-FILTER': "",
                 'BPAPUS-ORDERBY': '',
                 'BPAPUS-OFFSET': '0',
@@ -347,39 +506,28 @@ const OrderInformation = ({ route }) => {
             }),
         })
             .then((response) => response.json())
-            .then(async (json) => {
+            .then((json) => {
                 let responseData = JSON.parse(json.ResponseData);
+
                 if (responseData.RECORD_COUNT > 0) {
-                    let InfoWPurcPrice = responseData.SearchGoodsInfoWPurcPrice
-                    if (InfoWPurcPrice.length > 0) {
-                        let obj = {
-                            WPurcPrice: Sp211,
-                            InfoWPurcPrice: InfoWPurcPrice,
-                        }
-                        Sp000211.push(obj)
-                    }
+                    let READSKUATTR = responseData.READSKUATTRBYSKUKEYANDATTRFIELDNAME[0]
+                    if (SKU_FIELDNAME == "SKU_STD_COST")
+                        temReturnData = READSKUATTR.SKU_STD_COST
+                    if (SKU_FIELDNAME == "SKU_COST_TY")
+                        temReturnData = READSKUATTR.SKU_COST_TY
+
                 }
             })
             .catch((error) => {
-                if (ser_die) {
-                    ser_die = false
-                    regisMacAdd()
-                } else {
-                    console.log('Function Parameter Required');
-                    let temp_error = 'error_ser.' + 610;
-                    console.log('>> ', temp_error)
-                    Alert.alert(
-                        Language.t('alert.errorTitle'),
-                        Language.t(temp_error), [{
-                            text: Language.t('alert.ok'), onPress: () => navigation.dispatch(
-                                navigation.replace('LoginScreen')
-                            )
-                        }]);
+                console.error(error)
+                console.log('Function Parameter Required');
+                let temp_error = 'error_ser.' + 610;
 
-                }
                 console.error('ERROR at fetchContent >> ' + error)
+
             })
-        await setArraySp000211(Sp000211)
+
+        return temReturnData
     }
     const fetchOe404 = async (tempGuid) => {
         setArrayOe404Obj([])
@@ -391,8 +539,8 @@ const OrderInformation = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Oe000404',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': "",
-                'BPAPUS-ORDERBY': '',
+                'BPAPUS-FILTER': "AND ( DI_DATE  >='" + safe_Format.setnewdateF(safe_Format.checkDate(start_date)) + "') AND ( DI_DATE  <='" + safe_Format.setnewdateF(safe_Format.checkDate(end_date)) + "') ",
+                'BPAPUS-ORDERBY': 'ORDER BY DI_DATE DESC',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
             }),
@@ -427,13 +575,7 @@ const OrderInformation = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
-        for (var i in arrayOe404Obj) {
-            console.log()
-            console.log(arrayOe404Obj[i].Oe000404.DI_KEY)
-            console.log(arrayOe404Obj[i].Transtkd)
-            console.log()
 
-        }
 
     }
     const GetReceiveDocinfo = async (tempGuid, Oe000404) => {
@@ -456,19 +598,17 @@ const OrderInformation = ({ route }) => {
             .then(async (json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-                    let Transtkd = responseData.TRANSTKD.filter((Transtkd) => { return Transtkd.GOODS_CODE == route.params.data.GOODS_CODE })
-                    if (Transtkd.length > 0) {
-
-                        let obj = {
-                            Oe000404: Oe000404,
-                            Docinfo: responseData.DOCINFO,
-                            Transtkh: responseData.TRANSTKH,
-                            Transtkd: Transtkd,
-
+                    for (var i in GoodsInfo.GOODSMASTER) {
+                        let Transtkd = responseData.TRANSTKD.filter((Transtkd) => { return Transtkd.GOODS_CODE == GoodsInfo.GOODSMASTER[i].GOODS_CODE })
+                        if (Transtkd.length > 0) {
+                            let obj = {
+                                Oe000404: Oe000404,
+                                Docinfo: responseData.DOCINFO,
+                                Transtkh: responseData.TRANSTKH,
+                                Transtkd: Transtkd,
+                            }
+                            Oe404Obj.push(obj)
                         }
-
-                        Oe404Obj.push(obj)
-
                     }
                 }
             })
@@ -491,7 +631,8 @@ const OrderInformation = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
-        await setArrayOe404Obj(Oe404Obj)
+        const unique = [...new Set(Oe404Obj.map(item => JSON.stringify(item)))].map(item => JSON.parse(item));
+        await setArrayOe404Obj(unique)
     }
     const fetchOe304 = async (tempGuid) => {
         setArrayOe304Obj([])
@@ -503,8 +644,8 @@ const OrderInformation = ({ route }) => {
                 'BPAPUS-LOGIN-GUID': tempGuid ? tempGuid : loginReducer.guid,
                 'BPAPUS-FUNCTION': 'Oe000304',
                 'BPAPUS-PARAM': '',
-                'BPAPUS-FILTER': "",
-                'BPAPUS-ORDERBY': '',
+                'BPAPUS-FILTER': "AND ( DI_DATE  >='" + safe_Format.setnewdateF(safe_Format.checkDate(start_date)) + "') AND ( DI_DATE  <='" + safe_Format.setnewdateF(safe_Format.checkDate(end_date)) + "') ",
+                'BPAPUS-ORDERBY': 'ORDER BY DI_DATE DESC',
                 'BPAPUS-OFFSET': '0',
                 'BPAPUS-FETCH': '0',
             }),
@@ -539,13 +680,7 @@ const OrderInformation = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
-        for (var i in arrayOe304Obj) {
-            console.log()
-            console.log(arrayOe304Obj[i].Oe000304.DI_KEY)
-            console.log(arrayOe304Obj[i].Transtkd)
-            console.log()
 
-        }
 
     }
     const GetInvoiceDocinfo = async (tempGuid, Oe000304) => {
@@ -568,19 +703,21 @@ const OrderInformation = ({ route }) => {
             .then(async (json) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
-                    let Transtkd = responseData.TRANSTKD.filter((Transtkd) => { return Transtkd.GOODS_CODE == route.params.data.GOODS_CODE })
-                    if (Transtkd.length > 0) {
+                    for (var i in GoodsInfo.GOODSMASTER) {
+                        let Transtkd = responseData.TRANSTKD.filter((Transtkd) => { return Transtkd.GOODS_CODE == GoodsInfo.GOODSMASTER[i].GOODS_CODE })
+                        if (Transtkd.length > 0) {
 
-                        let obj = {
-                            Oe000304: Oe000304,
-                            Docinfo: responseData.DOCINFO,
-                            Transtkh: responseData.TRANSTKH,
-                            Transtkd: Transtkd,
+                            let obj = {
+                                Oe000304: Oe000304,
+                                Docinfo: responseData.DOCINFO,
+                                Transtkh: responseData.TRANSTKH,
+                                Transtkd: Transtkd,
+
+                            }
+
+                            Oe304Obj.push(obj)
 
                         }
-
-                        Oe304Obj.push(obj)
-
                     }
                 }
             })
@@ -603,11 +740,54 @@ const OrderInformation = ({ route }) => {
                 }
                 console.error('ERROR at fetchContent >> ' + error)
             })
-        await setArrayOe304Obj(Oe304Obj)
+        const unique = [...new Set(Oe304Obj.map(item => JSON.stringify(item)))].map(item => JSON.parse(item));
+        await setArrayOe304Obj(unique)
     }
 
-    return (
+    const getNetPrice = (a, b) => {
+        let allSell = Number(a)
+        let tempB = []
+        if (b != '') {
+            if (b.indexOf('+') > 1) {
+                tempB = b.split('+')
+                for (var i in tempB)
+                    if (i > 0) allSell -= sellC(allSell, tempB[i])
+                    else allSell -= sellC(allSell, tempB[i])
+            } else if (b.indexOf(',') > 1) {
+                tempB = b.split(',')
+                for (var i in tempB) {
+                    if (i > 0) allSell -= sellC(allSell, tempB[i])
+                    else allSell -= sellC(allSell, tempB[i])
+                }
+            } else if (b.length > 1) {
+                allSell -= sellC(allSell, b)
+            }
+            return allSell
+        } else {
+            return Number(a)
+        }
+    }
+    const sellPercent = (a, s) => {
 
+        if (s.indexOf('%') > -1) return Number(a) * (Number(s.split('%')[0]) / 100)
+        else return Number(a) * (Number(s) / 100)
+    }
+    const sellB = (s) => {
+
+        if (s.indexOf('b') > -1) return Number(s.split('b')[0])
+        else if (s.indexOf('B') > -1) return Number(s.split('B')[0])
+        else if (s.indexOf('บ') > -1) return Number(s.split('บ')[0])
+    }
+    const sellC = (a, s) => {
+        console.log(`a ${a} b ${s}`)
+        if (s.indexOf('b') > -1 || s.indexOf('B') > -1 || s.indexOf('บ') > -1) return sellB(s)
+        else if (s.indexOf('%') > -1) return sellPercent(a, s)
+        else return sellPercent(a, s)
+    }
+    const getGPM = (NP, COF) => {
+        return ((NP - COF) / NP) * 100
+    }
+    return (
         <SafeAreaView style={container1}>
             <StatusBar hidden={true} />
             <ImageBackground source={require(image)} onLoadEnd={() => { setLoading_backG(false) }} resizeMode="cover" style={styles.image}>
@@ -875,104 +1055,161 @@ const OrderInformation = ({ route }) => {
                                                 flexDirection: 'column',
                                                 padding: 5,
                                             }}>
-                                                {arrayOe404Obj.length > 0 && arrayOe404Obj.filter((token404) => { return Number(token404.Oe000404.DI_DATE) >= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fstart_date))) && Number(token404.Oe000404.DI_DATE) <= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fend_date))) }).length > 0 ? (
+                                                {arrayOe404Obj.length > 0 ? (
                                                     <>
                                                         <View
                                                             style={{ flexDirection: 'row', borderBottomColor: Colors.fontColor, borderBottomWidth: 1 }}
                                                         >
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    วันที่
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.4}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    เลขที่
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    รหัสเจ้าหนี้
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.2}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end', }}>
+                                                                    บรรจุ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ซื้อ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    แถม
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ต่อหน่วย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ส่วนลด
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    มูลค่า
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ลดรวม
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    สุทธิ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ต่อหน่วย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.5}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    ชื่อเจ้าหนี้
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    รหัสซื้อขาย
+                                                                </Text>
+                                                            </View>
 
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                วันที่
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.4, padding: 5 }}>
-                                                                เลขที่
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                รหัสเจ้าหนี้
-
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.5, padding: 5 }}>
-                                                                ชื่อเจ้าหนี้
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                รหัสซื้อขาย
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                บรรจุ
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ซื้อ
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                แถม
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ต่อหน่วย
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ส่วนลด
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                มูลค่า
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ลดรวม
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                สุทธิ
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ต่อหน่วย
-                                                            </Text>
                                                         </View>
                                                         <ScrollView>
-                                                            {arrayOe404Obj.filter((token404) => { return Number(token404.Oe000404.DI_DATE) >= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fstart_date))) && Number(token404.Oe000404.DI_DATE) <= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fend_date))) }).map((item) => {
+                                                            {arrayOe404Obj.sort((a, b) => {
+                                                                return b.Oe000404.DI_DATE - a.Oe000404.DI_DATE;
+                                                            }).map((item) => {
                                                                 return (
                                                                     item.Transtkd.map((Transtkditem) => {
                                                                         return (
                                                                             <View style={{ flexDirection: 'row' }}>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.dateFormat(item.Oe000404.DI_DATE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.4, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.Oe000404.DI_REF)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.Oe000404.AP_CODE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.5, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.Oe000404.AP_NAME)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.GOODS_CODE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.TRD_UTQNAME)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_U_PRC)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.TRD_Q_FREE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_K_U_PRC)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.TRD_DSC_KEYIN)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_DSC_KEYINV)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_TDSC_KEYINV)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_G_AMT)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_N_AMT)}
-                                                                                </Text>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.dateFormat(item.Oe000404.DI_DATE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.4}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.Oe000404.DI_REF)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.Oe000404.AP_CODE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.2}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_UTQQTY)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_QTY)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_Q_FREE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_K_U_PRC)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_DSC_KEYIN)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_G_SELL)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_TDSC_KEYINV)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_N_SELL)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Number(Transtkditem.TRD_N_SELL) / (Number(Transtkditem.TRD_UTQQTY) * Number(Transtkditem.TRD_QTY)))}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.5}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.Oe000404.AP_NAME)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.GOODS_CODE)}
+                                                                                    </Text>
+                                                                                </View>
 
                                                                             </View>
                                                                         )
@@ -1029,104 +1266,161 @@ const OrderInformation = ({ route }) => {
                                                 flexDirection: 'column',
                                                 padding: 5,
                                             }}>
-                                                {arrayOe304Obj.length > 0 && arrayOe304Obj.filter((token304) => { return Number(token304.Oe000304.DI_DATE) >= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fstart_date))) && Number(token304.Oe000304.DI_DATE) <= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fend_date))) }).length > 0 ? (
+                                                {arrayOe304Obj.length > 0 ? (
                                                     <>
                                                         <View
                                                             style={{ flexDirection: 'row', borderBottomColor: Colors.fontColor, borderBottomWidth: 1 }}
                                                         >
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    วันที่
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.4}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    เลขที่
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    รหัสลูกหนี้
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.2}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end', }}>
+                                                                    บรรจุ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ซื้อ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    แถม
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ต่อหน่วย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ส่วนลด
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    มูลค่า
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ลดรวม
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    สุทธิ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ต่อหน่วย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.5}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    ชื่อลูกหนี้
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    รหัสซื้อขาย
+                                                                </Text>
+                                                            </View>
 
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                วันที่
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.4, padding: 5 }}>
-                                                                เลขที่
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                รหัสลูกหนี้
-
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.5, padding: 5 }}>
-                                                                ชื่อลูกหนี้
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                รหัสซื้อขาย
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                บรรจุ
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ขาย
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                แถม
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ต่อหน่วย
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ส่วนลด
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                มูลค่า
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ลดรวม
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                สุทธิ
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ต่อหน่วย
-                                                            </Text>
                                                         </View>
                                                         <ScrollView>
-                                                            {arrayOe304Obj.filter((token304) => { return Number(token304.Oe000304.DI_DATE) >= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fstart_date))) && Number(token304.Oe000304.DI_DATE) <= Number(safe_Format.setnewdateF(safe_Format.checkDate(Fend_date))) }).map((item) => {
+                                                            {arrayOe304Obj.sort((a, b) => {
+                                                                return b.Oe000304.DI_DATE - a.Oe000304.DI_DATE;
+                                                            }).map((item) => {
                                                                 return (
                                                                     item.Transtkd.map((Transtkditem) => {
                                                                         return (
                                                                             <View style={{ flexDirection: 'row' }}>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.dateFormat(item.Oe000304.DI_DATE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.4, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.Oe000304.DI_REF)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.Oe000304.AR_CODE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.5, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.Oe000304.AR_NAME)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.GOODS_CODE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.TRD_UTQNAME)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_U_PRC)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_Q_FREE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_K_U_PRC)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(Transtkditem.TRD_DSC_KEYIN)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_DSC_KEYINV)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_TDSC_KEYINV)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_G_AMT)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(Transtkditem.TRD_N_AMT)}
-                                                                                </Text>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.dateFormat(item.Oe000304.DI_DATE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.4}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.Oe000304.DI_REF)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.Oe000304.AR_CODE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.2}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_UTQQTY)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_QTY)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_Q_FREE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_K_U_PRC)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.TRD_DSC_KEYIN)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_G_SELL)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_TDSC_KEYINV)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Transtkditem.TRD_N_SELL)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.currencyFormat(Number(Transtkditem.TRD_N_SELL) / (Number(Transtkditem.TRD_UTQQTY) * Number(Transtkditem.TRD_QTY)))}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.5}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.Oe000304.AR_NAME)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(Transtkditem.GOODS_CODE)}
+                                                                                    </Text>
+                                                                                </View>
 
                                                                             </View>
                                                                         )
@@ -1162,39 +1456,48 @@ const OrderInformation = ({ route }) => {
                                         }}>
                                             {SHOWWLSKUQTYBYGOODSKEY.length > 0 ? (
                                                 <>
-                                                    <View
-                                                        style={{ flexDirection: 'row', borderBottomColor: Colors.fontColor, borderBottomWidth: 1 }}
-                                                    >
-                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                            คลัง
-                                                        </Text>
-                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                            ตำแหน่งเก็บ
-                                                        </Text>
-                                                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                            คงเหลือ
-                                                        </Text>
+                                                    <View style={{ flexDirection: 'row', borderBottomColor: Colors.fontColor, borderBottomWidth: 1 }}>
+                                                        <View width={deviceWidth * 0.25}>
+                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                คลัง
+                                                            </Text>
+                                                        </View>
+                                                        <View width={deviceWidth * 0.35}>
+                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                ตำแหน่งเก็บ
+                                                            </Text>
+                                                        </View>
+                                                        <View width={deviceWidth * 0.3}>
+                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                คงเหลือ
+                                                            </Text>
+                                                        </View>
                                                     </View>
                                                     <ScrollView>
                                                         {SHOWWLSKUQTYBYGOODSKEY.map((item) => {
                                                             return (
-                                                                <View
-                                                                    style={{ flexDirection: 'row' }}
-                                                                >
-                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                        {safe_Format.massageFormat(item.WL_CODE)}
-                                                                    </Text>
-                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                        {safe_Format.massageFormat(item.WL_NAME)}
-                                                                    </Text>
-                                                                    <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                        {safe_Format.currencyFormat(item.SUM_QTY)}
-                                                                    </Text>
+                                                                <View style={{ flexDirection: 'row' }}>
+                                                                    <View width={deviceWidth * 0.25}>
+                                                                        <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                            {safe_Format.massageFormat(item.WL_CODE)}
+                                                                        </Text>
+                                                                    </View>
+                                                                    <View width={deviceWidth * 0.35}>
+                                                                        <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                            {safe_Format.massageFormat(item.WL_NAME)}
+                                                                        </Text>
+                                                                    </View>
+                                                                    <View width={deviceWidth * 0.3}>
+                                                                        <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                            {safe_Format.currencyFormat(item.SUM_QTY)}
+                                                                        </Text>
+                                                                    </View>
                                                                 </View>
                                                             )
                                                         })}
                                                     </ScrollView>
                                                 </>
+
                                             ) : (
                                                 <View style={{
 
@@ -1245,78 +1548,134 @@ const OrderInformation = ({ route }) => {
                                                         <View
                                                             style={{ flexDirection: 'row', borderBottomColor: Colors.fontColor, borderBottomWidth: 1 }}
                                                         >
-
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.2, padding: 5 }}>
-                                                                รหัสตารางราคา
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.4, padding: 5 }}>
-                                                                ชื่อตารางราคา
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.4, padding: 5 }}>
-                                                                รหัสซื้อขาย
-                                                            </Text>
-
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.2, padding: 5 }}>
-                                                                บรรจุ
-
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ราคาขาย
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                %ส่วนลด
-                                                            </Text>
-                                                            {/*   <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ราคาสุทธิ
-                                                            </Text>
-                                                           <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ทุนไม่รวมภพ.
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                ทุนรวมภพ.
-                                                            </Text>
-                                                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', width: deviceWidth * 0.3, padding: 5 }}>
-                                                                กำไรขั้นต้น
-                                                            </Text> */}
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    รหัสตารางราคา
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.4}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    ชื่อตารางราคา
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.4}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    รหัสซื้อขาย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.2}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    บรรจุ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.4}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5 }}>
+                                                                    ป้ายราคา
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ราคาต่อหน่วย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    %ส่วนลด
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ราคาสุทธิ
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ทุนฝ่ายขาย
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    ทุนรวมภพ.
+                                                                </Text>
+                                                            </View>
+                                                            <View width={deviceWidth * 0.3}>
+                                                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', padding: 5, alignSelf: 'flex-end' }}>
+                                                                    กำไรขั้นต้น
+                                                                </Text>
+                                                            </View>
                                                         </View>
                                                         <ScrollView>
-                                                            {arraySp000211.map((item) => {
+                                                            {arraySp000211.sort((a, b) => {
+                                                                return a.WPurcPrice.ARPRB_CODE - b.WPurcPrice.ARPRB_CODE;
+                                                            }).map((item) => {
                                                                 return (
                                                                     // WPurcPrice
-                                                                    item.InfoWPurcPrice.filter((TokenSp000211) => { return TokenSp000211.GOODS_CODE == route.params.data.GOODS_CODE }).map((TWPurcPriceitem) => {
+                                                                    item.Sp000221.map((Sp000221items) => {
                                                                         return (
                                                                             <View style={{ flexDirection: 'row' }}>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.2, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.WPurcPrice.ARPRB_KEY)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.4, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(item.WPurcPrice.ARPRB_NAME)}
-                                                                                </Text>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.WPurcPrice.ARPRB_CODE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.4}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(item.WPurcPrice.ARPRB_NAME)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.4}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(Sp000221items.GOODS_CODE)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.2}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {safe_Format.massageFormat(
+                                                                                            GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY
+                                                                                        )}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.4}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 }}>
+                                                                                        {safe_Format.massageFormat(
+                                                                                            GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].TAG_NAME
+                                                                                        )}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
+                                                                                        {safe_Format.currencyFormat(Sp000221items.ARPLU_U_PRC)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
+                                                                                        {safe_Format.massageFormat(Sp000221items.ARPLU_U_DSC)}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
+                                                                                        {safe_Format.currencyFormat(getNetPrice(Sp000221items.ARPLU_U_PRC, Sp000221items.ARPLU_U_DSC))}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
+                                                                                        {safe_Format.currencyFormat(item.SKU_STD_COST * GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY)}
 
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.4, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(TWPurcPriceitem.GOODS_CODE)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.2, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(TWPurcPriceitem.UTQ_NAME)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(TWPurcPriceitem.APPLU_U_PRC)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(TWPurcPriceitem.APPLU_U_DSC)}
-                                                                                </Text>
-                                                                                {/* <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.massageFormat(TWPurcPriceitem.APPLU_U_PRC - TWPurcPriceitem.APPLU_U_DSC)}
-                                                                                </Text>
-                                                                             <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(TWPurcPriceitem.InfoWPurcPrice.TRD_G_SELL)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(TWPurcPriceitem.InfoWPurcPrice.TRD_G_AMT)}
-                                                                                </Text>
-                                                                                <Text style={{ color: Colors.fontColor, width: deviceWidth * 0.3, padding: 5 }}>
-                                                                                    {safe_Format.currencyFormat(TWPurcPriceitem.InfoWPurcPrice.TRD_COMM_RATE)}
-                                                                                </Text> */}
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
+                                                                                        {safe_Format.currencyFormat(item.SKU_STD_COST_TY)}
+
+                                                                                    </Text>
+                                                                                </View>
+                                                                                <View width={deviceWidth * 0.3}>
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
+                                                                                        {safe_Format.currencyFormat(getGPM(getNetPrice(Sp000221items.ARPLU_U_PRC, Sp000221items.ARPLU_U_DSC), item.SKU_STD_COST * GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY)) + '%'}
+
+                                                                                    </Text>
+                                                                                </View>
+
 
                                                                             </View>
                                                                         )
@@ -1412,7 +1771,7 @@ const OrderInformation = ({ route }) => {
                 )}
             </ImageBackground>
 
-        </SafeAreaView>
+        </SafeAreaView >
     );
 };
 

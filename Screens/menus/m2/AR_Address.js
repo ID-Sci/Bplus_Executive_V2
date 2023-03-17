@@ -231,7 +231,13 @@ const AR_GoodsBooking = ({ route }) => {
                                 <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>ชื่อ : {arrayObj[0].name}</Text>
                             </View>
                             <View padding={10}>
-                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>ที่อยู่ : {arrayObj[0].addb_addb_1} {arrayObj[0].addb_addb_2}</Text>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>ที่อยู่ : {arrayObj[0].addb_addb_1} {arrayObj[0].addb_addb_2} {arrayObj[0].addb_addb_3}</Text>
+                            </View>
+                            <View padding={10}>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>แขวง-ตำบล :  {arrayObj[0].addb_sub_district}</Text>
+                            </View>
+                            <View padding={10}>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>เขต-อำเภอ :  {arrayObj[0].addb_district}</Text>
                             </View>
                             <View padding={10}>
                                 <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>จังหวัด :  {arrayObj[0].addb_province}</Text>
@@ -240,12 +246,23 @@ const AR_GoodsBooking = ({ route }) => {
                                 <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>ไปรษณีย์ : {arrayObj[0].addb_post}</Text>
                             </View>
                             <View padding={10}>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>ประเทศ : {arrayObj[0].addb_country}</Text>
+                            </View>
+                            <View padding={10}>
                                 <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>โทร : (+{arrayObj[0].addb_cntry_code}) {arrayObj[0].addb_phone}</Text>
                             </View>
                             <View padding={10}>
                                 <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>Fax : {arrayObj[0].addb_fax}</Text>
                             </View>
-
+                            <View padding={10}>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>ชื่ออื่นๆ : {arrayObj[0].arcat_name}</Text>
+                            </View>
+                            <View padding={10}>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>สาขา : {arrayObj[0].addb_branch}</Text>
+                            </View>
+                            <View padding={10}>
+                                <Text style={{ FontSize: FontSize.medium, color: 'black', fontWeight: 'bold' }}>เลขผู้เสียภาษี : {arrayObj[0].addb_tax_id}</Text>
+                            </View>
                         </View> : null}
 
                 </View>

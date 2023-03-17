@@ -183,7 +183,7 @@ const OrderScreen = () => {
                                     flexDirection: 'row', alignItems: 'center',
                                     backgroundColor: Colors.backgroundLoginColorSecondary,
                                     borderColor: Colors.borderColor,
-                                    borderWidth: 0.5
+                                    borderWidth: 1
 
                                 }}>
                                     <TextInput
@@ -228,11 +228,8 @@ const OrderScreen = () => {
                                                         data: item
                                                     })}>
 
-
                                                     <View style={{
-
                                                         flexDirection: 'column',
-
                                                     }}>
                                                         <View style={{
                                                             borderBottomColor: 'black',

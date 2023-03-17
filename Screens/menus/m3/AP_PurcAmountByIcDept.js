@@ -64,8 +64,7 @@ const AP_PurcAmountByIcDept = ({ route }) => {
         topImage,
         tabbar,
         buttonContainer,
-    } = style
-    ;
+    } = styles;
 
     const registerReducer = useSelector(({ registerReducer }) => registerReducer);
     const loginReducer = useSelector(({ loginReducer }) => loginReducer);

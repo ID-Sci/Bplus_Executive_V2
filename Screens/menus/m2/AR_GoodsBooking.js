@@ -87,9 +87,9 @@ const AR_GoodsBooking = ({ route }) => {
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
-    useEffect(()=>{
+    useEffect(() => {
         setRadio_menu2(1, radio_props[3].value)
-    },[])
+    }, [])
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
     var ser_die = true
@@ -122,7 +122,7 @@ const AR_GoodsBooking = ({ route }) => {
 
     }
     const fetchInCome = async (tempGuid) => {
-
+        console.log(route.params.Obj)
         setModalVisible(!modalVisible)
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
@@ -150,6 +150,7 @@ const AR_GoodsBooking = ({ route }) => {
                 let responseData = JSON.parse(json.ResponseData);
                 if (responseData.RECORD_COUNT > 0) {
                     for (var i in responseData.SHOWGOODSORDERARKEY) {
+                        console.log(responseData.SHOWGOODSORDERARKEY[i])
                         let jsonObj = {
                             id: i,
                             goods_code: responseData.SHOWGOODSORDERARKEY[i].GOODS_CODE,
@@ -301,12 +302,12 @@ const AR_GoodsBooking = ({ route }) => {
                                                                     fontSize: FontSize.medium,
                                                                     color: Colors.fontColor,
                                                                     alignSelf: 'flex-end'
-                                                                }} >{safe_Format.currencyFormat(item.trd_qty)}</Text></View>
+                                                                }} >{safe_Format.currencyFormat(item.trd_qty-item.showusedqty)}</Text></View>
                                                                 <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
                                                                     fontSize: FontSize.medium,
                                                                     color: Colors.fontColor,
                                                                     alignSelf: 'flex-end'
-                                                                }} >{safe_Format.currencyFormat(item.trd_qty_free)}</Text></View>
+                                                                }} >{safe_Format.currencyFormat(item.showusedqty)}</Text></View>
                                                                 <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
                                                                     fontSize: FontSize.medium,
                                                                     color: Colors.fontColor,
