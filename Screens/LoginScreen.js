@@ -103,8 +103,7 @@ const LoginScreen = () => {
       dispatch(loginActions.serviceID(serviceID))
 
     console.log('>> isSFeatures : ', isSFeatures)
-    if (registerReducer.machineNum.length == 0)
-      getMac()
+    if (registerReducer.machineNum.length == 0 || registerReducer.machineNum == "02:00:00:00:00:00") getMac()
 
     console.log('>> Language : ', Language.getLang())
 
@@ -138,25 +137,35 @@ const LoginScreen = () => {
     });
   };
   const getMac = async () => {
-    var lodstr = ''
-    for (var i = 0; i < 100; i++) {
-      lodstr += '_'
+    let uuid = '';
+    const characters = '0123456789abcdef';
 
-
+    for (let i = 0; i < 36; i++) {
+      if (i === 8 || i === 13 || i === 18 || i === 23) {
+        uuid += '-';
+      } else {
+        uuid += characters[Math.floor(Math.random() * characters.length)];
+      }
     }
 
 
     await DeviceInfo.getMacAddress().then((mac) => {
-      var a = Math.floor(100000 + Math.random() * 900000);
       console.log(DeviceInfo.getDeviceName())
       console.log('\nmachine > > ' + mac)
-      if (mac.length > 0) dispatch(registerActions.machine(mac));
+      if (mac.length > 0 && mac != "02:00:00:00:00:00") dispatch(registerActions.machine(mac))
       else NetworkInfo.getBSSID().then(macwifi => {
         console.log('\nmachine(wifi) > > ' + macwifi)
-        if (macwifi.length > 0) dispatch(registerActions.machine(macwifi));
-        else dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e'));
-      }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e')));
-    }).catch((e) => dispatch(registerActions.machine('9b911981-afbf-42d4-9828-0924a112d48e')));
+        if (macwifi.length > 0 && macwifi != "02:00:00:00:00:00") dispatch(registerActions.machine(macwifi))
+        else {
+          const deviceId = DeviceInfo.getUniqueId();
+          console.log('\ndeviceId > > ' + deviceId)
+          if (deviceId.length > 0 && deviceId != "02:00:00:00:00:00") dispatch(registerActions.machine(deviceId))
+          else {
+            dispatch(registerActions.machine(uuid))
+          }
+        }
+      }).catch((e) => dispatch(registerActions.machine(uuid)))
+    }).catch((e) => dispatch(registerActions.machine(uuid)))
   }
 
 
@@ -495,7 +504,7 @@ const LoginScreen = () => {
                         flexDirection: 'column',
                         alignItems: 'center'
                       }}>
-                      <Text style={Colors.borderColor}>version 2.5.7</Text>
+                      <Text style={Colors.borderColor}>version 2.5.9</Text>
                     </View>
 
                   </View>

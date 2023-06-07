@@ -162,7 +162,7 @@ const M6 = () => {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={() => navigation.navigate('IncomeByPos', { nav: 'IncomeByPos', routeName: 'IncomeByPos' })}
                                              >
                                         <View
@@ -199,7 +199,7 @@ const M6 = () => {
                                                 }}>สรุปยอดขายตามเครื่องบันทึกเงินสด</Text>
                                             </View>
                                         </View>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                     {/* <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowSlmn', { nav: 'ShowSlmn', routeName: 'SlmnByYearMonth' })}
                                              >

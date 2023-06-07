@@ -267,12 +267,18 @@ const Ereport = () => {
                                                 source={require('../images/UI/Asset20.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
-                                                <Text style={{
+                                                {/* <Text style={{
                                                     color: 'black',
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>สรุปยอดเช็คและสินค้าคงเหลือ</Text>
+                                                }}>สรุปยอดเช็คและสินค้าคงเหลือ</Text> */}
+                                                   <Text style={{
+                                                    color: 'black',
+                                                    alignSelf: 'center',
+                                                    fontSize: FontSize.medium,
+                                                    fontWeight: 'bold'
+                                                }}>สรุปยอดเช็คในธนาคาร</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

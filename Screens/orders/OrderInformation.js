@@ -1643,35 +1643,35 @@ const OrderInformation = ({ route }) => {
                                                                                     </Text>
                                                                                 </View>
                                                                                 <View width={deviceWidth * 0.3}>
-                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
-                                                                                        {safe_Format.currencyFormat(Sp000221items.ARPLU_U_PRC)}
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {Sp000221items.ARPLU_U_PRC == 0 ? "-" : safe_Format.currencyFormat(Sp000221items.ARPLU_U_PRC)}
                                                                                     </Text>
                                                                                 </View>
                                                                                 <View width={deviceWidth * 0.3}>
-                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
-                                                                                        {safe_Format.massageFormat(Sp000221items.ARPLU_U_DSC)}
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {Sp000221items.ARPLU_U_PRC == 0 ? "-" : safe_Format.massageFormat(Sp000221items.ARPLU_U_DSC)}
                                                                                     </Text>
                                                                                 </View>
                                                                                 <View width={deviceWidth * 0.3}>
-                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
-                                                                                        {safe_Format.currencyFormat(getNetPrice(Sp000221items.ARPLU_U_PRC, Sp000221items.ARPLU_U_DSC))}
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {Sp000221items.ARPLU_U_PRC == 0 ? "-" : safe_Format.currencyFormat(getNetPrice(Sp000221items.ARPLU_U_PRC, Sp000221items.ARPLU_U_DSC))}
                                                                                     </Text>
                                                                                 </View>
                                                                                 <View width={deviceWidth * 0.3}>
-                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
-                                                                                        {safe_Format.currencyFormat(item.SKU_STD_COST * GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY)}
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {Sp000221items.ARPLU_U_PRC == 0 ? "-" : safe_Format.currencyFormat(item.SKU_STD_COST * GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY)}
 
                                                                                     </Text>
                                                                                 </View>
                                                                                 <View width={deviceWidth * 0.3}>
-                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
-                                                                                        {safe_Format.currencyFormat(item.SKU_STD_COST_TY)}
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {Sp000221items.ARPLU_U_PRC == 0 ? "-" : safe_Format.currencyFormat(item.SKU_STD_COST_TY)}
 
                                                                                     </Text>
                                                                                 </View>
                                                                                 <View width={deviceWidth * 0.3}>
-                                                                                    <Text style={{ color: Colors.fontColor, padding: 5 , alignSelf: 'flex-end'}}>
-                                                                                        {safe_Format.currencyFormat(getGPM(getNetPrice(Sp000221items.ARPLU_U_PRC, Sp000221items.ARPLU_U_DSC), item.SKU_STD_COST * GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY)) + '%'}
+                                                                                    <Text style={{ color: Colors.fontColor, padding: 5, alignSelf: 'flex-end' }}>
+                                                                                        {Sp000221items.ARPLU_U_PRC == 0 ? "-" : safe_Format.currencyFormat(getGPM(getNetPrice(Sp000221items.ARPLU_U_PRC, Sp000221items.ARPLU_U_DSC), item.SKU_STD_COST * GoodsInfo.GOODSMASTER.filter((Gitem) => { return Gitem.GOODS_CODE == Sp000221items.GOODS_CODE })[0].UTQ_QTY)) + '%'}
 
                                                                                     </Text>
                                                                                 </View>

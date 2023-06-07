@@ -74,7 +74,7 @@ const AP_GoodsBooking = ({ route }) => {
     const [arrayObj, setArrayObj] = useState([]);
     const [start_date, setS_date] = useState(new Date());
     const [end_date, setE_date] = useState(new Date())
-    const [sum, setSum] = useState(0)
+    const [sum, setSum] = useState({})
     const [radioIndex1, setRadioIndex1] = useState(4);
     const [radioIndex2, setRadioIndex2] = useState(4);
     const [radioIndex3, setRadioIndex3] = useState(4);
@@ -85,9 +85,9 @@ const AP_GoodsBooking = ({ route }) => {
         { label: 'วันนี้', value: 'nowday' },
         { label: null, value: null }
     ];
-    useEffect(()=>{
+    useEffect(() => {
         setRadio_menu2(1, radio_props[3].value)
-    },[])
+    }, [])
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState([0]);
     var ser_die = true
@@ -95,12 +95,18 @@ const AP_GoodsBooking = ({ route }) => {
         setPage(0);
     }, [itemsPerPage])
     useEffect(() => {
-        var newsum = 0
+        var showusedqty = 0
+        var trd_qty = 0
         for (var i in arrayObj) {
-            newsum += Number(arrayObj[i].trd_qty_free)
+            showusedqty += Number(arrayObj[i].showusedqty)
+            trd_qty += Number(arrayObj[i].trd_qty)
+        }
+        let objSum = {
+            showusedqty: showusedqty,
+            trd_qty: trd_qty
         }
 
-        setSum(newsum)
+        setSum(objSum)
 
     }, [arrayObj])
     const regisMacAdd = async () => {
@@ -123,7 +129,7 @@ const AP_GoodsBooking = ({ route }) => {
         setModalVisible(!modalVisible)
         var sDate = safe_Format.setnewdateF(safe_Format.checkDate(start_date))
         var eDate = safe_Format.setnewdateF(safe_Format.checkDate(end_date))
-
+        console.log(route.params.Obj)
         await fetch(databaseReducer.Data.urlser + '/Executive', {
             method: 'POST',
             body: JSON.stringify({
@@ -263,12 +269,12 @@ const AP_GoodsBooking = ({ route }) => {
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2,
                                         alignSelf: 'center'
-                                    }}> จำนวนค้างส่ง </Text></View>
+                                    }}> จำนวนค้างรับ </Text></View>
                                     <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2,
                                         alignSelf: 'center'
-                                    }}> ส่งแล้ว </Text></View>
+                                    }}> รับแล้ว </Text></View>
                                     <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2,
@@ -298,17 +304,17 @@ const AP_GoodsBooking = ({ route }) => {
                                                                     fontSize: FontSize.medium,
                                                                     color: Colors.fontColor,
                                                                     alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.trd_qty - item.showusedqty)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
+                                                                }} >{safe_Format.currencyFormat(item.showusedqty)}</Text></View>
+                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                    fontSize: FontSize.medium,
+                                                                    color: Colors.fontColor,
+                                                                    alignSelf: 'flex-end'
                                                                 }} >{safe_Format.currencyFormat(item.trd_qty)}</Text></View>
-                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
-                                                                    fontSize: FontSize.medium,
-                                                                    color: Colors.fontColor,
-                                                                    alignSelf: 'flex-end'
-                                                                }} >{safe_Format.currencyFormat(item.trd_qty_free)}</Text></View>
-                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
-                                                                    fontSize: FontSize.medium,
-                                                                    color: Colors.fontColor,
-                                                                    alignSelf: 'flex-end'
-                                                                }} >{safe_Format.currencyFormat((item.trd_qty))}</Text></View>
                                                             </View>
                                                         </>
                                                     )
@@ -327,22 +333,25 @@ const AP_GoodsBooking = ({ route }) => {
                                                 fontSize: FontSize.medium,
                                                 color: Colors.fontColor2,
                                                 alignSelf: 'flex-start'
-                                            }}> </Text> </View>
-                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2,
-                                                alignSelf: 'flex-start'
-                                            }}> </Text> </View>
-                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2,
-                                                alignSelf: 'flex-start'
-                                            }}> </Text> </View>
-                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
-                                                fontSize: FontSize.medium,
-                                                color: Colors.fontColor2,
-                                                alignSelf: 'flex-end'
-                                            }}>{safe_Format.currencyFormat(sum)}</Text></View>
+                                            }}> </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }}>{safe_Format.currencyFormat(sum.trd_qty - sum.showusedqty)} </Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }}> {safe_Format.currencyFormat(sum.showusedqty)}</Text></View>
+                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                                <Text style={{
+                                                    fontSize: FontSize.medium,
+                                                    color: Colors.fontColor2,
+                                                    alignSelf: 'flex-end'
+                                                }}>{safe_Format.currencyFormat(sum.trd_qty)}</Text></View>
                                         </View> : null}
                                 </ScrollView>
 

@@ -477,11 +477,14 @@ const DailyCalendarScreen = () => {
             <ImageBackground source={require(image)} onLoadEnd={() => { setLoading_backG(false) }} resizeMode="cover" style={styles.image}>
                 {!loading_backG ?
                     < >
+
                         <View  >
                             <Image
                                 style={topImage}
                                 source={require('../../images/UI/Asset43.png')} />
                         </View>
+
+
                         <ScrollView>
                             <View style={container1}>
 
@@ -502,7 +505,7 @@ const DailyCalendarScreen = () => {
                                                 onValueChange={(itemValue, itemIndex) => set_yearIndex(itemValue, itemIndex)}>
                                                 {safe_Format.state_years.map((obj, index) => {
                                                     return (
-                                                        <Picker.Item color={Colors.itemColor} style={{backgroundColor: Colors.backgroundColorSecondary}} label={obj.toString()} value={obj} />
+                                                        <Picker.Item color={Colors.itemColor} style={{ backgroundColor: Colors.backgroundColorSecondary }} label={obj.toString()} value={obj} />
                                                     )
                                                 })}
                                             </Picker>
@@ -522,7 +525,7 @@ const DailyCalendarScreen = () => {
                                                 onValueChange={(itemValue, itemIndex) => setMonthState(itemValue, itemIndex)}>
                                                 {safe_Format.months_th.map((obj, index) => {
                                                     return (
-                                                        <Picker.Item color={Colors.itemColor}  style={{backgroundColor: Colors.backgroundColorSecondary}}  label={obj} value={index} />
+                                                        <Picker.Item color={Colors.itemColor} style={{ backgroundColor: Colors.backgroundColorSecondary }} label={obj} value={index} />
                                                     )
                                                 })}
                                             </Picker>
@@ -968,7 +971,7 @@ const DailyCalendarScreen = () => {
                             alignContent: 'center',
                             position: 'absolute',
                         }}>
-                        <ActivityIndicator
+                        <ActivityIndicator 
                             style={{
                                 borderRadius: 15,
                                 backgroundColor: null,

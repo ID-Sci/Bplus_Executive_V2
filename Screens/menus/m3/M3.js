@@ -238,7 +238,7 @@ const M3 = () => {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAP', { nav: 'ShowAP', routeName: 'AP_GoodsBooking' })}
                                              >
                                         <View
@@ -275,7 +275,7 @@ const M3 = () => {
                                                 }}>แสดงสินค้าสั่งซื้อค้างรับ</Text>
                                             </View>
                                         </View>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('ShowAP', { nav: 'ShowAP', routeName: 'AP_Address' })}
                                              >

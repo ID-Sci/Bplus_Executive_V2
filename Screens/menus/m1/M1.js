@@ -267,12 +267,19 @@ const M1 = () => {
                                                 source={require('../../../images/UI/Asset30.png')}
                                             />
                                             <View style={{ marginLeft: 20 }}>
-                                                <Text style={{
+                                                {/* <Text style={{
                                                     color: 'black',
                                                     alignSelf: 'center',
                                                     fontSize: FontSize.medium,
                                                     fontWeight: 'bold'
-                                                }}>แสดงยอดซื้อขายรายวัน</Text>
+                                                }}>แสดงยอดซื้อขายรายวัน</Text> */}
+                                                  <Text style={{
+                                                    color: 'black',
+                                                    alignSelf: 'center',
+                                                    fontSize: FontSize.medium,
+                                                    fontWeight: 'bold'
+                                                }}>แสดงยอดขายรายวัน</Text>
+                                                
                                             </View>
                                         </View>
                                     </TouchableOpacity>

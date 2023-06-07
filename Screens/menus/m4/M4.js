@@ -200,7 +200,7 @@ const M4 = () => {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={() => navigation.navigate('SkuBalance', { nav: 'SkuBalance', routeName: 'SkuBalance' })}
                                              >
                                         <View
@@ -275,7 +275,7 @@ const M4 = () => {
                                                 }}>ยอดสินค้าคงเหลือตามตำแหน่งเก็บ</Text>
                                             </View>
                                         </View>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
 
                                     <TouchableNativeFeedback
                                         onPress={() => navigation.goBack()}>

@@ -331,12 +331,18 @@ const ShowSellBook = ({ route }) => {
                             onPress={() => navigation.goBack()}>
                             <FontAwesome name="arrow-left" color={'black'} size={FontSize.large} />
                         </TouchableOpacity>
-                        <Text
+                        {/* <Text
                             style={{
                                 marginLeft: 12,
                                 fontSize: FontSize.medium,
                                 color: 'black'
-                            }}>{`แสดงยอดซื้อขายรายวัน`}</Text>
+                            }}>{`แสดงยอดซื้อขายรายวัน`}</Text> */}
+                             <Text
+                            style={{
+                                marginLeft: 12,
+                                fontSize: FontSize.medium,
+                                color: 'black'
+                            }}>{`แสดงยอดขายรายวัน`}</Text>
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -366,7 +372,7 @@ const ShowSellBook = ({ route }) => {
                                         color: Colors.fontColor2,
                                         alignSelf: 'center'
                                     }}>ยอดจอง </Text></View>
-                                    <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
+                                    {/* <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  ><Text style={{
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2,
                                         alignSelf: 'center'
@@ -375,7 +381,7 @@ const ShowSellBook = ({ route }) => {
                                         fontSize: FontSize.medium,
                                         color: Colors.fontColor2,
                                         alignSelf: 'center'
-                                    }}>ยอดสั่งซื้อ </Text></View>
+                                    }}>ยอดสั่งซื้อ </Text></View> */}
                                 </View>
                                 <ScrollView>
                                     <KeyboardAvoidingView keyboardVerticalOffset={1} >
@@ -400,7 +406,7 @@ const ShowSellBook = ({ route }) => {
                                                                     color: Colors.fontColor,
                                                                     alignSelf: 'flex-end'
                                                                 }} >{safe_Format.currencyFormat(item.bookamount)}</Text></View>
-                                                                <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
+                                                                {/* <View width={deviceWidth * 0.4} style={tableStyles.tableCellTitle}><Text style={{
                                                                     fontSize: FontSize.medium,
                                                                     color: Colors.fontColor,
                                                                     alignSelf: 'flex-end'
@@ -409,7 +415,7 @@ const ShowSellBook = ({ route }) => {
                                                                     fontSize: FontSize.medium,
                                                                     color: Colors.fontColor,
                                                                     alignSelf: 'flex-end'
-                                                                }} >{safe_Format.currencyFormat(item.poamount)}</Text></View>
+                                                                }} >{safe_Format.currencyFormat(item.poamount)}</Text></View> */}
                                                             </View>
 
                                                         </>
@@ -449,7 +455,7 @@ const ShowSellBook = ({ route }) => {
                                                     {safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_bookamount))}
                                                 </Text>
                                             </View>
-                                            <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
+                                            {/* <View width={deviceWidth * 0.4} style={tableStyles.tableHeaderTitle}  >
                                                 <Text style={{
                                                     fontSize: FontSize.medium,
                                                     color: Colors.fontColor2,
@@ -463,7 +469,7 @@ const ShowSellBook = ({ route }) => {
                                                 }} >
                                                     {safe_Format.currencyFormat(safe_Format.sumTabledata(arrayObj_poamount))}
                                                 </Text>
-                                            </View>
+                                            </View> */}
 
                                         </View>
 

@@ -80,28 +80,28 @@ const DailyCalendarInfomation = ({ route }) => {
         if (route.params?.poppoint) {
             tempVal = route.params.poppoint
             for (var i in tempVal)
-                sum += parseInt(tempVal[i].APPO_A_AMT)
+                sum += parseFloat(tempVal[i].APPO_A_AMT)
             console.log(sum)
             set_poppoint(sum)
         }
         if (route.params?.mappoint) {
             tempVal = route.params.mappoint
             for (var i in tempVal)
-                sum += parseInt(tempVal[i].AROE_A_AMT)
+                sum += parseFloat(tempVal[i].AROE_A_AMT)
             console.log(sum)
             set_mappoint(sum)
         }
         if (route.params?.rarchqDue) {
             tempVal = route.params.rarchqDue
             for (var i in tempVal)
-                sum += parseInt(tempVal[i].ARD_A_AMT)
+                sum += parseFloat(tempVal[i].ARD_A_AMT)
             console.log(sum)
             set_rarchqDue(sum)
         }
         if (route.params?.rapDue) {
             tempVal = route.params.rapDue
             for (var i in tempVal)
-                sum += parseInt(tempVal[i].APD_A_AMT)
+                sum += parseFloat(tempVal[i].APD_A_AMT)
             console.log(sum)
             set_rapDue(sum)
         }

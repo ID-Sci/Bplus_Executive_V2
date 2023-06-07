@@ -442,7 +442,6 @@ const SelectBase = ({ route }) => {
             </Picker>
           </View>
         </View>
-
         <ScrollView>
           <SafeAreaView >
             <KeyboardAvoidingView keyboardVerticalOffset={1} behavior={'position'}>
